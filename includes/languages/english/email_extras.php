@@ -1,10 +1,10 @@
 <?php
 /**
  * @package languageDefines
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2007 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: email_extras.php 19690 2011-10-04 16:41:45Z drbyte $
+ * @version $Id: email_extras.php 7161 2007-10-02 10:58:34Z drbyte $
  */
 
 // office use only
@@ -39,6 +39,7 @@
 
 // Admin additional email subjects
   define('SEND_EXTRA_CREATE_ACCOUNT_EMAILS_TO_SUBJECT','[CREATE ACCOUNT]');
+  define('SEND_EXTRA_TELL_A_FRIEND_EMAILS_TO_SUBJECT','[TELL A FRIEND]');
   define('SEND_EXTRA_GV_CUSTOMER_EMAILS_TO_SUBJECT','[GV CUSTOMER SENT]');
   define('SEND_EXTRA_NEW_ORDERS_EMAILS_TO_SUBJECT','[NEW ORDER]');
   define('SEND_EXTRA_CC_EMAILS_TO_SUBJECT','[EXTRA CC ORDER info] #');
@@ -46,3 +47,7 @@
 // Low Stock Emails
   define('EMAIL_TEXT_SUBJECT_LOWSTOCK','Warning: Low Stock');
   define('SEND_EXTRA_LOW_STOCK_EMAIL_TITLE','Low Stock Report: ');
+
+// for when gethost is off
+  define('OFFICE_IP_TO_HOST_ADDRESS', 'Disabled');
+?>

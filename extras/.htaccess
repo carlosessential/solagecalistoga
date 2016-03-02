@@ -31,6 +31,4 @@
 
 IndexIgnore */*
 
-# NOTE: GoDaddy runs PHP as CGI, so the -ExecCGI on the line below may block .php scripts from running in this directory
 OPTIONS -Indexes -ExecCGI
-

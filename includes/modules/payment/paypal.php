@@ -1,12 +1,12 @@
 <?php
 /**
- * paypal.php payment module class for PayPal Payments Standard (IPN) method
+ * paypal.php payment module class for PayPal Website Payments Standard (IPN) method
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Wed Oct 23 01:01:52 2013 -0400 Modified in v1.5.4 $
+ * @version $Id: paypal.php 15735 2010-03-29 07:13:53Z drbyte $
  */
 
 define('MODULE_PAYMENT_PAYPAL_TAX_OVERRIDE', 'true');
@@ -17,7 +17,7 @@ define('MODULE_PAYMENT_PAYPAL_TAX_OVERRIDE', 'true');
   include_once((IS_ADMIN_FLAG === true ? DIR_FS_CATALOG_MODULES : DIR_WS_MODULES) . 'payment/paypal/paypal_functions.php');
 
 /**
- * paypal.php payment module class for PayPal Payments Standard (IPN) method
+ * paypal.php payment module class for PayPal Website Payments Standard (IPN) method
  *
  */
 class paypal extends base {
@@ -54,10 +54,9 @@ class paypal extends base {
   function paypal($paypal_ipn_id = '') {
     global $order, $messageStack;
     $this->code = 'paypal';
-    $this->codeVersion = '1.5.4';
+    $this->codeVersion = '1.3.9';
     if (IS_ADMIN_FLAG === true) {
-      // Payment Module title in Admin
-      $this->title = STORE_COUNTRY != '223' ? MODULE_PAYMENT_PAYPAL_TEXT_ADMIN_TITLE_NONUSA : MODULE_PAYMENT_PAYPAL_TEXT_ADMIN_TITLE;
+      $this->title = MODULE_PAYMENT_PAYPAL_TEXT_ADMIN_TITLE; // Payment Module title in Admin
       if (IS_ADMIN_FLAG === true && defined('MODULE_PAYMENT_PAYPAL_IPN_DEBUG') && MODULE_PAYMENT_PAYPAL_IPN_DEBUG != 'Off') $this->title .= '<span class="alert"> (debug mode active)</span>';
       if (IS_ADMIN_FLAG === true && MODULE_PAYMENT_PAYPAL_TESTING == 'Test') $this->title .= '<span class="alert"> (dev/test mode active)</span>';
     } else {
@@ -70,17 +69,9 @@ class paypal extends base {
       $this->order_status = MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID;
     }
     if (is_object($order)) $this->update_status();
+    $this->form_action_url = 'https://' . MODULE_PAYMENT_PAYPAL_HANDLER;
 
-    if (PROJECT_VERSION_MAJOR != '1' && substr(PROJECT_VERSION_MINOR, 0, 3) != '5.4') $this->enabled = false;
-    /**
-     * Determine which PayPal URL to direct the customer's browser to when needed
-     */
-    if (MODULE_PAYMENT_PAYPAL_HANDLER == 'live' || !strstr(MODULE_PAYMENT_PAYPAL_HANDLER, 'sandbox')) {
-      $this->form_action_url = 'https://www.paypal.com/cgi-bin/webscr';
-    } else {
-      $this->form_action_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
-    }
-
+    if (PROJECT_VERSION_MAJOR != '1' && substr(PROJECT_VERSION_MINOR, 0, 3) != '3.9') $this->enabled = false;
 
     // verify table structure
     if (IS_ADMIN_FLAG === true) $this->tableCheckup();
@@ -92,9 +83,9 @@ class paypal extends base {
   function update_status() {
     global $order, $db;
 
-    if ($this->enabled && (int)MODULE_PAYMENT_PAYPAL_ZONE > 0 && isset($order->billing['country']['id'])) {
+    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_PAYPAL_ZONE > 0) ) {
       $check_flag = false;
-      $check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_PAYPAL_ZONE . "' and zone_country_id = '" . (int)$order->billing['country']['id'] . "' order by zone_id");
+      $check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_PAYPAL_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
       while (!$check_query->EOF) {
         if ($check_query->fields['zone_id'] < 1) {
           $check_flag = true;
@@ -167,6 +158,7 @@ class paypal extends base {
     $optionsTrans = array();
     $buttonArray = array();
 
+    $this->totalsum = $order->info['total'];
 
     // save the session stuff permanently in case paypal loses the session
     $_SESSION['ppipn_key_to_remove'] = session_id();
@@ -182,8 +174,7 @@ class paypal extends base {
     $my_currency = select_pp_currency();
     $this->transaction_currency = $my_currency;
 
-    $this->totalsum = $order->info['total'] = zen_round($order->info['total'], 2);
-    $this->transaction_amount = zen_round($this->totalsum * $currencies->get_value($my_currency), $currencies->get_decimal_places($my_currency));
+    $this->transaction_amount = ($this->totalsum * $currencies->get_value($my_currency));
 
     $telephone = preg_replace('/\D/', '', $order->customer['telephone']);
     if ($telephone != '') {
@@ -246,7 +237,7 @@ class paypal extends base {
     $optionsShip['no_shipping'] = MODULE_PAYMENT_PAYPAL_ADDRESS_REQUIRED;
     if (MODULE_PAYMENT_PAYPAL_ADDRESS_OVERRIDE == '1') $optionsShip['address_override'] = MODULE_PAYMENT_PAYPAL_ADDRESS_OVERRIDE;
     // prepare cart contents details where possible
-    if (MODULE_PAYMENT_PAYPAL_DETAILED_CART == 'Yes') $optionsLineItems = ipn_getLineItemDetails($my_currency);
+    if (MODULE_PAYMENT_PAYPAL_DETAILED_CART == 'Yes') $optionsLineItems = ipn_getLineItemDetails();
     if (sizeof($optionsLineItems) > 0) {
       $optionsLineItems['cmd'] = '_cart';
 //      $optionsLineItems['num_cart_items'] = sizeof($order->products);
@@ -283,9 +274,6 @@ class paypal extends base {
     // if line-item info is invalid, use aggregate:
     if (sizeof($optionsLineItems) > 0) $optionsAggregate = $optionsLineItems;
 
-    if (defined('MODULE_PAYMENT_PAYPAL_LOGO_IMAGE')) $optionsCore['cpp_logo_image'] = urlencode(MODULE_PAYMENT_LOGO_IMAGE);
-    if (defined('MODULE_PAYMENT_PAYPAL_CART_BORDER_COLOR')) $optionsCore['cpp_cart_border_color'] = MODULE_PAYMENT_PAYPAL_CART_BORDER_COLOR;
-
     // prepare submission
     $options = array_merge($optionsCore, $optionsCust, $optionsPhone, $optionsShip, $optionsTrans, $optionsAggregate);
     //ipn_debug_email('Keys for submission: ' . print_r($options, true));
@@ -304,43 +292,29 @@ class paypal extends base {
 
       $buttonArray[] = zen_draw_hidden_field($name, $value);
     }
-    $process_button_string = "\n" . implode("\n", $buttonArray) . "\n";
+    $process_button_string = implode("\n", $buttonArray) . "\n";
 
     $_SESSION['paypal_transaction_info'] = array($this->transaction_amount, $this->transaction_currency);
     return $process_button_string;
   }
   /**
-   * Determine the language to use when redirecting to the PayPal site
-   * Order of selection: locale for current language, current-language-code, delivery-country, billing-country, store-country
+   * Determine the language to use when visiting the PayPal site
    */
   function getLanguageCode() {
-    global $order, $locales;
-    $allowed_country_codes = array('US', 'AU', 'DE', 'FR', 'IT', 'GB', 'ES', 'AT', 'BE', 'CA', 'CH', 'CN', 'NL', 'PL', 'PT', 'BR', 'RU');
-    $allowed_language_codes = array('da_DK', 'he_IL', 'id_ID', 'ja_JP', 'no_NO', 'pt_BR', 'ru_RU', 'sv_SE', 'th_TH', 'tr_TR', 'zh_CN', 'zh_HK', 'zh_TW');
-
+    global $order;
     $lang_code = '';
-    $user_locale_info = array();
-    if (isset($locales) && is_array($locales)) {
-      $user_locale_info = $locales;
-    }
-    $user_locale_info[] = strtoupper($_SESSION['languages_code']);
-    $shippingISO = zen_get_countries($order->delivery['country']['id'], true);
-    $user_locale_info[] = strtoupper($shippingISO['countries_iso_code_2']);
-    $billingISO = zen_get_countries($order->billing['country']['id'], true);
-    $user_locale_info[] = strtoupper($billingISO['countries_iso_code_2']);
-    $custISO = zen_get_countries($order->customer['country']['id'], true);
-    $user_locale_info[] = strtoupper($custISO['countries_iso_code_2']);
+    $orderISO = zen_get_countries($order->customer['country']['id'], true);
     $storeISO = zen_get_countries(STORE_COUNTRY, true);
-    $user_locale_info[] = strtoupper($storeISO['countries_iso_code_2']);
-
-    $to_match = array_map('strtoupper', array_merge($allowed_country_codes, $allowed_language_codes));
-    foreach($user_locale_info as $val) {
-      if (in_array(strtoupper($val), $to_match)) {
-        if (strtoupper($val) == 'EN' && isset($locales) && $locales[0] == 'en_GB') $val = 'GB';
-        if (strtoupper($val) == 'EN') $val = 'US';
-        return $val;
-      }
+    if (in_array(strtoupper($orderISO['countries_iso_code_2']), array('US', 'AU', 'DE', 'FR', 'IT', 'GB', 'ES', 'AT', 'BE', 'CA', 'CH', 'CN', 'NL', 'PL'))) {
+      $lang_code = strtoupper($orderISO['countries_iso_code_2']);
+    } elseif (in_array(strtoupper($storeISO['countries_iso_code_2']), array('US', 'AU', 'DE', 'FR', 'IT', 'GB', 'ES', 'AT', 'BE', 'CA', 'CH', 'CN', 'NL', 'PL'))) {
+      $lang_code = strtoupper($storeISO['countries_iso_code_2']);
+    } elseif (in_array(strtoupper($_SESSION['languages_code']), array('EN', 'US', 'AU', 'DE', 'FR', 'IT', 'GB', 'ES', 'AT', 'BE', 'CA', 'CH', 'CN', 'NL', 'PL'))) {
+      $lang_code = $_SESSION['languages_code'];
+      if (strtoupper($lang_code) == 'EN') $lang_code = 'US';
     }
+    //return $orderISO['countries_iso_code_2'];
+    return strtoupper($lang_code);
   }
   /**
    * Store transaction info to the order and process any results that come back from the payment gateway
@@ -494,11 +468,6 @@ class paypal extends base {
       $check_query = $db->Execute("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_PAYPAL_STATUS'");
       $this->_check = $check_query->RecordCount();
     }
-    if (!in_array(MODULE_PAYMENT_PAYPAL_HANDLER, array('live', 'sandbox'))) {
-      $val = (stristr(MODULE_PAYMENT_PAYPAL_HANDLER, 'sand')) ? 'sandbox' : 'live';
-      $sql = "UPDATE " . TABLE_CONFIGURATION . " SET configuration_title = 'Live or Sandbox', configuration_value = '" . $val . "', configuration_description= '<strong>Live: </strong> Used to process Live transactions<br><strong>Sandbox: </strong>For developers and testing', set_function='zen_cfg_select_option(array(\'live\', \'sandbox\'), ' WHERE configuration_key = 'MODULE_PAYMENT_PAYPAL_HANDLER'";
-      $db->Execute($sql);
-    }
     return $this->_check;
   }
   /**
@@ -508,7 +477,7 @@ class paypal extends base {
   function install() {
     global $db, $messageStack;
     if (defined('MODULE_PAYMENT_PAYPAL_STATUS')) {
-      $messageStack->add_session('PayPal Payments Standard module already installed.', 'error');
+      $messageStack->add_session('PayPal Website Payments Standard module already installed.', 'error');
       zen_redirect(zen_href_link(FILENAME_MODULES, 'set=payment&module=paypal', 'NONSSL'));
       return 'failed';
     }
@@ -519,20 +488,21 @@ class paypal extends base {
     }
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Enable PayPal Module', 'MODULE_PAYMENT_PAYPAL_STATUS', 'True', 'Do you want to accept PayPal payments?', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Business ID', 'MODULE_PAYMENT_PAYPAL_BUSINESS_ID','".STORE_OWNER_EMAIL_ADDRESS."', 'Primary email address for your PayPal account.<br />NOTE: This must match <strong>EXACTLY </strong>the primary email address on your PayPal account settings.  It <strong>IS case-sensitive</strong>, so please check your PayPal profile preferences at paypal.com and be sure to enter the EXACT same primary email address here.', '6', '2', now())");
-    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Transaction Currency', 'MODULE_PAYMENT_PAYPAL_CURRENCY', 'Selected Currency', 'Which currency should the order be sent to PayPal as? <br />NOTE: if an unsupported currency is sent to PayPal, it will be auto-converted to USD.', '6', '3', 'zen_cfg_select_option(array(\'Selected Currency\', \'Only USD\', \'Only AUD\', \'Only CAD\', \'Only EUR\', \'Only GBP\', \'Only CHF\', \'Only CZK\', \'Only DKK\', \'Only HKD\', \'Only HUF\', \'Only JPY\', \'Only NOK\', \'Only NZD\', \'Only PLN\', \'Only SEK\', \'Only SGD\', \'Only THB\', \'Only MXN\', \'Only ILS\', \'Only PHP\', \'Only TWD\', \'Only BRL\', \'Only MYR\', \'Only TRY\'), ', now())");
+    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Transaction Currency', 'MODULE_PAYMENT_PAYPAL_CURRENCY', 'Selected Currency', 'Which currency should the order be sent to PayPal as? <br />NOTE: if an unsupported currency is sent to PayPal, it will be auto-converted to USD.', '6', '3', 'zen_cfg_select_option(array(\'Selected Currency\', \'Only USD\', \'Only AUD\', \'Only CAD\', \'Only EUR\', \'Only GBP\', \'Only CHF\', \'Only CZK\', \'Only DKK\', \'Only HKD\', \'Only HUF\', \'Only JPY\', \'Only NOK\', \'Only NZD\', \'Only PLN\', \'Only SEK\', \'Only SGD\', \'Only THB\', \'Only MXN\', \'Only ILS\', \'Only PHP\', \'Only TWD\', \'Only BRL\', \'Only MYR\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Payment Zone', 'MODULE_PAYMENT_PAYPAL_ZONE', '0', 'If a zone is selected, only enable this payment method for that zone.', '6', '4', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('Set Pending Notification Status', 'MODULE_PAYMENT_PAYPAL_PROCESSING_STATUS_ID', '" . DEFAULT_ORDERS_STATUS_ID .  "', 'Set the status of orders made with this payment module that are not yet completed to this value<br />(\'Pending\' recommended)', '6', '5', 'zen_cfg_pull_down_order_statuses(', 'zen_get_order_status_name', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('Set Order Status', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', '2', 'Set the status of orders made with this payment module that have completed payment to this value<br />(\'Processing\' recommended)', '6', '6', 'zen_cfg_pull_down_order_statuses(', 'zen_get_order_status_name', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added) values ('Set Refund Order Status', 'MODULE_PAYMENT_PAYPAL_REFUND_ORDER_STATUS_ID', '1', 'Set the status of orders that have been refunded made with this payment module to this value<br />(\'Pending\' recommended)', '6', '7', 'zen_cfg_pull_down_order_statuses(', 'zen_get_order_status_name', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Sort order of display.', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', '0', 'Sort order of display. Lowest is displayed first.', '6', '8', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Address Override', 'MODULE_PAYMENT_PAYPAL_ADDRESS_OVERRIDE', '1', 'If set to 1, the customer shipping address selected in Zen Cart will override the customer PayPal-stored address book. The customer will see their address from Zen Cart, but will NOT be able to edit it at PayPal.<br />(An invalid address will be treated by PayPal as not-supplied, or override=0)<br />0=No Override<br />1=ZC address overrides PayPal address choices', '6', '18', 'zen_cfg_select_option(array(\'0\',\'1\'), ', now())");
-    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Shipping Address Requirements?', 'MODULE_PAYMENT_PAYPAL_ADDRESS_REQUIRED', '2', 'The buyers shipping address. If set to 0 your customer will be prompted to include a shipping address. If set to 1 your customer will not be asked for a shipping address. If set to 2 your customer will be required to provide a shipping address.<br />0=Prompt<br />1=Not Asked<br />2=Required<br /><br /><strong>NOTE: If you allow your customers to enter their own shipping address, then MAKE SURE you PERSONALLY manually verify the PayPal confirmation details to verify the proper address when filling orders. When using PayPal Payments Standard (IPN), Zen Cart does not know if they choose an alternate shipping address at PayPal vs the one entered when placing an order.</strong>', '6', '20', 'zen_cfg_select_option(array(\'0\',\'1\',\'2\'), ', now())");
+    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Shipping Address Requirements?', 'MODULE_PAYMENT_PAYPAL_ADDRESS_REQUIRED', '2', 'The buyers shipping address. If set to 0 your customer will be prompted to include a shipping address. If set to 1 your customer will not be asked for a shipping address. If set to 2 your customer will be required to provide a shipping address.<br />0=Prompt<br />1=Not Asked<br />2=Required<br /><br /><strong>NOTE: If you allow your customers to enter their own shipping address, then MAKE SURE you PERSONALLY manually verify the PayPal confirmation details to verify the proper address when filling orders. When using Website Payments Standard (IPN), Zen Cart does not know if they choose an alternate shipping address at PayPal vs the one entered when placing an order.</strong>', '6', '20', 'zen_cfg_select_option(array(\'0\',\'1\',\'2\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Detailed Line Items in Cart', 'MODULE_PAYMENT_PAYPAL_DETAILED_CART', 'No', 'Do you want to give line-item details to PayPal?  If set to True, line-item details will be shared with PayPal if no discounts apply and if tax and shipping are simple. Otherwise an Aggregate cart summary will be sent.', '6', '22', 'zen_cfg_select_option(array(\'No\',\'Yes\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Page Style', 'MODULE_PAYMENT_PAYPAL_PAGE_STYLE', 'Primary', 'Sets the Custom Payment Page Style for payment pages. The value of page_style is the same as the Page Style Name you chose when adding or editing the page style. You can add and edit Custom Payment Page Styles from the Profile subtab of the My Account tab on the PayPal site. If you would like to always reference your Primary style, set this to \"primary.\" If you would like to reference the default PayPal page style, set this to \"paypal\".', '6', '25', now())");
-    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Live or Sandbox', 'MODULE_PAYMENT_PAYPAL_HANDLER', 'live', '<strong>Live: </strong> Used to process Live transactions<br><strong>Sandbox: </strong>For developers and testing', '6', '73', 'zen_cfg_select_option(array(\'live\', \'sandbox\'), ', now())");
+    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Mode for PayPal web services<br /><br />Default:<br /><code>www.paypal.com/cgi-bin/webscr</code><br />or<br /><code>www.paypal.com/us/cgi-bin/webscr</code><br />or for the UK,<br /><code>www.paypal.com/uk/cgi-bin/webscr</code>', 'MODULE_PAYMENT_PAYPAL_HANDLER', 'www.paypal.com/cgi-bin/webscr', 'Choose the URL for PayPal live processing', '6', '73', '', now())");
+// sandbox:  www.sandbox.paypal.com/cgi-bin/webscr
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, use_function) values ('PDT Token (Payment Data Transfer)', 'MODULE_PAYMENT_PAYPAL_PDTTOKEN', '', 'Enter your PDT Token value here in order to activate transactions immediately after processing (if they pass validation).', '6', '25', now(), 'zen_cfg_password_display')");
     // Paypal testing options here
-    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Debug Mode', 'MODULE_PAYMENT_PAYPAL_IPN_DEBUG', 'Off', 'Enable debug logging? <br />NOTE: This can REALLY clutter your email inbox and use up disk space!<br />Logging goes to the /logs folder<br />Email goes to the store-owner address.<br />Email option NOT recommended.<br /><strong>Leave OFF for normal operation.</strong>', '6', '71', 'zen_cfg_select_option(array(\'Off\',\'Log File\',\'Log and Email\'), ', now())");
+    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Debug Mode', 'MODULE_PAYMENT_PAYPAL_IPN_DEBUG', 'Off', 'Enable debug logging? <br />NOTE: This can REALLY clutter your email inbox!<br />Logging goes to the /includes/modules/payment/paypal/logs folder<br />Email goes to the store-owner address.<br />Email option NOT recommended.<br /><strong>Leave OFF for normal operation.</strong>', '6', '71', 'zen_cfg_select_option(array(\'Off\',\'Log File\',\'Log and Email\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Debug Email Address', 'MODULE_PAYMENT_PAYPAL_DEBUG_EMAIL_ADDRESS','".STORE_OWNER_EMAIL_ADDRESS."', 'The email address to use for PayPal debugging', '6', '72', now())");
 
     $this->notify('NOTIFY_PAYMENT_PAYPAL_INSTALLED');
@@ -624,7 +594,7 @@ class paypal extends base {
     }
 
     $PDTstatus = ($pdtTXN_is_unique && $PDTstatus);
-    if ($PDTstatus == TRUE) $this->transaction_id = $this->pdtData['txn_id'];
+
     return $PDTstatus;
   }
 

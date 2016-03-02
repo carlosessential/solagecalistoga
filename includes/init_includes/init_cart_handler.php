@@ -4,10 +4,10 @@
  * see {@link  http://www.zen-cart.com/wiki/index.php/Developers_API_Tutorials#InitSystem wikitutorials} for more details.
  *
  * @package initSystem
- * @copyright Copyright 2003-2011 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Sat Oct 6 15:06:42 2012 +0100 Modified in v1.5.2 $
+ * @version $Id: init_cart_handler.php 17047 2010-07-29 06:00:38Z drbyte $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -23,7 +23,6 @@ if (isset($_GET['action'])) {
     $goto =  FILENAME_SHOPPING_CART;
     $parameters = array('action', 'cPath', 'products_id', 'pid', 'main_page');
   } else {
-    $chk_handler = zen_get_info_page(isset($_GET['products_id']) ? $_GET['products_id'] : 0);
     $goto = $_GET['main_page'];
     if ($_GET['action'] == 'buy_now') {
       if (strpos($goto, 'reviews') > 5) {
@@ -32,10 +31,8 @@ if (isset($_GET['action'])) {
       } else {
         $parameters = array('action', 'products_id');
       }
-    } elseif ($_GET['main_page'] == $chk_handler) {
-      $parameters = array('action', 'pid', 'main_page');
     } else {
-      $parameters = array('action', 'pid', 'main_page', 'products_id');
+      $parameters = array('action', 'pid', 'main_page');
     }
   }
   /**

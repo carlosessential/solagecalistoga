@@ -6,16 +6,25 @@
  * Displays the allowed payment modules, for selection by customer.
  *
  * @package templateSystem
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2006 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: tpl_checkout_payment_default.php  wilt  Modified in v1.5.4 $
+ * @version $Id: tpl_checkout_payment_default.php 5414 2006-12-27 07:51:03Z drbyte $
  */
 ?>
 <?php echo $payment_modules->javascript_validation(); ?>
 <div class="centerColumn" id="checkoutPayment">
-<?php echo zen_draw_form('checkout_payment', zen_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post'); ?>
-<?php echo zen_draw_hidden_field('action', 'submit'); ?>
+<?php
+	// Start customized code for Shift4 module. This block of code sets the payment form to submit to the i4Go server.
+	if (class_exists('shift4') && shift4::is_enabled())  {
+		$url = shift4::get_i4go_url();
+		echo zen_draw_form('checkout_payment', $url, 'post', ($flagOnSubmit ? 'onsubmit="return check_form();"' : '')) . "\n";
+		echo zen_draw_hidden_field('i4Go_BounceBackURL', $value = zen_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'));
+	} else {
+		echo zen_draw_form('checkout_payment', zen_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', ($flagOnSubmit ? 'onsubmit="return check_form();"' : ''));
+	}
+	// End customized code for Shift4 module.
+?>
 
 <h1 id="checkoutPaymentHeading"><?php echo HEADING_TITLE; ?></h1>
 
@@ -53,7 +62,7 @@
 <?php // ** BEGIN PAYPAL EXPRESS CHECKOUT **
       }
       // ** END PAYPAL EXPRESS CHECKOUT ** ?>
-
+      
 <fieldset id="checkoutOrderTotals">
 <legend id="checkoutPaymentHeadingTotal"><?php echo TEXT_YOUR_TOTAL; ?></legend>
 <?php
@@ -142,9 +151,9 @@
 <?php   } ?>
 <?php
     } else {
-
+    	
 ?>
-<?php echo zen_draw_hidden_field('payment', $selection[$i]['id'], 'id="pmt-'.$selection[$i]['id'].'"'); ?>
+<?php echo zen_draw_hidden_field('payment', $selection[$i]['id']); ?>
 <?php
     }
 ?>
@@ -169,15 +178,23 @@
     <div><?php echo $selection[$i]['error']; ?></div>
 
 <?php
-    } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
+	} elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
 ?>
 
 <div class="ccinfo">
 <?php
+	// Start customized code for Shift4 module. This block of code has been modified to not display label tags for hidden input fields.
       for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
+?>	
+<?php 	if ($selection[$i]['fields'][$j]['title'] != '') { ?>
+<label <?php echo (isset($selection[$i]['fields'][$j]['tag']) ? 'for="'.$selection[$i]['fields'][$j]['tag'] . '" ' : ''); ?>class="inputLabelPayment"><?php echo $selection[$i]['fields'][$j]['title']; ?></label>
+<?php 	} ?>
+<?php echo $selection[$i]['fields'][$j]['field'];
+		if(!stristr($selection[$i]['fields'][$j]['field'], 'hidden') && ($selection[$i]['fields'][$j]['title'] != '')){ 
+	// End customized code for Shift4 module. 
 ?>
-<label <?php echo (isset($selection[$i]['fields'][$j]['tag']) ? 'for="'.$selection[$i]['fields'][$j]['tag'] . '" ' : ''); ?>class="inputLabelPayment"><?php echo $selection[$i]['fields'][$j]['title']; ?></label><?php echo $selection[$i]['fields'][$j]['field']; ?>
 <br class="clearBoth" />
+<?php } ?>
 <?php
       }
 ?>
@@ -203,7 +220,7 @@
 <?php echo zen_draw_textarea_field('comments', '45', '3'); ?>
 </fieldset>
 
-<div class="buttonRow forward" id="paymentSubmit"><?php echo zen_image_submit(BUTTON_IMAGE_CONTINUE_CHECKOUT, BUTTON_CONTINUE_ALT, 'onclick="submitFunction('.zen_user_has_gv_account($_SESSION['customer_id']).','.$order->info['total'].')"'); ?></div>
+<div class="buttonRow forward"><?php echo zen_image_submit(BUTTON_IMAGE_CONTINUE_CHECKOUT, BUTTON_CONTINUE_ALT, 'onclick="submitFunction('.zen_user_has_gv_account($_SESSION['customer_id']).','.$order->info['total'].')"'); ?></div>
 <div class="buttonRow back"><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '<br />' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div>
 
 </form>

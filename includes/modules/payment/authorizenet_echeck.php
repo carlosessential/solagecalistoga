@@ -3,10 +3,10 @@
  * authorize.net echeck payment method class
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Modified in v1.5.4 $
+ * @version $Id: authorizenet_echeck.php 17557 2010-09-14 13:42:49Z drbyte $
  */
 /**
  * Authorize.net echeck Payment Module
@@ -98,7 +98,7 @@ class authorizenet_echeck extends base {
       $this->order_status = (int)MODULE_PAYMENT_AUTHORIZENET_ECHECK_ORDER_STATUS_ID;
     }
 
-    $this->_logDir = defined('DIR_FS_LOGS') ? DIR_FS_LOGS : DIR_FS_SQL_CACHE;
+    $this->_logDir = DIR_FS_SQL_CACHE;
 
     if (is_object($order)) $this->update_status();
 
@@ -111,12 +111,7 @@ class authorizenet_echeck extends base {
    */
   function update_status() {
     global $order, $db;
-    if (IS_ADMIN_FLAG === false) {
-      // if store is not running in SSL, cannot offer bank module, for PCI reasons
-      if (!defined('ENABLE_SSL') || ENABLE_SSL != 'true') $this->enabled = FALSE;
-    }
-    // check other reasons for the module to be deactivated:
-    if ($this->enabled && (int)MODULE_PAYMENT_AUTHORIZENET_ECHECK_ZONE > 0 && isset($order->billing['country']['id'])) {
+    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_AUTHORIZENET_ECHECK_ZONE > 0) ) {
       $check_flag = false;
       $check = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_AUTHORIZENET_ECHECK_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
       while (!$check->EOF) {
@@ -392,15 +387,6 @@ class authorizenet_echeck extends base {
                          'x_drivers_license_dob' => zen_db_prepare_input($_POST['echeck_dl_dob'])  ));
       }
     }
-
-    // force conversion to USD
-    if ($order->info['currency'] != 'USD') {
-      global $currencies;
-      $submit_data['x_amount'] = number_format($order->info['total'] * $currencies->get_value('USD'), 2);
-      $submit_data['x_currency_code'] = 'USD';
-      unset($submit_data['x_tax'], $submit_data['x_freight']);
-    }
-
     unset($response);
     $response = $this->_sendRequest($submit_data);
     $response_code = $response[0];
@@ -585,9 +571,8 @@ class authorizenet_echeck extends base {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-//   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // NOTE: Leave commented-out! or set to TRUE!  This should NEVER be set to FALSE in production!!!!
-//   curl_setopt($ch, CURLOPT_CAINFO, '/local/path/to/cacert.pem'); // for offline testing, this file can be obtained from http://curl.haxx.se/docs/caextract.html ... should never be used in production!
+    curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); /* compatibility for SSL communications on some Windows servers (IIS 5.0+) */
     if (CURL_PROXY_REQUIRED == 'True') {
       $this->proxy_tunnel_flag = (defined('CURL_PROXY_TUNNEL_FLAG') && strtoupper(CURL_PROXY_TUNNEL_FLAG) == 'FALSE') ? false : true;
       curl_setopt ($ch, CURLOPT_HTTPPROXYTUNNEL, $this->proxy_tunnel_flag);
@@ -631,8 +616,9 @@ class authorizenet_echeck extends base {
     global $db;
     if ($order_time == '') $order_time = date("F j, Y, g:i a");
     // convert output to 1-based array for easier understanding:
-    $resp_output = $response;
-    array_unshift($resp_output, 'Response from gateway' . (isset($response['ErrorDetails']) ? ': ' . $response['ErrorDetails'] : ''));
+    $resp_output = array_reverse($response);
+    $resp_output[] = 'Response from gateway';
+    $resp_output = array_reverse($resp_output);
 
     // DEBUG LOGGING
       $errorMessage = date('M-d-Y h:i:s') .
@@ -642,7 +628,8 @@ class authorizenet_echeck extends base {
                       'Sending to Authorizenet: ' . print_r($this->reportable_submit_data, true) . "\n\n" .
                       'Results Received back from Authorizenet: ' . print_r($resp_output, true) . "\n\n" .
                       'CURL communication info: ' . print_r($this->commInfo, true) . "\n";
-      if (CURL_PROXY_REQUIRED == 'True') $errorMessage .= 'Using CURL Proxy: [' . CURL_PROXY_SERVER_DETAILS . ']  with Proxy Tunnel: ' .($this->proxy_tunnel_flag ? 'On' : 'Off') . "\n";
+      if (CURL_PROXY_REQUIRED == 'True')
+        $errorMessage .= 'Using CURL Proxy: [' . CURL_PROXY_SERVER_DETAILS . ']  with Proxy Tunnel: ' .($this->proxy_tunnel_flag ? 'On' : 'Off') . "\n";
       $errorMessage .= "\nRAW data received: \n" . $this->authorize . "\n\n";
 
       if (strstr(MODULE_PAYMENT_AUTHORIZENET_ECHECK_DEBUGGING, 'Log') || strstr(MODULE_PAYMENT_AUTHORIZENET_ECHECK_DEBUGGING, 'All') || (defined('AUTHORIZENET_DEVELOPER_MODE') && in_array(AUTHORIZENET_DEVELOPER_MODE, array('on', 'certify')))) {

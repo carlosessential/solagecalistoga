@@ -6,15 +6,15 @@
  * Displays contact us page form.
  *
  * @package templateSystem
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2009 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Sun Feb 17 23:22:33 2013 -0500 Modified in v1.5.2 $
+ * @version $Id: tpl_contact_us_default.php 16307 2010-05-21 21:50:06Z wilt $
  */
 ?>
 <div class="centerColumn" id="contactUsDefault">
 
-<?php echo zen_draw_form('contact_us', zen_href_link(FILENAME_CONTACT_US, 'action=send', 'SSL')); ?>
+<?php echo zen_draw_form('contact_us', zen_href_link(FILENAME_CONTACT_US, 'action=send')); ?>
 
 <?php if (CONTACT_US_STORE_NAME_ADDRESS== '1') { ?>
 <address><?php echo nl2br(STORE_NAME_ADDRESS); ?></address>
@@ -71,8 +71,6 @@
 
 <label for="enquiry"><?php echo ENTRY_ENQUIRY . '<span class="alert">' . ENTRY_REQUIRED_SYMBOL . '</span>'; ?></label>
 <?php echo zen_draw_textarea_field('enquiry', '30', '7', $enquiry, 'id="enquiry"'); ?>
-
-<?php echo zen_draw_input_field('should_be_empty', '', ' size="40" id="CUAS" style="visibility:hidden; display:none;" autocomplete="off"'); ?>
 
 </fieldset>
 

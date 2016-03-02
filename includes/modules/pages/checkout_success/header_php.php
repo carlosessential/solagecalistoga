@@ -3,10 +3,10 @@
  * checkout_success header_php.php
  *
  * @package page
- * @copyright Copyright 2003-2012 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Tue Aug 14 14:56:11 2012 +0100 Modified in v1.5.1 $
+ * @version $Id: header_php.php 16909 2010-07-15 20:02:37Z drbyte $
  */
 
 // This should be first line of the script:
@@ -144,10 +144,9 @@ submit_form();
   reset($_POST);
   while (list($key, $value) = each($_POST)) {
     if (!is_array($_POST[$key])) {
-      echo zen_draw_hidden_field($key, htmlspecialchars(stripslashes($value), ENT_COMPAT, CHARSET, TRUE)) . "\n";
+      echo zen_draw_hidden_field($key, htmlspecialchars(stripslashes($value))) . "\n";
     }
   }
-  if (!isset($_POST['securityToken'])) zen_draw_hidden_field('securityToken', $_SESSION['securityToken']);
   echo "\n" . '<input type="submit" class="submitbutton" id="submitbutton" value=" Continue " onclick="continueClick()" />' . "\n";
   echo '</form></div></body></html>';
   exit();

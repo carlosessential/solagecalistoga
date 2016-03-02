@@ -3,16 +3,13 @@
  * download header_php.php
  *
  * @package page
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Sat Nov 2 00:02:54 2013 -0400 Modified in v1.5.2 $
+ * @version $Id: header_php.php 16271 2010-05-15 02:32:57Z drbyte $
  */
 // This should be first line of the script:
 $zco_notifier->notify('NOTIFY_HEADER_START_DOWNLOAD');
-
-define('SYMLINK_GARBAGE_COLLECTION_THRESHOLD', 1*60*60); // 1 hour default
-
 
 require(DIR_WS_MODULES . zen_get_module_directory('require_languages.php'));
 
@@ -29,7 +26,7 @@ if ((isset($_GET['order']) && !is_numeric($_GET['order'])) || (isset($_GET['id']
 
 // Check that order_id, customer_id and filename match
 $sql = "SELECT date_format(o.date_purchased, '%Y-%m-%d')
-          AS date_purchased_day, opd.download_maxdays, opd.download_count, opd.download_maxdays, opd.orders_products_filename, o.*
+          AS date_purchased_day, opd.download_maxdays, opd.download_count, opd.download_maxdays, opd.orders_products_filename
           FROM " . TABLE_ORDERS . " o, " . TABLE_ORDERS_PRODUCTS . " op, " . TABLE_ORDERS_PRODUCTS_DOWNLOAD . " opd
           WHERE o.customers_id = customersID
           AND o.orders_id = ordersID
@@ -43,10 +40,7 @@ $sql = $db->bindVars($sql, 'downloadID', $_GET['id'], 'integer');
 $sql = $db->bindVars($sql, 'ordersID', $_GET['order'], 'integer');
 $downloads = $db->Execute($sql);
 if ($downloads->RecordCount() <= 0 ) die;
-
-$zco_notifier->notify('NOTIFY_CHECK_DOWNLOAD_HANDLER', array($downloads));
-
-// MySQL 3.22 does not have INTERVAL, so must calculate dates with PHP:
+// MySQL 3.22 does not have INTERVAL
 list($dt_year, $dt_month, $dt_day) = explode('-', $downloads->fields['date_purchased_day']);
 $download_timestamp = mktime(23, 59, 59, $dt_month, $dt_day + $downloads->fields['download_maxdays'], $dt_year);
 
@@ -78,7 +72,6 @@ function zen_random_name()
 {
   $letters = 'abcdefghijklmnopqrstuvwxyz';
   $dirname = '.';
-  if (defined('DOWNLOADS_SKIP_DOT_PREFIX_ON_REDIRECT') && DOWNLOADS_SKIP_DOT_PREFIX_ON_REDIRECT === TRUE) $dirname = '';
   $length = floor(zen_rand(16,20));
   for ($i = 1; $i <= $length; $i++) {
     $q = floor(zen_rand(1,26));
@@ -95,12 +88,10 @@ function zen_unlink_temp_dir($dir)
   while ($subdir = readdir($h1)) {
     // Ignore non directories
     if (!is_dir($dir . $subdir)) continue;
-    // Ignore . and .. and .svn
-    if ($subdir == '.' || $subdir == '..' || $subdir == '.svn') continue;
+    // Ignore . and .. and CVS
+    if ($subdir == '.' || $subdir == '..' || $subdir == 'CVS') continue;
     // Loop and unlink files in subdirectory
     $h2 = opendir($dir . $subdir);
-    list($fn, $exptime) = explode('-', $subdir);
-    if ($exptime + SYMLINK_GARBAGE_COLLECTION_THRESHOLD > time()) continue;
     while ($file = readdir($h2)) {
       if ($file == '.' || $file == '..') continue;
       @unlink($dir . $subdir . '/' . $file);
@@ -113,7 +104,7 @@ function zen_unlink_temp_dir($dir)
 
 // disable gzip output buffering if active:
 @ob_end_clean();
-if (@ini_get('zlib.output_compression')) @ini_set('zlib.output_compression', 'Off');
+@ini_set('zlib.output_compression', 'Off');
 
 // determine filename for download
 $origin_filename = $downloads->fields['orders_products_filename'];
@@ -144,14 +135,13 @@ if (!isset($downloadFilesize) || ($downloadFilesize < 1)) {
       if ((int)$version[1] == 6) $detectedBrowser = 'IE6';
       if ((int)$version[1] == 7) $detectedBrowser = 'IE7';
       if ((int)$version[1] == 8) $detectedBrowser = 'IE8';
-      if ((int)$version[1] == 9) $detectedBrowser = 'IE9';
     }
 
 
     /**
-     * set notifier point ... we are ready to begin the actual download. An observer class could hook this notifier point and do something completely different, such as stamping PDFs etc.
+     * set notifier point ... we are ready to begin the actual download
      */
-    $zco_notifier->notify('NOTIFY_DOWNLOAD_READY_TO_START', array($origin_filename, $browser_filename, $downloadFilesize, $_SESSION['customers_host_address'], $downloads->fields));
+    $zco_notifier->notify('NOTIFY_DOWNLOAD_READY_TO_START', $origin_filename, $browser_filename, $downloadFilesize, $_SESSION['customers_host_address']);
 
 
     /**
@@ -168,29 +158,12 @@ if (!isset($downloadFilesize) || ($downloadFilesize < 1)) {
      * The "must-revalidate" and expiry times are used to prevent caching and fraudulent re-acquiring of files w/o redownloading.
      * Certain browsers require certain header combinations, especially when related to SSL mode and caching
      */
-
-    /**
-     * Set mime type
-     * These Content-Type headers should cause the downloaded file to trigger a "save as" dialog, instead of opening directly
-     * However, some browsers and some software already installed on the PC may cause this to be overridden simply based on the filename. In these cases, the user will have to manually choose "Save As" themselves.
-     * Alternatively, simply set the right handler in .htaccess
-     */
-//    header("Content-Type: application/x-octet-stream");
-//    header("Content-Type: application/octet-stream");
-//    header("Content-Type: application/download");
-    header("Content-Type: application/force-download");
-
-    header('Content-Disposition: attachment; filename="' . urlencode($browser_filename) . '"');
-
-//     relocated below
-//     if ((int)$downloadFilesize > 0) header("Content-Length: " . (string) $downloadFilesize);
-
-    header("Expires: Mon, 22 Jan 2002 00:00:00 GMT");
-    header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
     switch($detectedBrowser)
     {
       case 'IE5':
       case 'IE6':
+        header("Expires: Mon, 22 Jan 2002 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
         header("Pragma: public");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private", FALSE);
@@ -198,26 +171,41 @@ if (!isset($downloadFilesize) || ($downloadFilesize < 1)) {
       break;
       case 'IE7':
       case 'IE8':
-      case 'IE9':
+        header("Expires: Mon, 22 Jan 2002 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
         header("Pragma: public");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private", FALSE);
         header("Cache-Control: max-age=1");  // stores for only 1 second, which helps allow SSL downloads to work more reliably in IE
         break;
       default:
+        header("Expires: Mon, 22 Jan 2002 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M Y H:i:s") . " GMT");
         header("Cache-Control: no-cache, must-revalidate");
         header("Pragma: no-cache");
       break;
     }
 
+    /**
+     * Set mime type
+     * These content-type headers should cause the downloaded file to trigger a "save as" dialog, instead of opening directly
+     * However, some browsers and some software already installed on the PC may cause this to be overridden simply based on the filename. In these cases, the user will have to manually choose "Save As" themselves.
+     */
+    header("Content-Type: application/x-octet-stream");
+    header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/download");
+
+
     header("Content-Transfer-Encoding: binary");
+    header('Content-Disposition: attachment; filename="' . urlencode($browser_filename) . '"');
+    if ($downloadFilesize > 0) header("Content-Length: " . (string) $downloadFilesize);
 
 
-// NOTE: Redirect usually will work only on Unix/Linux hosts since Windows hosts can't do symlinking in PHP versions older than 5.3.0
-
+// Redirect usually will work only on Unix/Linux hosts since Windows hosts can't do symlinking in PHP versions older than 5.3.0
 if (DOWNLOAD_BY_REDIRECT == 'true') {
   zen_unlink_temp_dir(DIR_FS_DOWNLOAD_PUBLIC);
-  $tempdir = zen_random_name() . '-' . time();
+  $tempdir = zen_random_name();
   umask(0000);
   mkdir(DIR_FS_DOWNLOAD_PUBLIC . $tempdir, 0777);
   $download_link = str_replace(array('/','\\'),'_',$browser_filename);
@@ -233,16 +221,9 @@ if (DOWNLOAD_BY_REDIRECT == 'true') {
 if (DOWNLOAD_BY_REDIRECT != 'true' or $link_create_status==false ) {
   // not downloading by redirect; instead, we stream it to the browser.
   // This happens if the symlink couldn't happen, or if set as default in Admin
-
-  if ((int)$downloadFilesize > 0) header("Content-Length: " . (string) $downloadFilesize);
-
-
-  $disabled_funcs = @ini_get("disable_functions");
-  if (DOWNLOAD_IN_CHUNKS != 'true' && !strstr($disabled_funcs,'readfile')) {
+  if (DOWNLOAD_IN_CHUNKS != 'true') {
     $zco_notifier->notify('NOTIFY_DOWNLOAD_WITHOUT_REDIRECT___COMPLETED', $origin_filename);
-    // close the session, since it is not needed for streaming the file contents
-    session_write_close();
-    // Dump the file to the browser. This will work on all systems, but will need considerable resources
+    // This will work on all systems, but will need considerable resources
     readfile(DIR_FS_DOWNLOAD . $origin_filename);
   } else {
     // override PHP timeout to 25 minutes, if allowed
@@ -251,9 +232,6 @@ if (DOWNLOAD_BY_REDIRECT != 'true' or $link_create_status==false ) {
     // loop with fread($fp, xxxx) to allow streaming in chunk sizes below the PHP memory_limit
     $handle = @fopen(DIR_FS_DOWNLOAD . $origin_filename, "rb");
     if ($handle) {
-      // close the session, since it is not needed for streaming the file contents
-      session_write_close();
-      // stream the file in 4K chunks
       while (!@feof($handle)) {
         echo(fread($handle, 4096));
         @flush();

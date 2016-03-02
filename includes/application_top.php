@@ -7,10 +7,10 @@
  * see {@link  http://www.zen-cart.com/wiki/index.php/Developers_API_Tutorials#InitSystem wikitutorials} for more details.
  *
  * @package initSystem
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Sun Dec 30 15:16:17 2012 +0000 Modified in v1.5.2 $
+ * @version $Id: application_top.php 15766 2010-03-31 20:17:56Z drbyte $
  */
 /**
  * inoculate against hack attempts which waste CPU cycles
@@ -35,8 +35,7 @@ if (!$contaminated) {
         $contaminated = true;
         break;
       }
-      $len = (in_array($key, array('zenid', 'error_message', 'payment_error'))) ? 255 : 43;
-      if (isset($_GET[$key]) && strlen($_GET[$key]) > $len) {
+      if (isset($_GET[$key]) && strlen($_GET[$key]) > 43) {
         $contaminated = true;
         break;
       }
@@ -49,7 +48,7 @@ if ($contaminated)
   header('HTTP/1.1 406 Not Acceptable');
   exit(0);
 }
-unset($contaminated, $len);
+unset($contaminated);
 /* *** END OF INNOCULATION *** */
 /**
  * boolean used to see if we are in the admin script, obviously set to false here.
@@ -61,7 +60,6 @@ define('IS_ADMIN_FLAG', false);
 define('PAGE_PARSE_START_TIME', microtime());
 //  define('DISPLAY_PAGE_PARSE_TIME', 'true');
 @ini_set("arg_separator.output","&");
-@ini_set("html_errors","0");
 /**
  * Set the local configuration parameters - mainly for developers
  */
@@ -80,10 +78,13 @@ define('DEBUG_AUTOLOAD', false);
  *
  * Note STRICT_ERROR_REPORTING should never be set to true on a production site. <br />
  * It is mainly there to show php warnings during testing/bug fixing phases.<br />
+ * note for strict error reporting we also turn on show_errors as this may be disabled<br />
+ * in php.ini. Otherwise we respect the php.ini setting
+ *
  */
 if (defined('STRICT_ERROR_REPORTING') && STRICT_ERROR_REPORTING == true) {
   @ini_set('display_errors', TRUE);
-  error_reporting(version_compare(PHP_VERSION, 5.3, '>=') ? E_ALL & ~E_DEPRECATED & ~E_NOTICE : version_compare(PHP_VERSION, 5.4, '>=') ? E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT : E_ALL & ~E_NOTICE);
+  error_reporting(version_compare(PHP_VERSION, 5.3, '>=') ? E_ALL & ~E_DEPRECATED & ~E_NOTICE : version_compare(PHP_VERSION, 6.0, '>=') ? E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT : E_ALL & ~E_NOTICE);
 } else {
   error_reporting(0);
 }
@@ -91,14 +92,7 @@ if (defined('STRICT_ERROR_REPORTING') && STRICT_ERROR_REPORTING == true) {
  * turn off magic-quotes support, for both runtime and sybase, as both will cause problems if enabled
  */
 if (version_compare(PHP_VERSION, 5.3, '<') && function_exists('set_magic_quotes_runtime')) set_magic_quotes_runtime(0);
-if (version_compare(PHP_VERSION, 5.4, '<') && @ini_get('magic_quotes_sybase') != 0) @ini_set('magic_quotes_sybase', 0);
-/*
- * Get time zone info from PHP config
- */
-if (version_compare(PHP_VERSION, 5.3, '>='))
-{
-  @date_default_timezone_set(date_default_timezone_get());
-}
+if (@ini_get('magic_quotes_sybase') != 0) @ini_set('magic_quotes_sybase', 0);
 /**
  * check for and include load application parameters
  */
@@ -107,7 +101,7 @@ if (file_exists('includes/configure.php')) {
    * load the main configure file.
    */
   include('includes/configure.php');
-} else if (!defined('DIR_FS_CATALOG') && !defined('HTTP_SERVER') && !defined('DIR_WS_CATALOG') && !defined('DIR_WS_INCLUDES')) {
+} else {
   $problemString = 'includes/configure.php not found';
   require('includes/templates/template_default/templates/tpl_zc_install_suggested_default.php');
   exit;
@@ -125,7 +119,7 @@ if (!defined('DIR_FS_CATALOG') || !is_dir(DIR_FS_CATALOG.'/includes/classes')) {
  */
 if ($za_dir = @dir(DIR_WS_INCLUDES . 'extra_configures')) {
   while ($zv_file = $za_dir->read()) {
-    if (preg_match('~^[^\._].*\.php$~i', $zv_file) > 0) {
+    if (preg_match('/\.php$/', $zv_file) > 0) {
       /**
        * load any user/contribution specific configuration files.
        */
@@ -137,7 +131,7 @@ if ($za_dir = @dir(DIR_WS_INCLUDES . 'extra_configures')) {
 }
 $autoLoadConfig = array();
 if (isset($loaderPrefix)) {
- $loaderPrefix = preg_replace('/[^a-z_]/', '', $loaderPrefix);
+ $loaderPrefix = preg_replace('/[a-z_]^/', '', $loaderPrefix);
 } else {
   $loaderPrefix = 'config';
 }

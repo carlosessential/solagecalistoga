@@ -3,14 +3,20 @@
  * checkout_confirmation header_php.php
  *
  * @package page
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Wed Nov 6 16:20:00 2013 -0500 Modified in v1.5.2 $
+ * @version $Id: header_php.php 16397 2010-05-26 11:21:22Z drbyte $
  */
 
 // This should be first line of the script:
 $zco_notifier->notify('NOTIFY_HEADER_START_CHECKOUT_CONFIRMATION');
+
+// account for Shift4's servers using either GET or POST, and sometimes using all caps
+$lowercase_GET = array_change_key_case($_GET, CASE_LOWER);
+$lowercase_POST = array_change_key_case($_POST, CASE_LOWER);	
+$_POST = array_merge($lowercase_GET, $lowercase_POST);
+
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($_SESSION['cart']->count_contents() <= 0) {
@@ -37,15 +43,15 @@ if (isset($_SESSION['cart']->cartID) && $_SESSION['cartID']) {
 }
 
 // if no shipping method has been selected, redirect the customer to the shipping method selection page
-if (!isset($_SESSION['shipping'])) {
+if (!$_SESSION['shipping']) {
   zen_redirect(zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 }
-if (isset($_SESSION['shipping']['id']) && $_SESSION['shipping']['id'] == 'free_free' && $_SESSION['cart']->get_content_type() != 'virtual' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING') && MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING == 'true' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER') && $_SESSION['cart']->show_total() < MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER) {
+if (isset($_SESSION['shipping']['id']) && $_SESSION['shipping']['id'] == 'free_free' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER') && $_SESSION['cart']->show_total() < MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER) {
   zen_redirect(zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 }
 
 if (isset($_POST['payment'])) $_SESSION['payment'] = $_POST['payment'];
-$_SESSION['comments'] = $_POST['comments'];
+$_SESSION['comments'] = zen_db_prepare_input($_POST['comments']);
 
 //'checkout_payment_discounts'
 //zen_redirect(zen_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));

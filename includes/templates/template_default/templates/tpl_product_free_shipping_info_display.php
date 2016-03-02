@@ -6,10 +6,10 @@
  * Displays details of a "free-shipping" product (provided it is assigned to the product-free-shipping product type)
  *
  * @package templateSystem
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2006 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: $
+ * @version $Id: tpl_product_free_shipping_info_display.php 16242 2010-05-08 16:05:40Z ajeh $
  */
 ?>
 <div class="centerColumn" id="productFreeShipdisplay">
@@ -171,6 +171,15 @@ if (CUSTOMERS_APPROVAL == 3 and TEXT_LOGIN_FOR_PRICE_BUTTON_REPLACE_SHOWROOM == 
 <?php } ?>
 <!--eof Prev/Next bottom position -->
 
+<!--bof Tell a Friend button -->
+<?php
+  if ($flag_show_product_info_tell_a_friend == 1) { ?>
+<div id="productTellFriendLink" class="buttonRow forward"><?php echo ($flag_show_product_info_tell_a_friend == 1 ? '<a href="' . zen_href_link(FILENAME_TELL_A_FRIEND, 'products_id=' . $_GET['products_id']) . '">' . zen_image_button(BUTTON_IMAGE_TELLAFRIEND, BUTTON_TELLAFRIEND_ALT) . '</a>' : ''); ?></div>
+<?php
+  }
+?>
+<!--eof Tell a Friend button -->
+
 <!--bof Reviews button and count-->
 <?php
   if ($flag_show_product_info_reviews == 1) {
@@ -212,7 +221,7 @@ if (CUSTOMERS_APPROVAL == 3 and TEXT_LOGIN_FOR_PRICE_BUTTON_REPLACE_SHOWROOM == 
   if (zen_not_null($products_url)) {
     if ($flag_show_product_info_url == 1) {
 ?>
-    <p id="productInfoLink" class="freeShip centeredContent"><?php echo sprintf(TEXT_MORE_INFORMATION, zen_href_link(FILENAME_REDIRECT, 'action=product&products_id=' . zen_output_string_protected($_GET['products_id']), 'NONSSL', true, false)); ?></p>
+    <p id="productInfoLink" class="freeShip centeredContent"><?php echo sprintf(TEXT_MORE_INFORMATION, zen_href_link(FILENAME_REDIRECT, 'action=url&goto=' . urlencode($products_url), 'NONSSL', true, false)); ?></p>
 <?php
     } // $flag_show_product_info_url
   }

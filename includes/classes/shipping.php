@@ -3,10 +3,10 @@
  * shipping class
  *
  * @package classes
- * @copyright Copyright 2003-2012 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Wed Jul 24 17:24:08 2013 +0100 Modified in v1.5.2 $
+ * @version $Id: shipping.php 15880 2010-04-11 16:24:30Z wilt $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -64,10 +64,6 @@ class shipping extends base {
 
   function calculate_boxes_weight_and_tare() {
     global $total_weight, $shipping_weight, $shipping_quoted, $shipping_num_boxes;
-
-    $this->abort_legacy_calculations = FALSE;
-    $this->notify('NOTIFY_SHIPPING_MODULE_PRE_CALCULATE_BOXES_AND_TARE');
-    if ($this->abort_legacy_calculations) return;
 
     if (is_array($this->modules)) {
       $shipping_quoted = '';
@@ -127,10 +123,10 @@ class shipping extends base {
       while (list(, $value) = each($this->modules)) {
         $class = substr($value, 0, strrpos($value, '.'));
         if (zen_not_null($module)) {
-          if ( ($module == $class) && (isset($GLOBALS[$class]) && $GLOBALS[$class]->enabled) ) {
+          if ( ($module == $class) && ($GLOBALS[$class]->enabled) ) {
             $include_quotes[] = $class;
           }
-        } elseif (isset($GLOBALS[$class]) && $GLOBALS[$class]->enabled) {
+        } elseif ($GLOBALS[$class]->enabled) {
           $include_quotes[] = $class;
         }
       }

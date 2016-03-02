@@ -4,10 +4,10 @@
  * General functions used throughout Zen Cart
  *
  * @package functions
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Modified in v1.5.4 $
+ * @version $Id: functions_general.php 16312 2010-05-22 08:13:42Z wilt $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -27,7 +27,7 @@ if (!defined('IS_ADMIN_FLAG')) {
   function zen_redirect($url, $httpResponseCode = '') {
     global $request_type;
     // Are we loading an SSL page?
-    if ( (ENABLE_SSL == 'true') && ($request_type == 'SSL') ) {
+    if ( (ENABLE_SSL == true) && ($request_type == 'SSL') ) {
       // yes, but a NONSSL url was supplied
       if (substr($url, 0, strlen(HTTP_SERVER . DIR_WS_CATALOG)) == HTTP_SERVER . DIR_WS_CATALOG) {
         // So, change it to SSL, based on site's configuration for SSL
@@ -42,11 +42,11 @@ if (!defined('IS_ADMIN_FLAG')) {
     while (strstr($url, '&amp;')) $url = str_replace('&amp;', '&', $url);
 
     if ($httpResponseCode == '') {
-      session_write_close();
       header('Location: ' . $url);
-    } else {
       session_write_close();
+    } else {
       header('Location: ' . $url, TRUE, (int)$httpResponseCode);
+      session_write_close();
     }
 
     exit();
@@ -71,7 +71,7 @@ if (!defined('IS_ADMIN_FLAG')) {
 */
   function zen_output_string($string, $translate = false, $protected = false) {
     if ($protected == true) {
-      return htmlspecialchars($string, ENT_COMPAT, CHARSET, TRUE);
+      return htmlspecialchars($string);
     } else {
       if ($translate == false) {
         return zen_parse_input_field_data($string, array('"' => '&quot;'));
@@ -140,22 +140,21 @@ if (!defined('IS_ADMIN_FLAG')) {
  *
  * @param mixed either a single or array of parameter names to be excluded from output
 */
-  function zen_get_all_get_params($exclude_array = array(), $search_engine_safe = true) {
+// Return all HTTP GET variables, except those passed as a parameter
+  function zen_get_all_get_params($exclude_array = '', $search_engine_safe = true) {
+
     if (!is_array($exclude_array)) $exclude_array = array();
-    $exclude_array = array_merge($exclude_array, array(zen_session_name(), 'main_page', 'error', 'x', 'y'));
+
     $get_url = '';
     if (is_array($_GET) && (sizeof($_GET) > 0)) {
       reset($_GET);
       while (list($key, $value) = each($_GET)) {
-        if (!in_array($key, $exclude_array)) {
-          if (!is_array($value)) {
-            if (strlen($value) > 0) {
-              $get_url .= zen_sanitize_string($key) . '=' . rawurlencode(stripslashes($value)) . '&';
-            }
+        if ( (strlen($value) > 0) && ($key != 'main_page') && ($key != zen_session_name()) && ($key != 'error') && (!in_array($key, $exclude_array)) && ($key != 'x') && ($key != 'y') ) {
+          if ( (SEARCH_ENGINE_FRIENDLY_URLS == 'true') && ($search_engine_safe == true) ) {
+//    die ('here');
+            $get_url .= $key . '/' . rawurlencode(stripslashes($value)) . '/';
           } else {
-            foreach(array_filter($value) as $arr){
-              $get_url .= zen_sanitize_string($key) . '[]=' . rawurlencode(stripslashes($arr)) . '&';
-            }
+            $get_url .= zen_sanitize_string($key) . '=' . rawurlencode(stripslashes($value)) . '&';
           }
         }
       }
@@ -165,42 +164,7 @@ if (!defined('IS_ADMIN_FLAG')) {
 
     return $get_url;
   }
-/**
- * Return all GET params as (usually hidden) POST params
- * @param array $exclude_array
- * @param boolean $hidden
- * @return string
- */
-  function zen_post_all_get_params($exclude_array = array(), $hidden = true) {
-    if (!is_array($exclude_array)) $exclude_array = array();
-    $exclude_array = array_merge($exclude_array, array(zen_session_name(), 'error', 'x', 'y'));
-    $fields = '';
-    if (is_array($_GET) && (sizeof($_GET) > 0)) {
-      reset($_GET);
-      while (list($key, $value) = each($_GET)) {
-        if (!in_array($key, $exclude_array)) {
-          if (!is_array($value)) {
-            if (strlen($value) > 0) {
-              if ($hidden) {
-                $fields .= zen_draw_hidden_field($key, $value);
-              } else {
-                $fields .= zen_draw_input_field($key, $value);
-              }
-            }
-          } else {
-            foreach(array_filter($value) as $arr){
-              if ($hidden) {
-                $fields .= zen_draw_hidden_field($key . '[]', $arr);
-              } else {
-                $fields .= zen_draw_input_field($key . '[]', $arr);
-              }
-            }
-          }
-        }
-      }
-    }
-    return $fields;
-  }
+
 
 ////
 // Returns the clients browser
@@ -406,7 +370,7 @@ if (!defined('IS_ADMIN_FLAG')) {
       if ($objects[$i] == ')') $balance ++;
       if ( ($objects[$i] == 'and') || ($objects[$i] == 'or') ) {
         $operator_count ++;
-      } elseif ( (is_string($objects[$i]) && $objects[$i] == '0') || ($objects[$i]) && ($objects[$i] != '(') && ($objects[$i] != ')') ) {
+      } elseif ( ($objects[$i]) && ($objects[$i] != '(') && ($objects[$i] != ')') ) {
         $keyword_count ++;
       }
     }
@@ -626,7 +590,7 @@ if (!defined('IS_ADMIN_FLAG')) {
     for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
       $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
 
-      if (isset($GLOBALS[$class]) && is_object($GLOBALS[$class])) {
+      if (is_object($GLOBALS[$class])) {
         if ($GLOBALS[$class]->enabled) {
           $count++;
         }
@@ -644,6 +608,29 @@ if (!defined('IS_ADMIN_FLAG')) {
 ////
   function zen_count_shipping_modules() {
     return zen_count_modules(MODULE_SHIPPING_INSTALLED);
+  }
+
+////
+  function zen_create_random_value($length, $type = 'mixed') {
+    if ( ($type != 'mixed') && ($type != 'chars') && ($type != 'digits')) return false;
+
+    $rand_value = '';
+    while (strlen($rand_value) < $length) {
+      if ($type == 'digits') {
+        $char = zen_rand(0,9);
+      } else {
+        $char = chr(zen_rand(0,255));
+      }
+      if ($type == 'mixed') {
+        if (preg_match('/^[a-z0-9]$/i', $char)) $rand_value .= $char;
+      } elseif ($type == 'chars') {
+        if (preg_match('/^[a-z]$/i', $char)) $rand_value .= $char;
+      } elseif ($type == 'digits') {
+        if (preg_match('/^[0-9]$/', $char)) $rand_value .= $char;
+      }
+    }
+
+    return $rand_value;
   }
 
 ////
@@ -778,14 +765,6 @@ if (!defined('IS_ADMIN_FLAG')) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
       } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
-      } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
-        $ip = $_SERVER['HTTP_X_FORWARDED'];
-      } elseif (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
-        $ip = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
-      } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
-        $ip = $_SERVER['HTTP_FORWARDED_FOR'];
-      } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
-        $ip = $_SERVER['HTTP_FORWARDED'];
       } else {
         $ip = $_SERVER['REMOTE_ADDR'];
       }
@@ -802,8 +781,14 @@ if (!defined('IS_ADMIN_FLAG')) {
     return $ip;
   }
 
+
+// nl2br() prior PHP 4.2.0 did not convert linefeeds on all OSs (it only converted \n)
   function zen_convert_linefeeds($from, $to, $string) {
-    return str_replace($from, $to, $string);
+    if ((PHP_VERSION < "4.0.5") && is_array($from)) {
+      return preg_replace('/(' . implode('|', $from) . ')/', $to, $string);
+    } else {
+      return str_replace($from, $to, $string);
+    }
   }
 
 
@@ -900,8 +885,7 @@ if (!defined('IS_ADMIN_FLAG')) {
 
 ////
   function zen_db_input($string) {
-    global $db;
-    return $db->prepareInput($string);
+    return addslashes($string);
   }
 
 ////
@@ -1093,7 +1077,7 @@ if (!defined('IS_ADMIN_FLAG')) {
 
 // show case only superceeds all other settings
     if (STORE_STATUS != '0') {
-      return '<a href="' . zen_href_link(FILENAME_CONTACT_US, '', 'SSL') . '">' .  TEXT_SHOWCASE_ONLY . '</a>';
+      return '<a href="' . zen_href_link(FILENAME_CONTACT_US) . '">' .  TEXT_SHOWCASE_ONLY . '</a>';
     }
 
 // 0 = normal shopping
@@ -1148,7 +1132,7 @@ if (!defined('IS_ADMIN_FLAG')) {
       return $additional_link;
       break;
     case ($button_check->fields['product_is_call'] == '1'):
-      $return_button = '<a href="' . zen_href_link(FILENAME_CONTACT_US, '', 'SSL') . '">' . TEXT_CALL_FOR_PRICE . '</a>';
+      $return_button = '<a href="' . zen_href_link(FILENAME_CONTACT_US) . '">' . TEXT_CALL_FOR_PRICE . '</a>';
       break;
     case ($button_check->fields['products_quantity'] <= 0 and SHOW_PRODUCTS_SOLD_OUT_IMAGE == '1'):
       if ($_GET['main_page'] == zen_get_info_page($product_id)) {
@@ -1246,9 +1230,6 @@ if (!defined('IS_ADMIN_FLAG')) {
   function zen_clean_html($clean_it, $extraTags = '') {
     if (!is_array($extraTags)) $extraTags = array($extraTags);
 
-    // remove any embedded javascript
-    $clean_it = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $clean_it);
-
     $clean_it = preg_replace('/\r/', ' ', $clean_it);
     $clean_it = preg_replace('/\t/', ' ', $clean_it);
     $clean_it = preg_replace('/\n/', ' ', $clean_it);
@@ -1341,15 +1322,15 @@ if (!defined('IS_ADMIN_FLAG')) {
     return $zp_result;
   }
 
-  // replacement for fmod to manage values < 1
+// replacement for fmod to manage values < 1
   function fmod_round($x, $y) {
     $x = strval($x);
     $y = strval($y);
     $zc_round = ($x*1000)/($y*1000);
-    $zc_round_ceil = round($zc_round,0);
+    $zc_round_ceil = (int)($zc_round);
     $multiplier = $zc_round_ceil * $y;
     $results = abs(round($x - $multiplier, 6));
-    return $results;
+     return $results;
   }
 
 ////
@@ -1490,7 +1471,7 @@ if (!defined('IS_ADMIN_FLAG')) {
  */
   function replace_accents($s) {
     $skipPreg = (defined('OVERRIDE_REPLACE_ACCENTS_WITH_HTMLENTITIES') && OVERRIDE_REPLACE_ACCENTS_WITH_HTMLENTITIES == 'TRUE') ? TRUE : FALSE;
-    $s = htmlentities($s, ENT_COMPAT, CHARSET);
+    $s = htmlentities($s);
     if ($skipPreg == FALSE) {
       $s = preg_replace ('/&([a-zA-Z])(uml|acute|elig|grave|circ|tilde|cedil|ring|quest|slash|caron);/', '$1', $s);
     }
@@ -1554,69 +1535,21 @@ if (!defined('IS_ADMIN_FLAG')) {
     return $string;
   }
 
-  // Helper function to check whether the current instance is using SSL or not.
-  // Returns SSL or NONSSL
-  function getConnectionType() {
-    global $request_type;
-    return $request_type;
-  }
-
-  // debug utility only
-  function utilDumpRequest($mode='p', $out = 'log') {
-    if ($mode =='p') {
-      $val = '<pre>DEBUG request: ' . print_r($_REQUEST, TRUE);
-    } else {
-      @ob_start();
-      var_dump('DEBUG request: ', $_REQUEST);
-      $val = @ob_get_contents();
-      @ob_end_clean();
-    }
-    if ($out == 'log' || $out == 'l') {
-      error_log($val);
-    } else if ($out == 'die' || $out == 'd') {
-      die($val);
-    } else if ($out == 'echo' || $out == 'e') {
-      echo $val;
-    }
-  }
-  function fixup_url($url)
-  {
-    if (!preg_match('#^https?://#', $url)) {
-      $url = 'http://' . $url;
-    }
-    return $url;
-  }
-  function zen_update_music_artist_clicked($artistId, $languageId)
-  {
-    global $db;
-    $sql = "UPDATE " . TABLE_RECORD_ARTISTS_INFO . " set url_clicked = url_clicked +1, date_last_click = NOW() WHERE artists_id = :artistId: AND languages_id = :languageId:";
-    $sql = $db->bindVars($sql, ':artistId:', $artistId, 'integer');
-    $sql = $db->bindVars($sql, ':languageId:', $languageId, 'integer');
-    $db->execute($sql);
-  }
-  function zen_update_record_company_clicked($recordCompanyId, $languageId)
-  {
-    global $db;
-    $sql = "UPDATE " . TABLE_RECORD_COMPANY_INFO . " set url_clicked = url_clicked +1, date_last_click = NOW() WHERE record_company_id = :rcId: AND languages_id = :languageId:";
-    $sql = $db->bindVars($sql, ':rcId:', $recordCompanyId, 'integer');
-    $sql = $db->bindVars($sql, ':languageId:', $languageId, 'integer');
-    $db->execute($sql);
-  }
-  /////////////////////////////////////////////
+/////////////////////////////////////////////
 ////
 // call additional function files
 // prices and quantities
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_prices.php');
+  require(DIR_WS_FUNCTIONS . 'functions_prices.php');
 // taxes
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_taxes.php');
+  require(DIR_WS_FUNCTIONS . 'functions_taxes.php');
 // gv and coupons
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_gvcoupons.php');
+  require(DIR_WS_FUNCTIONS . 'functions_gvcoupons.php');
 // categories, paths, pulldowns
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_categories.php');
+  require(DIR_WS_FUNCTIONS . 'functions_categories.php');
 // customers and addresses
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_customers.php');
+  require(DIR_WS_FUNCTIONS . 'functions_customers.php');
 // lookup information
-  require(DIR_FS_CATALOG . DIR_WS_FUNCTIONS . 'functions_lookups.php');
+  require(DIR_WS_FUNCTIONS . 'functions_lookups.php');
 ////
 /////////////////////////////////////////////
 

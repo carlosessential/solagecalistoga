@@ -3,10 +3,10 @@
  * functions_prices
  *
  * @package functions
- * @copyright Copyright 2003-2011 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: ajeh  Wed Jun 26 11:54:36 2013 -0400 Modified in v1.5.2 $
+ * @version $Id: functions_prices.php 15932 2010-04-13 12:28:11Z drbyte $
  */
 
 ////
@@ -355,6 +355,23 @@
     $the_products_quantity_order_max = $db->Execute("select products_id, products_quantity_order_max from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
     return $the_products_quantity_order_max->fields['products_quantity_order_max'];
   }
+
+////
+// Find quantity discount quantity mixed and not mixed
+  function zen_get_products_quantity_discount_mixed($product_id, $qty) {
+    global $db;
+    global $cart;
+
+    $product_discounts = $db->Execute("select products_price, products_quantity_mixed, product_is_free from " . TABLE_PRODUCTS . " where products_id = '" . (int)$product_id . "'");
+
+    if ($product_discounts->fields['products_quantity_mixed']) {
+      if ($new_qty = $_SESSION['cart']->count_contents_qty($product_id)) {
+        $qty = $new_qty;
+      }
+    }
+    return $qty;
+  }
+
 
 ////
 // Return a product's quantity box status
@@ -1222,7 +1239,7 @@ If a special exist * 10
       $products_discounts_query = $db->Execute("select * from " . TABLE_PRODUCTS_DISCOUNT_QUANTITY . " where products_id='" . (int)$product_id . "' and discount_qty <='" . (float)$check_qty . "' order by discount_qty desc");
 
       $display_price = zen_get_products_base_price($product_id);
-      $display_specials_price = zen_get_products_special_price($product_id, false);
+      $display_specials_price = zen_get_products_special_price($product_id, true);
 
       switch ($products_query->fields['products_discount_type']) {
         // none

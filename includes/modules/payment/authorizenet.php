@@ -3,10 +3,10 @@
  * authorize.net SIM payment method class
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Tue Sep 9 2014 -0500 Modified in v1.5.4 $
+ * @version $Id: authorizenet.php 17478 2010-09-05 20:21:49Z ajeh $
  */
 /**
  * authorize.net SIM payment method class
@@ -88,18 +88,10 @@ class authorizenet extends base {
 
     $this->gateway_mode = MODULE_PAYMENT_AUTHORIZENET_GATEWAY_MODE;
 
-    $this->_logDir = defined('DIR_FS_LOGS') ? DIR_FS_LOGS : DIR_FS_SQL_CACHE;
+    $this->_logDir = DIR_FS_SQL_CACHE;
 
     // verify table structure
     if (IS_ADMIN_FLAG === true) $this->tableCheckup();
-
-    // Determine default/supported currencies
-    if (in_array(DEFAULT_CURRENCY, array('USD', 'CAD', 'GBP', 'EUR', 'AUD', 'NZD'))) {
-      $this->gateway_currency = DEFAULT_CURRENCY;
-    } else {
-      $this->gateway_currency = 'USD';
-    }
-
   }
 
   // Authorize.net utility functions
@@ -134,7 +126,7 @@ class authorizenet extends base {
     // RFC 2104 HMAC implementation for php.
     // Creates an md5 HMAC.
     // Eliminates the need to install mhash to compute a HMAC
-    // by Lance Rushing
+    // Hacked by Lance Rushing
 
     $b = 64; // byte length for md5
     if (strlen($key) > $b) {
@@ -178,7 +170,7 @@ class authorizenet extends base {
   function update_status() {
     global $order, $db;
 
-    if ($this->enabled && (int)MODULE_PAYMENT_AUTHORIZENET_ZONE > 0 && isset($order->billing['country']['id'])) {
+    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_AUTHORIZENET_ZONE > 0) ) {
       $check_flag = false;
       $check = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_AUTHORIZENET_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
       while (!$check->EOF) {
@@ -255,7 +247,7 @@ class authorizenet extends base {
                          'module' => $this->title,
                          'fields' => array(array('title' => MODULE_PAYMENT_AUTHORIZENET_TEXT_CREDIT_CARD_OWNER,
                                                  'field' => zen_draw_input_field('authorizenet_cc_owner', $order->billing['firstname'] . ' ' . $order->billing['lastname'], 'id="'.$this->code.'-cc-owner"' . $onFocus . ' autocomplete="off"'),
-                                                 'tag' => $this->code.'-cc-owner'),
+                                               'tag' => $this->code.'-cc-owner'),
                                          array('title' => MODULE_PAYMENT_AUTHORIZENET_TEXT_CREDIT_CARD_NUMBER,
                                                'field' => zen_draw_input_field('authorizenet_cc_number', '', 'id="'.$this->code.'-cc-number"' . $onFocus . ' autocomplete="off"'),
                                                'tag' => $this->code.'-cc-number'),
@@ -264,7 +256,7 @@ class authorizenet extends base {
                                                'tag' => $this->code.'-cc-expires-month')));
       if (MODULE_PAYMENT_AUTHORIZENET_USE_CVV == 'True') {
         $selection['fields'][] = array('title' => MODULE_PAYMENT_AUTHORIZENET_TEXT_CVV,
-                                       'field' => zen_draw_input_field('authorizenet_cc_cvv', '', 'size="4" maxlength="4"' . ' id="'.$this->code.'-cc-cvv"' . $onFocus . ' autocomplete="off"') . ' ' . '<a href="javascript:popupWindow(\'' . zen_href_link(FILENAME_POPUP_CVV_HELP) . '\')">' . MODULE_PAYMENT_AUTHORIZENET_TEXT_POPUP_CVV_LINK . '</a>',
+                                       'field' => zen_draw_input_field('authorizenet_cc_cvv', '', 'size="4", maxlength="4"' . ' id="'.$this->code.'-cc-cvv"' . $onFocus . ' autocomplete="off"') . ' ' . '<a href="javascript:popupWindow(\'' . zen_href_link(FILENAME_POPUP_CVV_HELP) . '\')">' . MODULE_PAYMENT_AUTHORIZENET_TEXT_POPUP_CVV_LINK . '</a>',
                                        'tag' => $this->code.'-cc-cvv');
       }
     }
@@ -340,7 +332,8 @@ class authorizenet extends base {
     $submit_data_core = array(
       'x_login' => MODULE_PAYMENT_AUTHORIZENET_LOGIN,
       'x_amount' => number_format($order->info['total'], 2),
-      'x_currency_code' => $_SESSION['currency'],
+      //'x_currency_code' => $_SESSION['currency'],
+      'x_version' => '3.1',
       'x_method' => ((MODULE_PAYMENT_AUTHORIZENET_METHOD == 'Credit Card') ? 'CC' : 'ECHECK'),
       'x_type' => MODULE_PAYMENT_AUTHORIZENET_AUTHORIZATION_TYPE == 'Authorize' ? 'AUTH_ONLY': 'AUTH_CAPTURE',
       'x_cust_ID' => $_SESSION['customer_id'],
@@ -364,8 +357,6 @@ class authorizenet extends base {
       'x_ship_to_state' => $order->delivery['state'],
       'x_ship_to_zip' => $order->delivery['postcode'],
       'x_ship_to_country' => $order->delivery['country']['title'],
-      'x_solution_id' => 'A1000003', // used by authorize.net
-      'x_version' => '3.1',
       'x_Customer_IP' => zen_get_ip_address(),
       'x_relay_response' => 'TRUE',
       'x_relay_URL' => zen_href_link(FILENAME_CHECKOUT_PROCESS, 'action=confirm', 'SSL', true, false),
@@ -375,14 +366,7 @@ class authorizenet extends base {
       'x_description' => 'Website Purchase from ' . str_replace('"',"'", STORE_NAME),
     );
 
-    // force conversion to supported currencies: USD, GBP, CAD, EUR, AUD, NZD
-    if (!in_array($order->info['currency'], array('USD', 'CAD', 'GBP', 'EUR', 'AUD', 'NZD', $this->gateway_currency))) {
-      global $currencies;
-      $submit_data_core['x_amount'] = number_format($order->info['total'] * $currencies->get_value($this->gateway_currency), 2);
-      $submit_data_core['x_currency_code'] = $this->gateway_currency;
-    }
-
-    $submit_data_security = $this->InsertFP(MODULE_PAYMENT_AUTHORIZENET_LOGIN, MODULE_PAYMENT_AUTHORIZENET_TXNKEY, $submit_data_core['x_amount'], $sequence, $submit_data_core['x_currency_code']);
+    $submit_data_security = $this->InsertFP(MODULE_PAYMENT_AUTHORIZENET_LOGIN, MODULE_PAYMENT_AUTHORIZENET_TXNKEY, number_format($order->info['total'], 2), $sequence);
 
     $submit_data_offline = array(
       'x_show_form' => 'PAYMENT_FORM',
@@ -432,8 +416,7 @@ class authorizenet extends base {
     $this->reportable_submit_data['x_login'] = '*******';
     if (isset($this->reportable_submit_data['x_tran_key'])) $this->reportable_submit_data['x_tran_key'] = '*******';
     if (isset($this->reportable_submit_data['x_card_num'])) $this->reportable_submit_data['x_card_num'] = str_repeat('X', strlen($this->reportable_submit_data['x_card_num'] - 4)) . substr($this->reportable_submit_data['x_card_num'], -4);
-    if (isset($this->reportable_submit_data['x_exp_date'])) $this->reportable_submit_data['x_exp_date'] = '****';
-    if (isset($this->reportable_submit_data['x_card_code'])) $this->reportable_submit_data['x_card_code'] = '*******';
+//    if (isset($this->reportable_submit_data['x_card_code'])) $this->reportable_submit_data['x_card_code'] = '*******';
     $this->reportable_submit_data['url'] = $url;
 
     $this->_debugActions($this->reportable_submit_data, 'Submit-Data', '', zen_session_id());

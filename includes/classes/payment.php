@@ -3,10 +3,10 @@
  * Payment Class.
  *
  * @package classes
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson   Modified in v1.5.4 $
+ * @version $Id: payment.php 17614 2010-09-25 11:12:15Z wilt $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -18,12 +18,11 @@ if (!defined('IS_ADMIN_FLAG')) {
  * @package classes
  */
 class payment extends base {
-  var $modules, $selected_module, $doesCollectsCardDataOnsite;
+  var $modules, $selected_module;
 
   // class constructor
   function payment($module = '') {
     global $PHP_SELF, $language, $credit_covers, $messageStack;
-    $this->doesCollectsCardDataOnsite = false;
 
     if (defined('MODULE_PAYMENT_INSTALLED') && zen_not_null(MODULE_PAYMENT_INSTALLED)) {
       $this->modules = explode(';', MODULE_PAYMENT_INSTALLED);
@@ -38,7 +37,7 @@ class payment extends base {
         reset($this->modules);
 
         // Free Payment Only shows
-        if (zen_get_configuration_key_value('MODULE_PAYMENT_FREECHARGER_STATUS') and ($_SESSION['cart']->show_total()==0 and (!isset($_SESSION['shipping']['cost']) || $_SESSION['shipping']['cost'] == 0))) {
+        if (zen_get_configuration_key_value('MODULE_PAYMENT_FREECHARGER_STATUS') and ($_SESSION['cart']->show_total()==0 and $_SESSION['shipping']['cost']== 0)) {
           $this->selected_module = $module;
           if (file_exists(DIR_FS_CATALOG . DIR_WS_MODULES . '/payment/' . 'freecharger.php')) {
             $include_modules[] = array('class'=> 'freecharger', 'file' => 'freecharger.php');
@@ -77,9 +76,6 @@ class payment extends base {
         if ($this->paymentClass->enabled)
         {
           $GLOBALS[$include_modules[$i]['class']] = $this->paymentClass;
-          if (isset($this->paymentClass->collectsCardDataOnsite) && $this->paymentClass->collectsCardDataOnsite == true) {
-            $this->doesCollectsCardDataOnsite = true;
-          }
         } else {
           unset($include_modules[$i]);
         }
@@ -147,20 +143,20 @@ class payment extends base {
         }
       }
 
-       $js =  $js . "\n" . '  if (payment_value == null && submitter != 1) {' . "\n";
-       $js =  $js .'    error_message = error_message + "' . JS_ERROR_NO_PAYMENT_MODULE_SELECTED . '";' . "\n";
-       $js =  $js .'    error = 1;' . "\n";
-       $js =  $js .'  }' . "\n\n";
-       $js =  $js .'  if (error == 1 && submitter != 1) {' . "\n";
-       $js =  $js .'    alert(error_message);' . "\n";
-       $js =  $js . '    return false;' . "\n";
-       $js =  $js .'  } else {' . "\n";
-       if ($this->doesCollectsCardDataOnsite == true && PADSS_AJAX_CHECKOUT == '1') {
-         $js .= '   return collectsCardDataOnsite(payment_value);' . "\n";
-       }
-       $js =  $js .'    return true;' . "\n";
-       $js =  $js .'  }' . "\n" . '}' . "\n" . '//--></script>' . "\n";
+      $js .= "\n" . '  if (payment_value == null && submitter != 1) {' . "\n" .
+      '    error_message = error_message + "' . JS_ERROR_NO_PAYMENT_MODULE_SELECTED . '";' . "\n" .
+      '    error = 1;' . "\n" .
+      '  }' . "\n\n" .
+      '  if (error == 1 && submitter != 1) {' . "\n" .
+      '    alert(error_message);' . "\n" .
+      '    return false;' . "\n" .
+      '  } else {' . "\n" .
+      '    return true;' . "\n" .
+      '  }' . "\n" .
+      '}' . "\n" .
+      '//--></script>' . "\n";
     }
+
     return $js;
   }
 
@@ -216,13 +212,6 @@ class payment extends base {
     }
   }
 
-  function process_button_ajax() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-        return $GLOBALS[$this->selected_module]->process_button_ajax();
-      }
-    }
-  }
   function process_button() {
     if (is_array($this->modules)) {
       if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
@@ -269,16 +258,5 @@ class payment extends base {
         return $GLOBALS[$this->selected_module]->get_error();
       }
     }
-  }
-
-  function get_checkout_confirm_form_replacement() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-        if (method_exists($GLOBALS[$this->selected_module], 'get_checkout_confirm_form_replacement')) {
-          return $GLOBALS[$this->selected_module]->get_checkout_confirm_form_replacement();
-        }
-      }
-    }
-    return array(false, '');
   }
 }

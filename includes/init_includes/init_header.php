@@ -3,10 +3,10 @@
  * header code, mainly concerned with adding to messagestack when certain warnings are applicable
  *
  * @package templateStructure
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Tue Jul 23 19:29:41 2013 -0400 Modified in v1.5.2 $
+ * @version $Id: init_header.php 15921 2010-04-12 22:08:10Z drbyte $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -22,6 +22,10 @@ define('WARN_INSTALL_EXISTENCE', 'true');
  * should a message be displayed if  config directory is writeable
  */
 define('WARN_CONFIG_WRITEABLE', 'true');
+/**
+ * should a message be displayed if session directory not writeable
+ */
+define('WARN_SESSION_DIRECTORY_NOT_WRITEABLE', 'true');
 /**
  * should a message be displayed if sql cache directory not writeable
  */
@@ -51,6 +55,17 @@ if (WARN_CONFIG_WRITEABLE == 'true') {
   $check_path = realpath(dirname(basename($PHP_SELF)) . '/includes/configure.php');
   if (file_exists($check_path) && is__writeable($check_path)) {
     $messageStack->add('header', sprintf(WARNING_CONFIG_FILE_WRITEABLE, ($check_path == '' ? '..../includes/configure.php' : $check_path)), 'warning');
+  }
+}
+
+// check if the session folder is writeable
+if (WARN_SESSION_DIRECTORY_NOT_WRITEABLE == 'true') {
+  if (STORE_SESSIONS == '') {
+    if (!is_dir(zen_session_save_path())) {
+      $messageStack->add('header', WARNING_SESSION_DIRECTORY_NON_EXISTENT, 'warning');
+    } elseif (!is_writeable(zen_session_save_path())) {
+      $messageStack->add('header', WARNING_SESSION_DIRECTORY_NOT_WRITEABLE, 'warning');
+    }
   }
 }
 
@@ -127,28 +142,6 @@ if (defined('STRICT_ERROR_REPORTING') && STRICT_ERROR_REPORTING == true) {
 
 
 // if down for maintenance, prevent indexing
-if ( (DOWN_FOR_MAINTENANCE == 'true') && (!strstr(EXCLUDE_ADMIN_IP_FOR_MAINTENANCE, $_SERVER['REMOTE_ADDR'])) ) {
+if ((DOWN_FOR_MAINTENANCE == 'true')) {
   header("HTTP/1.1 503 Service Unavailable");
-}
-
-/* Check for invalid countries in customer's address book.
- * If a customer is logged in, check to see that the customers' address(es) still contain valid countries.
-* If not, redirect to the address-book page for changes.
-*/
-if ($_SESSION['customer_id'] && $_GET['main_page'] != FILENAME_ADDRESS_BOOK_PROCESS && $_GET['main_page'] != FILENAME_LOGOFF) {
-  $addresses_query = "SELECT address_book_id, entry_country_id as country_id, entry_firstname as firstname, entry_lastname as lastname
-                      FROM   " . TABLE_ADDRESS_BOOK . "
-                      WHERE  customers_id = :customersID
-                      ORDER BY firstname, lastname";
-
-  $addresses_query = $db->bindVars($addresses_query, ':customersID', $_SESSION['customer_id'], 'integer');
-  $addresses = $db->Execute($addresses_query);
-
-  while (!$addresses->EOF) {
-    if (zen_get_country_name($addresses->fields['country_id'], TRUE) == '') {
-      $messageStack->add_session('addressbook', sprintf(ERROR_TEXT_COUNTRY_DISABLED_PLEASE_CHANGE, zen_get_country_name($addresses->fields['country_id'], FALSE)), 'error');
-      zen_redirect (zen_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'edit=' . $addresses->fields['address_book_id'], 'SSL'));
-    }
-    $addresses->MoveNext();
-  }
 }

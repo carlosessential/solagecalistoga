@@ -1,9 +1,9 @@
 <?php
 /**
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Copyright 2003 LinkPoint International, Inc. All Rights Reserved.
- * @version GIT: $Id: Author: DrByte  Aug 25 2014 Modified in v1.5.4 $
+ * @version (within Zen Cart SVN) $Id: class.linkpoint_api.php 15881 2010-04-11 16:32:39Z wilt $
  */
 /* lphp.php  LINKPOINT PHP MODULE */
 
@@ -57,7 +57,7 @@ class lphp
 					echo "at process, incoming data: <br>";
 
 					while (list($key, $value) = each($data))
-						 echo htmlspecialchars($key) . " = " . htmlspecialchars($value, ENT_COMPAT, CHARSET, TRUE) . "<BR>\n";
+						 echo htmlspecialchars($key) . " = " . htmlspecialchars($value) . "<BR>\n";
 				}
 				else      // don't use html output
 				{
@@ -103,7 +103,7 @@ class lphp
 		if ($this->debugging)
 		{
 			if ($webspace)
-				echo "<br>sending xml string:<br>" . htmlspecialchars($xml, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+				echo "<br>sending xml string:<br>" . htmlspecialchars($xml) . "<br><br>";
 			else
 				echo "\nsending xml string:\n$xml\n\n";
 		}
@@ -118,7 +118,7 @@ class lphp
 		if ($this->debugging)
 		{
 			if ($this->webspace)	// we're web space
-				echo "<br>server responds:<br>" . htmlspecialchars($retstg, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+				echo "<br>server responds:<br>" . htmlspecialchars($retstg) . "<br><br>";
 			else						// not html output
 				echo "\nserver responds:\n $retstg\n\n";
 		}
@@ -211,7 +211,7 @@ class lphp
 		if ($this->debugging)
 		{
 			if ($webspace)
-				echo "<br>sending xml string:<br>" . htmlspecialchars($xml, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+				echo "<br>sending xml string:<br>" . htmlspecialchars($xml) . "<br><br>";
 			else
 				echo "\nsending xml string:\n$xml\n\n";
 				$this->xmlString .= "\nsending xml string:\n$xml\n\n";
@@ -253,7 +253,7 @@ class lphp
 					if ($this->debugging)
 						$result = exec ("$cpath -v -d \"$xml\" -E $key  -k $host", $retarr, $retnum);
 					else
-						$result = exec ("$cpath -d \"$xml\" -E $key $host", $retarr, $retnum);
+						$result = exec ("$cpath -d \"$xml\" -E $key  -k $host", $retarr, $retnum);
 				}
 
 				else	//*nix string
@@ -261,7 +261,7 @@ class lphp
 					if ($this->debugging)
           $result = exec ("'$cpath' $args -v -k -E '$key' -d '$xml' '$host'", $retarr, $retnum);
 					else
-          $result = exec ("'$cpath' $args -v -E '$key' -d '$xml' '$host'", $retarr, $retnum);
+          $result = exec ("'$cpath' $args -v -k -E '$key' -d '$xml' '$host'", $retarr, $retnum);
 				}
 
 				# EVALUATE RESPONSE #
@@ -275,7 +275,7 @@ class lphp
 				if ($this->debugging)
 				{
 					if ($this->webspace)
-						echo "<br>server responds:<br>" . htmlspecialchars($result, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+						echo "<br>server responds:<br>" . htmlspecialchars($result) . "<br><br>";
 					else						// non html output
 						echo "\nserver responds:\n $result\n\n";
 				}
@@ -304,6 +304,10 @@ class lphp
 			curl_setopt ($ch, CURLOPT_POST, 1);
 			curl_setopt ($ch, CURLOPT_POSTFIELDS, $xml);
 			curl_setopt ($ch, CURLOPT_SSLCERT, $key);
+      curl_setopt ($ch, CURLOPT_CAINFO, $key);
+      curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, false);
+      curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt ($ch, CURLOPT_SSLVERSION, 3);
 			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
 
 
@@ -323,7 +327,7 @@ class lphp
       if ($this->debugging)
       {
         if ($webspace)	// html-friendly output
-        echo "<br>server responds:<br>" . htmlspecialchars(curl_error($ch), ENT_COMPAT, CHARSET, TRUE). ' <br>ErrNo#: ' . curl_errno($ch) . "<br><br>";
+        echo "<br>server responds:<br>" . htmlspecialchars(curl_error($ch)). ' <br>ErrNo#: ' . curl_errno($ch) . "<br><br>";
         else
         echo "\nserver responds:\n". curl_error($ch). " \nErrNo:" . curl_errno($ch)."\n\n";
       }
@@ -335,7 +339,7 @@ class lphp
       if ($this->debugging)
       {
         if ($webspace)	// html-friendly output
-        echo "<br>server responds:<br>" . htmlspecialchars($result, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+        echo "<br>server responds:<br>" . htmlspecialchars($result) . "<br><br>";
         else
         echo "\nserver responds:\n $result\n\n";
 				$this->serverResponse .= "\nCould Not Connect:\n $result\n\n";
@@ -346,7 +350,7 @@ class lphp
 			if ($this->debugging)
 			{
 				if ($webspace)	// html-friendly output
-					echo "<br>server responds:<br>" . htmlspecialchars($result, ENT_COMPAT, CHARSET, TRUE) . "<br><br>";
+					echo "<br>server responds:<br>" . htmlspecialchars($result) . "<br><br>";
 				else
 					echo "\nserver responds:\n $result\n\n";
 					$this->serverResponse .= "\nserver responds:\n $result\n\n";
@@ -406,7 +410,7 @@ class lphp
 	{
 
 //		while (list($key, $value) = each($pdata))
-//			 echo htmlspecialchars($key) . " = " . htmlspecialchars($value, ENT_COMPAT, CHARSET, TRUE) . "<br>\n";
+//			 echo htmlspecialchars($key) . " = " . htmlspecialchars($value) . "<br>\n";
 
 
 		### ORDEROPTIONS NODE ###

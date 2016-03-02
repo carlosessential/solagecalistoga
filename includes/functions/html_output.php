@@ -4,10 +4,10 @@
  * HTML-generating functions used throughout the core
  *
  * @package functions
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2009 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Sat Apr 19 13:30:33 2014 -0400 Modified in v1.5.3 $
+ * @version $Id: html_output.php 16306 2010-05-21 21:24:03Z wilt $
  */
 
 /*
@@ -59,8 +59,8 @@
     while ( (substr($link, -1) == '&') || (substr($link, -1) == '?') ) $link = substr($link, 0, -1);
 // Add the session ID when moving from different HTTP and HTTPS servers, or when SID is defined
     if ( ($add_session_id == true) && ($session_started == true) && (SESSION_FORCE_COOKIE_USE == 'False') ) {
-      if (defined('SID') && zen_not_null(constant('SID'))) {
-        $sid = constant('SID');
+      if (defined('SID') && zen_not_null(SID)) {
+        $sid = SID;
 //      } elseif ( ( ($request_type == 'NONSSL') && ($connection == 'SSL') && (ENABLE_SSL_ADMIN == 'true') ) || ( ($request_type == 'SSL') && ($connection == 'NONSSL') ) ) {
       } elseif ( ( ($request_type == 'NONSSL') && ($connection == 'SSL') && (ENABLE_SSL == 'true') ) || ( ($request_type == 'SSL') && ($connection == 'NONSSL') ) ) {
         if ($http_domain != $https_domain) {
@@ -158,7 +158,7 @@
  * The HTML image wrapper function
  */
   function zen_image($src, $alt = '', $width = '', $height = '', $parameters = '') {
-    global $template_dir, $zco_notifier;
+    global $template_dir;
 
     // soft clean the alt tag
     $alt = zen_clean_html($alt);
@@ -186,7 +186,6 @@
     if (function_exists('handle_image')) {
       $newimg = handle_image($src, $alt, $width, $height, $parameters);
       list($src, $alt, $width, $height, $parameters) = $newimg;
-      $zco_notifier->notify('NOTIFY_HANDLE_IMAGE', array($newimg));
     }
 
     // Convert width/height to int for proper validation.
@@ -242,14 +241,14 @@
        // override on missing image to allow for proportional and required/not required
       if (IMAGE_REQUIRED == 'false') {
         return false;
-      } else if (substr($src, 0, 4) != 'http') {
+      } else {
         $image .= ' width="' . intval(SMALL_IMAGE_WIDTH) . '" height="' . intval(SMALL_IMAGE_HEIGHT) . '"';
       }
     }
 
     // inject rollover class if one is defined. NOTE: This could end up with 2 "class" elements if $parameters contains "class" already.
     if (defined('IMAGE_ROLLOVER_CLASS') && IMAGE_ROLLOVER_CLASS != '') {
-      $parameters .= (zen_not_null($parameters) ? ' ' : '') . 'class="rollover"';
+    	$parameters .= (zen_not_null($parameters) ? ' ' : '') . 'class="rollover"';
     }
     // add $parameters to the tag output
     if (zen_not_null($parameters)) $image .= ' ' . $parameters;
@@ -265,7 +264,7 @@
  */
   function zen_image_submit($image, $alt = '', $parameters = '', $sec_class = '') {
     global $template, $current_page_base, $zco_notifier;
-    if (strtolower(IMAGE_USE_CSS_BUTTONS) == 'yes' && strlen($alt)<30) return zenCssButton($image, $alt, 'submit', $sec_class, $parameters);
+    if (strtolower(IMAGE_USE_CSS_BUTTONS) == 'yes' && strlen($alt)<30) return zenCssButton($image, $alt, 'submit', $sec_class /*, $parameters = ''*/ );
     $zco_notifier->notify('PAGE_OUTPUT_IMAGE_SUBMIT');
 
     $image_submit = '<input type="image" src="' . zen_output_string($template->get_template_dir($image, DIR_WS_TEMPLATE, $current_page_base, 'buttons/' . $_SESSION['language'] . '/') . $image) . '" alt="' . zen_output_string($alt) . '"';
@@ -287,11 +286,11 @@
 
     // inject rollover class if one is defined. NOTE: This could end up with 2 "class" elements if $parameters contains "class" already.
     if (defined('IMAGE_ROLLOVER_CLASS') && IMAGE_ROLLOVER_CLASS != '') {
-      $parameters .= (zen_not_null($parameters) ? ' ' : '') . 'class="rollover"';
+    	$parameters .= (zen_not_null($parameters) ? ' ' : '') . 'class="rollover"';
     }
 
     $zco_notifier->notify('PAGE_OUTPUT_IMAGE_BUTTON');
-    if (strtolower(IMAGE_USE_CSS_BUTTONS) == 'yes') return zenCssButton($image, $alt, 'button', $sec_class, $parameters);
+    if (strtolower(IMAGE_USE_CSS_BUTTONS) == 'yes') return zenCssButton($image, $alt, 'button', $sec_class, $parameters = '');
     return zen_image($template->get_template_dir($image, DIR_WS_TEMPLATE, $current_page_base, 'buttons/' . $_SESSION['language'] . '/') . $image, $alt, '', '', $parameters);
   }
 
@@ -302,47 +301,34 @@
  * note: any hard-coded buttons will not be able to use this function
 **/
   function zenCssButton($image = '', $text, $type, $sec_class = '', $parameters = '') {
-   global $css_button_text, $css_button_opts, $template, $current_page_base, $language;
 
-   $button_name = basename($image, '.gif');
-
+    // automatic width setting depending on the number of characters
+    $min_width = 80; // this is the minimum button width, change the value as you like
+    $character_width = 6.5; // change this value depending on font size!
+    // end settings
+    // added html_entity_decode function to prevent html special chars to be counted as multiple characters (like &amp;)
+    $width = strlen(html_entity_decode($text)) * $character_width;
+    $width = (int)$width;
+    if ($width < $min_width) $width = $min_width;
+    $style = ' style="width: ' . $width . 'px;"';
     // if no secondary class is set use the image name for the sec_class
-    if (empty($sec_class)) $sec_class = $button_name;
-    if(!empty($sec_class)) $sec_class = ' ' . $sec_class;
+    if (empty($sec_class)) $sec_class = basename($image, '.gif');
+    if(!empty($sec_class))$sec_class = ' ' . $sec_class;
     if(!empty($parameters))$parameters = ' ' . $parameters;
-    $mouse_out_class  = 'cssButton ' . (($type == 'submit') ? 'submit_button button ' : 'normal_button button ') . $sec_class;
-    $mouse_over_class = 'cssButtonHover ' . (($type == 'button') ? 'normal_button button ' : '') . $sec_class . $sec_class . 'Hover';
+    $mouse_out_class  = 'cssButton' . $sec_class;
+    $mouse_over_class = 'cssButtonHover' . $sec_class . $sec_class . 'Hover';
     // javascript to set different classes on mouseover and mouseout: enables hover effect on the buttons
     // (pure css hovers on non link elements do work work in every browser)
     $css_button_js .=  'onmouseover="this.className=\''. $mouse_over_class . '\'" onmouseout="this.className=\'' . $mouse_out_class . '\'"';
 
-    if (CSS_BUTTON_POPUPS_IS_ARRAY == 'true') {
-      $popuptext = (!empty($css_button_text[$button_name])) ? $css_button_text[$button_name] : ($button_name . CSSBUTTONS_CATALOG_POPUPS_SHOW_BUTTON_NAMES_TEXT);
-      $tooltip = ' title="' . $popuptext . '"';
-    } else {
-      $tooltip = '';
-    }
-    $css_button = '';
-
     if ($type == 'submit'){
-      // form input button
-      if ($parameters != '') {
-        // If the input parameters include a "name" attribute, need to emulate an <input type="image" /> return value by adding a _x to the name parameter (creds to paulm)
-        if (preg_match('/name="([a-zA-Z0-9\-_]+)"/', $parameters, $matches)) {
-          $parameters = str_replace('name="' . $matches[1], 'name="' . $matches[1] . '_x', $parameters);
-        }
-        // If the input parameters include a "value" attribute, remove it since that attribute will be set to the input text string.
-        if (preg_match('/(value="[a-zA-Z0=9\-_]+")/', $parameters, $matches)) {
-          $parameters = str_replace($matches[1], '', $parameters);
-        }
-      }
-
-      $css_button = '<input class="' . $mouse_out_class . '" ' . $css_button_js . ' type="submit" value="' . $text . '"' . $tooltip . $parameters . ' />';
+// form input button
+   $css_button = '<input class="' . $mouse_out_class . '" ' . $css_button_js . ' type="submit" value="' .$text . '"' . $parameters . $style . ' />';
     }
 
     if ($type=='button'){
-      // link button
-      $css_button = '<span class="' . $mouse_out_class . '" ' . $css_button_js . $tooltip . $parameters . '>&nbsp;' . $text . '&nbsp;</span>';
+// link button
+   $css_button = '<span class="' . $mouse_out_class . '" ' . $css_button_js . $style . ' >&nbsp;' . $text . '&nbsp;</span>'; // add $parameters ???
     }
     return $css_button;
   }
@@ -373,7 +359,7 @@
     if (zen_not_null($parameters)) $form .= ' ' . $parameters;
 
     $form .= '>';
-    if (strtolower($method) == 'post') $form .= '<input type="hidden" name="securityToken" value="' . $_SESSION['securityToken'] . '" />';
+
     return $form;
   }
 

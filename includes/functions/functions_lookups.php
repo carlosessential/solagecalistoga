@@ -4,50 +4,54 @@
  * Lookup Functions for various Zen Cart activities such as countries, prices, products, product types, etc
  *
  * @package functions
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2009 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Tue Jul 23 19:29:41 2013 -0400 Modified in v1.5.2 $
+ * @version $Id: functions_lookups.php 14141 2009-08-10 19:34:47Z wilt $
  */
+
 
 /**
  * Returns an array with countries
  *
  * @param int If set limits to a single country
  * @param boolean If true adds the iso codes to the array
- */
-  function zen_get_countries($countries_id = '', $with_iso_codes = false, $activeOnly = TRUE) {
+*/
+  function zen_get_countries($countries_id = '', $with_iso_codes = false) {
     global $db;
     $countries_array = array();
     if (zen_not_null($countries_id)) {
-      $countries_array['countries_name'] = '';
-      $countries = "select countries_name, countries_iso_code_2, countries_iso_code_3
-                    from " . TABLE_COUNTRIES . "
-                    where countries_id = '" . (int)$countries_id . "'";
-      if ($activeOnly) $countries .= " and status != 0 ";
-      $countries .= " order by countries_name";
-      $countries_values = $db->Execute($countries);
-
       if ($with_iso_codes == true) {
-        $countries_array['countries_iso_code_2'] = '';
-        $countries_array['countries_iso_code_3'] = '';
-        if (!$countries_values->EOF) {
-          $countries_array = array('countries_name' => $countries_values->fields['countries_name'],
-                                   'countries_iso_code_2' => $countries_values->fields['countries_iso_code_2'],
-                                   'countries_iso_code_3' => $countries_values->fields['countries_iso_code_3']);
-        }
+        $countries = "select countries_name, countries_iso_code_2, countries_iso_code_3
+                      from " . TABLE_COUNTRIES . "
+                      where countries_id = '" . (int)$countries_id . "'
+                      order by countries_name";
+
+        $countries_values = $db->Execute($countries);
+
+        $countries_array = array('countries_name' => $countries_values->fields['countries_name'],
+                                 'countries_iso_code_2' => $countries_values->fields['countries_iso_code_2'],
+                                 'countries_iso_code_3' => $countries_values->fields['countries_iso_code_3']);
       } else {
-        if (!$countries_values->EOF) $countries_array = array('countries_name' => $countries_values->fields['countries_name']);
+        $countries = "select countries_name
+                      from " . TABLE_COUNTRIES . "
+                      where countries_id = '" . (int)$countries_id . "'";
+
+        $countries_values = $db->Execute($countries);
+
+        $countries_array = array('countries_name' => $countries_values->fields['countries_name']);
       }
     } else {
       $countries = "select countries_id, countries_name
-                    from " . TABLE_COUNTRIES . " ";
-      if ($activeOnly) $countries .= " where status != 0 ";
-      $countries .= " order by countries_name";
+                    from " . TABLE_COUNTRIES . "
+                    order by countries_name";
+
       $countries_values = $db->Execute($countries);
+
       while (!$countries_values->EOF) {
         $countries_array[] = array('countries_id' => $countries_values->fields['countries_id'],
                                    'countries_name' => $countries_values->fields['countries_name']);
+
         $countries_values->MoveNext();
       }
     }
@@ -58,8 +62,9 @@
 /*
  *  Alias function to zen_get_countries()
  */
-  function zen_get_country_name($country_id, $activeOnly = TRUE) {
-    $country_array = zen_get_countries($country_id, FALSE, $activeOnly);
+  function zen_get_country_name($country_id) {
+    $country_array = zen_get_countries($country_id);
+
     return $country_array['countries_name'];
   }
 
@@ -68,8 +73,8 @@
  *
  * @param int If set limits to a single country
 */
-  function zen_get_countries_with_iso_codes($countries_id, $activeOnly = TRUE) {
-    return zen_get_countries($countries_id, true, $activeOnly);
+  function zen_get_countries_with_iso_codes($countries_id) {
+    return zen_get_countries($countries_id, true);
   }
 
 /*
@@ -442,7 +447,7 @@
     if (preg_match('/^txt_/', $option)) {
       $check_attributes = $db->Execute("select attributes_display_only, attributes_required from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id='" . (int)$product_id . "' and options_id='" . (int)preg_replace('/txt_/', '', $option) . "' and options_values_id='0'");
 // text cannot be blank
-      if ($check_attributes->fields['attributes_required'] == '1' && (empty($value) && !is_numeric($value))) {
+      if ($check_attributes->fields['attributes_required'] == '1' and empty($value)) {
         $check_valid = false;
       }
     }
@@ -809,18 +814,25 @@
  */
   function zen_get_index_filters_directory($check_file, $dir_only = 'false') {
     global $template_dir;
+
     $zv_filename = $check_file;
     if (!strstr($zv_filename, '.php')) $zv_filename .= '.php';
-    $checkArray = array();
-    $checkArray[] = DIR_WS_INCLUDES . 'index_filters/' . $template_dir . '/' . $zv_filename;
-    $checkArray[] = DIR_WS_INCLUDES . 'index_filters/' . $zv_filename;
-    $checkArray[] = DIR_WS_INCLUDES . 'index_filters/' . $template_dir . '/' . 'default_filter.php';
-    foreach($checkArray as $key => $val) {
-      if (file_exists($val)) {
-        return ($dir_only == 'true') ? $val = substr($val, 0, strpos($val, '/')) : $val;
-      }
+
+    if (file_exists(DIR_WS_INCLUDES . 'index_filters/' . $template_dir . '/' . $zv_filename)) {
+      $template_dir_select = $template_dir . '/';
+    } else {
+      $template_dir_select = '';
     }
-    return DIR_WS_INCLUDES . 'index_filters/' . 'default_filter.php';
+
+    if (!file_exists(DIR_WS_INCLUDES . 'index_filters/' . $template_dir_select . '/' . $zv_filename)) {
+      $zv_filename = 'default';
+    }
+
+    if ($dir_only == 'true') {
+      return 'index_filters/' . $template_dir_select;
+    } else {
+      return 'index_filters/' . $template_dir_select . $zv_filename;
+    }
   }
 
 ////

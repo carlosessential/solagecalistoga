@@ -3,27 +3,27 @@
  * paypal_curl.php communications class for PayPal Express Checkout / Website Payments Pro / Payflow Pro payment methods
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Modified in v1.5.4 $
+ * @version $Id: paypal_curl.php 17860 2010-10-08 04:31:42Z drbyte $
  */
 
 /**
- * PayPal NVP (v61) and Payflow Pro (v4 HTTP API) implementation via cURL.
+ * PayPal NVP (v60) and Payflow Pro (v4 HTTP API) implementation via cURL.
  */
 class paypal_curl extends base {
 
   /**
    * What level should we log at? Valid levels are:
-   *   1 - Log only severe errors.
-   *   2 - Date/time of operation, operation name, elapsed time, success or failure indication.
-   *   3 - Full text of requests and responses and other debugging messages.
+   *   PEAR_LOG_ERR   - Log only severe errors.
+   *   PEAR_LOG_INFO  - Date/time of operation, operation name, elapsed time, success or failure indication.
+   *   PEAR_LOG_DEBUG - Full text of requests and responses and other debugging messages.
    *
    * @access protected
    *
    * @var integer $_logLevel
    */
-  var $_logLevel = 3;
+  var $_logLevel = PEAR_LOG_DEBUG;
 
   /**
    * If we're logging, what directory should we create log files in?
@@ -35,7 +35,7 @@ class paypal_curl extends base {
    *
    * @var string $_logFile
    */
-  var $_logDir = DIR_FS_LOGS;
+  var $_logDir = 'logs';
 
   /**
    * Debug or production?
@@ -46,17 +46,17 @@ class paypal_curl extends base {
    * URL endpoints -- defaults here are for three-token NVP implementation
    */
   var $_endpoints = array('live'    => 'https://api-3t.paypal.com/nvp',
-                          'sandbox' => 'https://api-3t.sandbox.paypal.com/nvp');
+                          'sandbox' => 'https://api.sandbox.paypal.com/nvp');
   /**
    * Options for cURL. Defaults to preferred (constant) options.
    */
   var $_curlOptions = array(CURLOPT_HEADER => 0,
                             CURLOPT_RETURNTRANSFER => TRUE,
-                            CURLOPT_TIMEOUT => 45,
-                            CURLOPT_CONNECTTIMEOUT => 10,
+                            CURLOPT_TIMEOUT => 60,
                             CURLOPT_FOLLOWLOCATION => FALSE,
-                          //CURLOPT_SSL_VERIFYPEER => FALSE, // Leave this line commented out! This should never be set to FALSE on a live site!
-                          //CURLOPT_CAINFO => '/local/path/to/cacert.pem', // for offline testing, this file can be obtained from http://curl.haxx.se/docs/caextract.html ... should never be used in production!
+                            CURLOPT_SSL_VERIFYPEER => FALSE,
+                            CURLOPT_SSL_VERIFYHOST => 2,
+                            CURLOPT_SSLVERSION => 3,
                             CURLOPT_FORBID_REUSE => TRUE,
                             CURLOPT_FRESH_CONNECT => TRUE,
                             CURLOPT_POST => TRUE,
@@ -102,14 +102,10 @@ class paypal_curl extends base {
   /**
    * Constructor. Sets up communication infrastructure.
    */
-  function __construct($params = array()) {
+  function paypal_curl($params = array()) {
     foreach ($params as $name => $value) {
       $this->setParam($name, $value);
     }
-    $this->notify('NOTIFY_PAYPAL_CURL_CONSTRUCT', $params);
-    if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_CATALOG . $this->_logDir;
-    if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_LOGS;
-    if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_SQL_CACHE;
   }
 
   /**
@@ -146,13 +142,10 @@ class paypal_curl extends base {
 
     // allow page-styling support -- see language file for definitions
     if (defined('MODULE_PAYMENT_PAYPALWPP_PAGE_STYLE'))   $values['PAGESTYLE'] = MODULE_PAYMENT_PAYPALWPP_PAGE_STYLE;
-    if (defined('MODULE_PAYMENT_PAYPAL_LOGO_IMAGE')) $values['LOGOIMG'] = urlencode(MODULE_PAYMENT_LOGO_IMAGE);
-    if (defined('MODULE_PAYMENT_PAYPAL_CART_BORDER_COLOR')) $values['CARTBORDERCOLOR'] = MODULE_PAYMENT_PAYPAL_CART_BORDER_COLOR;
     if (defined('MODULE_PAYMENT_PAYPALWPP_HEADER_IMAGE')) $values['HDRIMG'] = urlencode(MODULE_PAYMENT_PAYPALWPP_HEADER_IMAGE);
     if (defined('MODULE_PAYMENT_PAYPALWPP_PAGECOLOR'))    $values['PAYFLOWCOLOR'] = MODULE_PAYMENT_PAYPALWPP_PAGECOLOR;
-// The following are deprecated since July 2013:
-//     if (defined('MODULE_PAYMENT_PAYPALWPP_HEADER_BORDER_COLOR')) $values['HDRBORDERCOLOR'] = MODULE_PAYMENT_PAYPALWPP_HEADER_BORDER_COLOR;
-//     if (defined('MODULE_PAYMENT_PAYPALWPP_HEADER_BACK_COLOR')) $values['HDRBACKCOLOR'] = MODULE_PAYMENT_PAYPALWPP_HEADER_BACK_COLOR;
+    if (defined('MODULE_PAYMENT_PAYPALWPP_HEADER_BORDER_COLOR')) $values['HDRBORDERCOLOR'] = MODULE_PAYMENT_PAYPALWPP_HEADER_BORDER_COLOR;
+    if (defined('MODULE_PAYMENT_PAYPALWPP_HEADER_BACK_COLOR')) $values['HDRBACKCOLOR'] = MODULE_PAYMENT_PAYPALWPP_HEADER_BACK_COLOR;
 
     if (PAYPAL_DEV_MODE == 'true') $this->log('SetExpressCheckout - breakpoint 1 - [' . print_r($values, true) .']');
     $this->values = $values;
@@ -171,8 +164,9 @@ class paypal_curl extends base {
       $values = array_merge($values, array('ACTION'  => 'G', /* ACTION=G denotes GetExpressCheckoutDetails */
                                            'TENDER'  => 'P',
                                            'TRXTYPE' => $this->_trxtype));
+    } elseif ($this->_mode == 'nvp') {
+      $values = array_merge($values, array('REQBILLINGADDRESS' => '1'));
     }
-    $this->notify('NOTIFY_PAYPAL_GETEXPRESSCHECKOUTDETAILS');
     return $this->_request($values, 'GetExpressCheckoutDetails');
   }
 
@@ -249,7 +243,7 @@ class paypal_curl extends base {
    *
    * Used to refund all or part of a given transaction
    */
-  function RefundTransaction($oID, $txnID, $amount = 'Full', $note = '', $curCode = 'USD') {
+  function RefundTransaction($oID, $txnID, $amount = 'Full', $note = '') {
     if ($this->_mode == 'payflow') {
       $values['ORIGID'] = $txnID;
       $values['TENDER'] = 'C';
@@ -260,7 +254,6 @@ class paypal_curl extends base {
       $values['TRANSACTIONID'] = $txnID;
       if ($amount != 'Full' && (float)$amount > 0) {
         $values['REFUNDTYPE'] = 'Partial';
-        $values['CURRENCYCODE'] = $curCode;
         $values['AMT'] = number_format((float)$amount, 2);
       } else {
         $values['REFUNDTYPE'] = 'Full';
@@ -432,14 +425,14 @@ class paypal_curl extends base {
     }
 
     $headers[] = 'Content-Type: text/namevalue';
-    $headers[] = 'X-VPS-Timeout: 90';
+    $headers[] = 'X-VPS-Timeout: 45';
     $headers[] = "X-VPS-VIT-Client-Type: PHP/cURL";
     if ($this->_mode == 'payflow') {
-      $headers[] = 'X-VPS-VIT-Integration-Product: PHP::Zen Cart(R) - PayPal/Payflow Pro';
+      $headers[] = 'X-VPS-VIT-Integration-Product: PHP::Zen Cart(tm) - PayPal/Payflow Pro';
     } elseif ($this->_mode == 'nvp') {
-      $headers[] = 'X-VPS-VIT-Integration-Product: PHP::Zen Cart(R) - PayPal/NVP';
+      $headers[] = 'X-VPS-VIT-Integration-Product: PHP::Zen Cart(tm) - PayPal/NVP';
     }
-    $headers[] = 'X-VPS-VIT-Integration-Version: 1.5.4';
+    $headers[] = 'X-VPS-VIT-Integration-Version: 1.3.9h';
     $this->lastHeaders = $headers;
 
     $ch = curl_init();
@@ -510,15 +503,13 @@ class paypal_curl extends base {
 
     // Adjustments if Micropayments account profile details have been set
     if (defined('MODULE_PAYMENT_PAYPALWPP_MICROPAY_THRESHOLD') && MODULE_PAYMENT_PAYPALWPP_MICROPAY_THRESHOLD != ''
-        && (($pairs['AMT'] > 0 && $pairs['AMT'] < strval(MODULE_PAYMENT_PAYPALWPP_MICROPAY_THRESHOLD) )
-           || ($pairs['METHOD'] == 'GetExpressCheckoutDetails' && isset($_SESSION['using_micropayments']) && $_SESSION['using_micropayments'] == TRUE))
+        && $pairs['AMT'] < strval(MODULE_PAYMENT_PAYPALWPP_MICROPAY_THRESHOLD)
         && defined('MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIUSERNAME') && MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIUSERNAME != ''
         && defined('MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIPASSWORD') && MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIPASSWORD != ''
         && defined('MODULE_PAYMENT_PAYPALWPP_MICROPAY_APISIGNATURE') && MODULE_PAYMENT_PAYPALWPP_MICROPAY_APISIGNATURE != '') {
       $commpairs['USER'] = str_replace('+', '%2B', trim(MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIUSERNAME));
       $commpairs['PWD'] = trim(MODULE_PAYMENT_PAYPALWPP_MICROPAY_APIPASSWORD);
       $commpairs['SIGNATURE'] = trim(MODULE_PAYMENT_PAYPALWPP_MICROPAY_APISIGNATURE);
-      $_SESSION['using_micropayments'] = ($pairs['METHOD'] == 'DoExpressCheckoutPayment') ? FALSE : TRUE;
     }
 
     // Accelerated/Unilateral Boarding support:
@@ -583,26 +574,29 @@ class paypal_curl extends base {
     $values = $this->_parseNameValueList($response);
     $token = isset($values['TOKEN']) ? $values['TOKEN'] : '';
     $token = preg_replace('/[^0-9.A-Z\-]/', '', urldecode($token));
-    $success = false;
-    if ($response) {
-      if ((isset($values['RESULT']) && $values['RESULT'] == 0) || (isset($values['ACK']) && (strstr($values['ACK'],'Success') || strstr($values['ACK'],'SuccessWithWarning')) && !strstr($values['ACK'],'Failure'))) {
-        $success = true;
-      }
-    }
-    $message =   date('Y-m-d h:i:s') . "\n-------------------\n";
-    $message .=  '(' . $this->_server . ' transaction) --> ' . $this->_endpoints[$this->_server] . "\n";
-    $message .= 'Request Headers: ' . "\n" . $this->_sanitizeLog($this->lastHeaders) . "\n\n";
-    $message .= 'Request Parameters: {' . $operation . '} ' . "\n" . urldecode($this->_sanitizeLog($this->_parseNameValueList($this->lastParamList))) . "\n\n";
-    $message .= 'Response: ' . "\n" . urldecode($this->_sanitizeLog($values)) . $errors;
-
-    if ($this->_logLevel > 0 || $success == FALSE) {
+    switch ($this->_logLevel) {
+    case PEAR_LOG_DEBUG:
+      $message =   date('Y-m-d h:i:s') . "\n-------------------\n";
+      $message .=  '(' . $this->_server . ' transaction) --> ' . $this->_endpoints[$this->_server] . "\n";
+      $message .= 'Request Headers: ' . "\n" . $this->_sanitizeLog($this->lastHeaders) . "\n\n";
+      $message .= 'Request Parameters: {' . $operation . '} ' . "\n" . urldecode($this->_sanitizeLog($this->_parseNameValueList($this->lastParamList))) . "\n\n";
+      $message .= 'Response: ' . "\n" . urldecode($this->_sanitizeLog($values)) . $errors;
       $this->log($message, $token);
       // extra debug email: //
       if (MODULE_PAYMENT_PAYPALWPP_DEBUGGING == 'Log and Email') {
         zen_mail(STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, 'PayPal Debug log - ' . $operation, $message, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, array('EMAIL_MESSAGE_HTML'=>nl2br($message)), 'debug');
       }
+
+    case PEAR_LOG_INFO:
+      $success = false;
+      if ($response) {
+        if ((isset($values['RESULT']) && $values['RESULT'] == 0) || strstr($values['ACK'],'Success') || strstr($values['ACK'],'SuccessWithWarning')) {
+          $success = true;
+        }
+      }
       $this->log($operation . ', Elapsed: ' . $elapsed . 'ms -- ' . (isset($values['ACK']) ? $values['ACK'] : ($success ? 'Succeeded' : 'Failed')) . $errors, $token);
 
+    case PEAR_LOG_ERR:
       if (!$response) {
         $this->log('No response from server' . $errors, $token);
       } else {
@@ -649,17 +643,13 @@ class paypal_curl extends base {
   function log($message, $token = '') {
     static $tokenHash;
     if ($tokenHash == '') $tokenHash = '_' . zen_create_random_value(4);
-    $this->outputDestination = 'File';
-    $this->notify('PAYPAL_CURL_LOG', $token, $tokenHash);
     if ($token == '') $token = $_SESSION['paypal_ec_token'];
     if ($token == '') $token = time();
     $token .= $tokenHash;
-    if ($this->outputDestination == 'File') {
-      $file = $this->_logDir . '/' . 'Paypal_CURL_' . $token . '.log';
-      if ($fp = @fopen($file, 'a')) {
-        fwrite($fp, $message . "\n\n");
-        fclose($fp);
-      }
+    $file = $this->_logDir . '/' . 'Paypal_CURL_' . $token . '.log';
+    if ($fp = @fopen($file, 'a')) {
+      fwrite($fp, $message . "\n\n");
+      fclose($fp);
     }
   }
   /**

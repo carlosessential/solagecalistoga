@@ -3,11 +3,11 @@
  * ipncheck.php diagnostic tool
  *
  * @package utility
- * @copyright Copyright 2007-2013 Zen Cart Development Team
+ * @copyright Copyright 2007-2010 Zen Cart Development Team
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Fri Jun 28 21:05:21 2013 -0400 Modified in v1.5.2 $
+ * @version $Id: ipncheck.php 15777 2010-04-02 01:59:22Z drbyte $
  *
- * This utility is intended to be used to check whether this webserver is able to connect TO PayPal in order to RESPOND to an incoming IPN notification.
+ * This utility is intended to be used to check whether a Zen Cart store is able to connect TO PayPal in order to RESPOND to an incoming IPN notification.
  * Unfortunately it cannot test whether PayPal's servers can successfully post an IPN *to* your store.  To do that one should test a live transaction.
  *
  * USAGE INSTRUCTIONS:
@@ -42,6 +42,8 @@ if (isset($_REQUEST)) unset($_REQUEST);
 $_POST['ipn_mode'] = 'communication_test';
 if ($testSandbox) $_POST['test_ipn'] = 1;
 define('ENABLE_SSL','true');
+define('MODULE_PAYMENT_PAYPAL_HANDLER', 'www.paypal.com/cgi-bin/webscr');
+
 
 echo 'IPNCHECK.PHP - Version 1.3.9';
 echo '<br /><br /><pre>';
@@ -70,7 +72,7 @@ echo '<br /><br /><pre>';
     // send received data back to PayPal for validation
       $scheme = 'https://';
       //Parse url
-      $web = parse_url($scheme . 'www.paypal.com/cgi-bin/webscr');
+      $web = parse_url($scheme . MODULE_PAYMENT_PAYPAL_HANDLER);
       if ($checkNoChex == TRUE) $web = parse_url('https://www.nochex.com/nochex.dll/apc/apc');
       if (isset($_POST['test_ipn']) && $_POST['test_ipn'] == 1) {
         $web = parse_url($scheme . 'www.sandbox.paypal.com/cgi-bin/webscr');
@@ -192,8 +194,8 @@ echo '<br><br>Script finished.';
                       CURLOPT_HEADER => ($headerMode ? TRUE : FALSE),
                       CURLOPT_FOLLOWLOCATION => FALSE,
                       CURLOPT_RETURNTRANSFER => TRUE,
-                      //CURLOPT_SSL_VERIFYPEER => FALSE, // Leave this line commented out! This should never be set to FALSE on a live site!
-                      //CURLOPT_CAINFO => '/local/path/to/cacert.pem', // for offline testing, this file can be obtained from http://curl.haxx.se/docs/caextract.html ... should never be used in production!
+                      CURLOPT_SSL_VERIFYPEER => FALSE,
+                      CURLOPT_SSL_VERIFYHOST => 2,
                       CURLOPT_FORBID_REUSE => TRUE,
                       CURLOPT_FRESH_CONNECT => TRUE,
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -216,7 +218,7 @@ echo '<br><br>Script finished.';
     $errors = ($commErrNo != 0 ? "\n(" . $commErrNo . ') ' . $commError : '');
 
     if (($response == '' || $errors != '') && ($web['scheme'] != 'http')) {
-      if ($verboseMode) echo nl2br("\n\n" . 'VERBOSE output:' . "\n-------------\n<pre>" . htmlspecialchars($response, ENT_COMPAT, 'UTF-8', TRUE) . "</pre>\n--------------\n");
+      if ($verboseMode) echo nl2br("\n\n" . 'VERBOSE output:' . "\n-------------\n<pre>" . htmlspecialchars($response) . "</pre>\n--------------\n");
       echo nl2br('CURL ERROR: ' . $status . $errors . "\n" . 'Trying direct HTTP on port 80 instead ...' . "\n");
       $web['scheme'] = 'http';
       $web['port'] = '80';
@@ -230,7 +232,7 @@ echo '<br><br>Script finished.';
     //$commInfo = @curl_getinfo($ch);
     curl_close($ch);
     //die("\n\n".'data:'.$response);
-    if ($verboseMode) echo nl2br("\n\n" . 'VERBOSE output: ' . "\n-------------\n<pre>" . htmlspecialchars($response, ENT_COMPAT, 'UTF-8', TRUE) . "</pre>\n--------------\n");
+    if ($verboseMode) echo nl2br("\n\n" . 'VERBOSE output: ' . "\n-------------\n<pre>" . htmlspecialchars($response) . "</pre>\n--------------\n");
     $errors = ($commErrNo != 0 ? "\n(" . $commErrNo . ') ' . $commError : '');
     if ($errors != '') {
       echo nl2br('CURL ERROR: ' . $status . $errors . "\n" . 'ABORTING CURL METHOD ...' . "\n\n");

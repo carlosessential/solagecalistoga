@@ -1,13 +1,13 @@
 <?php
 /**
- * paypaldp.php payment module class for Paypal Payments Pro (aka Website Payments Pro)
+ * paypaldp.php payment module class for Paypal Website Payments Pro
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2005 CardinalCommerce
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author:Ian Wilson Modified in v1.5.4 $
+ * @version $Id: paypaldp.php 18013 2010-10-22 03:38:29Z drbyte $
  */
 /**
  * The transaction URL for the Cardinal Centinel 3D-Secure service.
@@ -23,7 +23,7 @@ if (!defined('MODULE_PAYMENT_CARDINAL_CENTINEL_DEBUGGING')) define('MODULE_PAYME
  */
 require_once(DIR_FS_CATALOG . DIR_WS_MODULES . 'payment/paypal/paypal_curl.php');
 /**
- * the PayPal payment module for PayPal Payments Pro (Direct Payment API)
+ * the PayPal payment module for Website Payments Pro (Direct Payment API)
  */
 class paypaldp extends base {
   /**
@@ -113,17 +113,13 @@ class paypaldp extends base {
   /**
    * Debug tools
    */
-  var $_logDir = DIR_FS_LOGS;
+  var $_logDir = 'includes/modules/payment/paypal/logs/';
   var $_logLevel = 0;
   /**
    * FMF
    */
   var $fmfResponse = '';
   var $fmfErrors = array();
-  /**
-   * this module collects card-info onsite
-   */
-  var $collectsCardDataOnsite = TRUE;
   /**
    * class constructor
    */
@@ -132,15 +128,13 @@ class paypaldp extends base {
     global $order;
     $this->code = 'paypaldp';
     $this->codeTitle = MODULE_PAYMENT_PAYPALDP_TEXT_ADMIN_TITLE_WPP;
-    $this->codeVersion = '1.5.4';
+    $this->codeVersion = '1.3.9h';
     $this->enableDirectPayment = true;
     $this->enabled = (MODULE_PAYMENT_PAYPALDP_STATUS == 'True');
     // Set the title & description text based on the mode we're in
     if (IS_ADMIN_FLAG === true) {
       $this->description = sprintf(MODULE_PAYMENT_PAYPALDP_TEXT_ADMIN_DESCRIPTION, ' (rev' . $this->codeVersion . ')');
-      $country = (defined('MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY')) ? MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY : STORE_COUNTRY;
-      $this->title = $country == '223' || $country == 'USA' ? MODULE_PAYMENT_PAYPALDP_TEXT_ADMIN_TITLE_WPP : MODULE_PAYMENT_PAYPALDP_TEXT_ADMIN_TITLE_NONUSA;
-      $this->title .= (defined('MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY') ? ' (' . MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY . ')' : '');
+      $this->title = MODULE_PAYMENT_PAYPALDP_TEXT_ADMIN_TITLE_WPP . (defined('MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY') ? ' (' . MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY . ')' : '');
       if ($this->enabled) {
         if ( ((MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY == 'US' || MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY == 'Canada') && (MODULE_PAYMENT_PAYPALWPP_APISIGNATURE == '' || MODULE_PAYMENT_PAYPALWPP_APIUSERNAME == '' || MODULE_PAYMENT_PAYPALWPP_APIPASSWORD == ''))
               || (!defined('MODULE_PAYMENT_PAYPALWPP_STATUS') || MODULE_PAYMENT_PAYPALWPP_STATUS != 'True')
@@ -170,7 +164,7 @@ class paypaldp extends base {
     $this->zone = (int)MODULE_PAYMENT_PAYPALDP_ZONE;
     if (is_object($order)) $this->update_status();
 
-    if (PROJECT_VERSION_MAJOR != '1' && substr(PROJECT_VERSION_MINOR, 0, 3) != '5.4') $this->enabled = false;
+    if (PROJECT_VERSION_MAJOR != '1' && substr(PROJECT_VERSION_MINOR, 0, 3) != '3.9') $this->enabled = false;
 
     // offer credit card choices for pull-down menu -- only needed for UK version
     $this->cards = array();
@@ -184,12 +178,11 @@ class paypaldp extends base {
 
     // debug setup
     if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_CATALOG . $this->_logDir;
-    if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_LOGS;
     if (!@is_writable($this->_logDir)) $this->_logDir = DIR_FS_SQL_CACHE;
     // Regular mode:
-    if ($this->enableDebugging) $this->_logLevel = 2;
+    if ($this->enableDebugging) $this->_logLevel = PEAR_LOG_INFO;
     // DEV MODE:
-    if (defined('PAYPAL_DEV_MODE') && PAYPAL_DEV_MODE == 'true') $this->_logLevel = 3;
+    if (defined('PAYPAL_DEV_MODE') && PAYPAL_DEV_MODE == 'true') $this->_logLevel = PEAR_LOG_DEBUG;
 
     if (IS_ADMIN_FLAG === true) $this->tableCheckup();
 
@@ -199,16 +192,7 @@ class paypaldp extends base {
    */
   function update_status() {
     global $order, $db;
-//    $this->zcLog('update_status', 'Checking whether module should be enabled or not.');
-    if (IS_ADMIN_FLAG === false) {
-      // if store is not running in SSL, cannot offer credit card module, for PCI reasons
-      if (!defined('ENABLE_SSL') || ENABLE_SSL != 'true') {
-        $this->enabled = FALSE;
-        $this->zcLog('update_status', 'Module disabled because SSL is not enabled on this site.');
-      }
-    }
-    // check other reasons for the module to be deactivated:
-    if ($this->enabled && (int)$this->zone > 0 && isset($order->billing['country']['id'])) {
+    if ($this->enabled && (int)$this->zone > 0) {
       $check_flag = false;
       $sql = "SELECT zone_id
               FROM " . TABLE_ZONES_TO_GEO_ZONES . "
@@ -231,19 +215,11 @@ class paypaldp extends base {
 
       if (!$check_flag) {
         $this->enabled = false;
-        $this->zcLog('update_status', 'Module disabled due to zone restriction. Billing address is not within the Payment Zone selected in the module settings.');
       }
 
       // module cannot be used for purchase > $10,000 USD
       $order_amount = $this->calc_order_amount($order->info['total'], 'USD');
-      if ($order_amount > 10000) {
-        $this->enabled = false;
-        $this->zcLog('update_status', 'Module disabled because purchase price (' . $order_amount . ') exceeds PayPal-imposed maximum limit of 10,000 USD.');
-      }
-      if ($order->info['total'] == 0) {
-        $this->enabled = false;
-        $this->zcLog('update_status', 'Module disabled because purchase amount is set to 0.00.' . "\n" . print_r($order, true));
-      }
+      if ($order_amount > 10000) $this->enabled = false;
     }
   }
   /**
@@ -435,7 +411,7 @@ class paypaldp extends base {
         $calculatedOrderTotal = $order_total_modules->pre_confirmation_check(TRUE);
         $lookup_data_array = array('currency' => $order->info['currency'],
                                    'txn_amount' => $calculatedOrderTotal,
-                                   'order_desc' => 'Zen Cart(R) ' . MODULE_PAYMENT_PAYPALDP_TEXT_TRANSACTION_FOR . ' ' . $_POST['paypalwpp_cc_firstname'] . ' ' . $_POST['paypalwpp_cc_lastname'],
+                                   'order_desc' => 'Zen Cart(tm) ' . MODULE_PAYMENT_PAYPALDP_TEXT_TRANSACTION_FOR . ' ' . $_POST['paypalwpp_cc_firstname'] . ' ' . $_POST['paypalwpp_cc_lastname'],
                                    'cc3d_card_number' => $_POST['paypalwpp_cc_number'],
                                    'cc3d_checkcode' => $_POST['paypalwpp_cc_checkcode'],
                                    'cc3d_exp_month' => $_POST['paypalwpp_cc_expires_month'],
@@ -542,8 +518,9 @@ class paypaldp extends base {
                                             (isset($_POST['paypalwpp_cc_issuenumber']) ? array('title' => MODULE_PAYMENT_PAYPALDP_TEXT_ISSUE_NUMBER,
                                                   'field' => $_POST['paypalwpp_cc_issuenumber']) : '')
                                             )));
+
     // 3D-Secure
-    if (MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY == 'UK' && $this->requiresLookup($_POST['paypalwpp_cc_number']) == true) {
+    if ($this->requiresLookup($_POST['paypalwpp_cc_number']) == true) {
           $confirmation['fields'][count($confirmation['fields'])] = array(
               'title' => '',
               'field' => '<div id="' . $this->code.'-cc-securetext"><p>' .
@@ -575,20 +552,6 @@ class paypaldp extends base {
     $process_button_string .= zen_draw_hidden_field(zen_session_name(), zen_session_id());
     return $process_button_string;
   }
-  function process_button_ajax() {
-    $processButton = array('ccFields'=>array('wpp_cc_type'=>'paypalwpp_cc_type',
-        'wpp_cc_expdate_month'=>'paypalwpp_cc_expires_month',
-        'wpp_cc_expdate_year'=>'paypalwpp_cc_expires_year',
-        'wpp_cc_issuedate_month'=>'paypalwpp_cc_issue_year',
-        'wpp_cc_issuedate_year'=>'paypalwpp_cc_issue_year',
-        'wpp_cc_issuenumber'=>'paypalwpp_cc_issuenumber',
-        'wpp_cc_number'=>'paypalwpp_cc_number',
-        'wpp_cc_checkcode'=>'paypalwpp_cc_checkcode',
-        'wpp_payer_firstname'=>'paypalwpp_cc_firstname',
-        'wpp_payer_lastname'=>'paypalwpp_cc_lastname',
-    ), 'extraFields'=>array(zen_session_name()=>zen_session_id()));
-    return $processButton;
-  }
   /**
    * Prepare and submit the final authorization to PayPal via the appropriate means as configured
    */
@@ -598,7 +561,7 @@ class paypaldp extends base {
     $optionsShip = array();
     $optionsNVP = array();
 
-    $options = $this->getLineItemDetails($this->selectCurrency($order->info['currency']));
+    $options = $this->getLineItemDetails();
 
     //$this->zcLog('before_process - 1', 'Have line-item details:' . "\n" . print_r($options, true));
 
@@ -658,7 +621,7 @@ class paypaldp extends base {
       $cc_issuedate_month = $_POST['wpp_cc_issuedate_month'];
       $cc_issuedate_year = $_POST['wpp_cc_issuedate_year'];
       $cc_issuenumber = $_POST['wpp_cc_issuenumber'];
-      $cc_owner_ip = current(explode(':', str_replace(',', ':', zen_get_ip_address())));
+      $cc_owner_ip = zen_get_ip_address();
 
       // If they're still here, set some of the order object's variables.
       $order->info['cc_type'] = $cc_type;
@@ -675,7 +638,6 @@ class paypaldp extends base {
         $my_currency = 'GBP';
       }
 
-//      $order->info['total'] = zen_round($order->info['total'], 2);
       $order_amount = $this->calc_order_amount($order->info['total'], $my_currency);
       $display_order_amount = $this->calc_order_amount($order->info['total'], $my_currency, TRUE);
 
@@ -858,8 +820,8 @@ class paypaldp extends base {
     global $insert_id, $db, $order;
     // FMF
     if ($this->fmfResponse != '') {
-      $detailedMessage = $insert_id . "\n" . $this->fmfResponse . "\n" . MODULES_PAYMENT_PAYPALDP_TEXT_EMAIL_FMF_INTRO . "\n" . print_r($this->fmfErrors, TRUE);
-      zen_mail(STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, MODULES_PAYMENT_PAYPALDP_TEXT_EMAIL_FMF_SUBJECT . ' (' . $insert_id . ')', $detailedMessage, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, array('EMAIL_MESSAGE_HTML'=>nl2br($detailedMessage)), 'paymentalert');
+      $detailedMessage = $insert_id . "\n" . $this->fmfResponse . "\n" . MODULE_PAYMENT_PAYPALDP_TEXT_EMAIL_FMF_INTRO . "\n" . print_r($this->fmfErrors, TRUE);
+      zen_mail(STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, MODULE_PAYMENT_PAYPALDP_TEXT_EMAIL_FMF_SUBJECT . ' (' . $insert_id . ')', $detailedMessage, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, array('EMAIL_MESSAGE_HTML'=>nl2br($detailedMessage)), 'paymentalert');
     }
 
     // add a new OSH record for this order's PP details
@@ -969,10 +931,7 @@ class paypaldp extends base {
             ORDER BY paypal_ipn_id DESC LIMIT 1";
     $sql = $db->bindVars($sql, ':orderID', $zf_order_id, 'integer');
     $ipn = $db->Execute($sql);
-    if ($ipn->EOF) {
-      $ipn = new stdClass;
-      $ipn->fields = array();
-    }
+    if ($ipn->RecordCount() == 0) $ipn->fields = array();
     if (file_exists(DIR_FS_CATALOG . DIR_WS_MODULES . 'payment/paypal/paypalwpp_admin_notification.php')) require(DIR_FS_CATALOG . DIR_WS_MODULES . 'payment/paypal/paypalwpp_admin_notification.php');
     return $output;
   }
@@ -984,7 +943,7 @@ class paypaldp extends base {
     global $db, $messageStack, $doPayPal;
     $doPayPal = $this->paypal_init();
     // look up history on this order from PayPal table
-    $sql = "select * from " . TABLE_PAYPAL . " where order_id = :orderID order by last_modified DESC, date_added DESC, parent_txn_id DESC, paypal_ipn_id DESC LIMIT 2";
+    $sql = "select * from " . TABLE_PAYPAL . " where order_id = :orderID order by last_modified DESC, date_added DESC, parent_txn_id DESC, paypal_ipn_id DESC ";
     $sql = $db->bindVars($sql, ':orderID', $oID, 'integer');
     $zc_ppHist = $db->Execute($sql);
     if ($zc_ppHist->RecordCount() == 0) return false;
@@ -994,19 +953,9 @@ class paypaldp extends base {
      * Read data from PayPal
      */
     $response = $doPayPal->GetTransactionDetails($txnID);
-    if (isset($response['RESULT']) && $response['RESULT'] == '7' && $zc_ppHist->RecordCount() > 1) {
-      $sql = "select * from " . TABLE_PAYPAL . " where order_id = :orderID and txn_id != :condition: order by last_modified ASC, date_added ASC, paypal_ipn_id ASC LIMIT 1";
-      $sql = $db->bindVars($sql, ':orderID', $oID, 'integer');
-      $sql = $db->bindVars($sql, ':condition:', $zc_ppHist->fields['txn_id'], 'integer');
-      $zc_ppHist = $db->Execute($sql);
-      if ($zc_ppHist->RecordCount() == 0) return false;
-      $txnID = $zc_ppHist->fields['txn_id'];
-      if ($txnID == '' || $txnID === 0) return FALSE;
-      $response = $doPayPal->GetTransactionDetails($txnID);
-    }
 
     $error = $this->_errorHandler($response, 'GetTransactionDetails', 10007);
-    if ($error === true) {
+    if ($error === false) {
       return false;
     } else {
       return $response;
@@ -1062,7 +1011,7 @@ class paypaldp extends base {
     }
     // cannot install DP if EC not already enabled:
     if (!defined('MODULE_PAYMENT_PAYPALWPP_STATUS') || MODULE_PAYMENT_PAYPALWPP_STATUS != 'True') {
-      $messageStack->add_session('<strong>Sorry, you must install and configure PayPal Express Checkout first.</strong> PayPal Website Payments Pro requires that you offer Express Checkout to your customers.<br /><a href="' . zen_href_link('modules.php?set=payment&module=paypalwpp', '', 'NONSSL') . '">Click here to set up Express Checkout.</a>' , 'error');
+      $messageStack->add_session('<strong>Sorry, you must install and configure PayPal Express Checkout first.</strong> Website Payments Pro requires that you offer Express Checkout to your customers.<br /><a href="' . zen_href_link('modules.php?set=payment&module=paypalwpp', '', 'NONSSL') . '">Click here to set up Express Checkout.</a>' , 'error');
       zen_redirect(zen_href_link(FILENAME_MODULES, 'set=payment&module=paypaldp', 'NONSSL'));
       return 'failed';
     }
@@ -1077,7 +1026,7 @@ class paypaldp extends base {
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Transaction Currency', 'MODULE_PAYMENT_PAYPALDP_CURRENCY',  'Selected Currency', 'Which currency should the order be sent to PayPal as? <br />NOTE: if an unsupported currency is sent to PayPal, it will be auto-converted to USD (or GBP if using UK account)<br /><strong>Default: Selected Currency</strong>', '6', '25', 'zen_cfg_select_option(array(\'Selected Currency\', \'Only USD\', \'Only AUD\', \'Only CAD\', \'Only EUR\', \'Only GBP\', \'Only CHF\', \'Only CZK\', \'Only DKK\', \'Only HKD\', \'Only HUF\', \'Only JPY\', \'Only NOK\', \'Only NZD\', \'Only PLN\', \'Only SEK\', \'Only SGD\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Fraud Mgmt Filters - FMF', 'MODULE_PAYMENT_PAYPALDP_EC_RETURN_FMF_DETAILS', 'No', 'If you have enabled FMF support in your PayPal account and wish to utilize it in your transactions, set this to yes. Otherwise, leave it at No.', '6', '25','zen_cfg_select_option(array(\'No\', \'Yes\'), ', now())");
 
-    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Merchant Country', 'MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY', 'USA', 'Which country is your PayPal Account registered to? <br /><u>Choices:</u><br /><font color=green>You will need to supply <strong>API Settings</strong> in the Express Checkout module.</font><br /><strong>USA and Canada merchants</strong> need PayPal API credentials and a PayPal Payments Pro account.<br /><strong>UK merchants</strong> need to supply <strong>PAYFLOW settings</strong> (and have a Payflow account)', '6', '25',  'zen_cfg_select_option(array(\'USA\', \'UK\', \'Canada\'), ', now())");
+    $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Merchant Country', 'MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY', 'USA', 'Which country is your PayPal Account registered to? <br /><u>Choices:</u><br /><font color=green>You will need to supply <strong>API Settings</strong> in the Express Checkout module.</font><br /><strong>USA and Canada merchants</strong> need PayPal API credentials and a Website Payments Pro account.<br /><strong>UK merchants</strong> need to supply <strong>PAYFLOW settings</strong> (and have a Payflow account)', '6', '25',  'zen_cfg_select_option(array(\'USA\', \'UK\', \'Canada\'), ', now())");
     $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Debug Mode', 'MODULE_PAYMENT_PAYPALDP_DEBUGGING', 'Off', 'Would you like to enable debug mode?  A complete detailed log of failed transactions will be emailed to the store owner.', '6', '25', 'zen_cfg_select_option(array(\'Off\', \'Alerts Only\', \'Log File\', \'Log and Email\'), ', now())");
 
     // 3D-Secure
@@ -1163,15 +1112,15 @@ class paypaldp extends base {
                                         'user' => trim(MODULE_PAYMENT_PAYPALWPP_APIUSERNAME),
                                         'pwd' =>  trim(MODULE_PAYMENT_PAYPALWPP_APIPASSWORD),
                                         'signature' => trim(MODULE_PAYMENT_PAYPALWPP_APISIGNATURE),
-                                        'version' => '61.0',
+                                        'version' => '60.0',
                                         'server' => MODULE_PAYMENT_PAYPALDP_SERVER));
       $doPayPal->_endpoints = array('live'    => 'https://api-3t.paypal.com/nvp',
-                                    'sandbox' => 'https://api-3t.sandbox.paypal.com/nvp');
+                                    'sandbox' => 'https://api.sandbox.paypal.com/nvp');
     }
 
     // set logging options
     $doPayPal->_logDir = $this->_logDir;
-    $doPayPal->_logLevel = $this->_logLevel;
+//    $doPayPal->_logLevel = $this->_logLevel;
 
     // set proxy options if configured
     if (CURL_PROXY_REQUIRED == 'True' && CURL_PROXY_SERVER_DETAILS != '') {
@@ -1232,7 +1181,6 @@ class paypaldp extends base {
     $zc_ppHist = $db->Execute($sql);
     if ($zc_ppHist->RecordCount() == 0) return false;
     $txnID = $zc_ppHist->fields['txn_id'];
-    $curCode = $zc_ppHist->fields['mc_currency'];
     $PFamt = $zc_ppHist->fields['mc_gross'];
     if ($doPayPal->_mode == 'payflow' && $refundAmt == 'Full') $refundAmt = $PFamt;
 
@@ -1240,7 +1188,7 @@ class paypaldp extends base {
      * Submit refund request to PayPal
      */
     if ($proceedToRefund) {
-       $response = $doPayPal->RefundTransaction($oID, $txnID, $refundAmt, $refundNote, $curCode);
+      $response = $doPayPal->RefundTransaction($oID, $txnID, $refundAmt, $refundNote);
       $error = $this->_errorHandler($response, 'DoRefund');
       $new_order_status = ($new_order_status > 0 ? $new_order_status : 1);
       if (!$error) {
@@ -1379,11 +1327,11 @@ class paypaldp extends base {
    * Set the currency code -- use defaults if active currency is not a currency accepted by PayPal
    */
   function selectCurrency($val = '') {
-    $ec_currencies = array('CAD', 'EUR', 'GBP', 'JPY', 'USD', 'AUD', 'CHF', 'CZK', 'DKK', 'HKD', 'HUF', 'NOK', 'NZD', 'PLN', 'SEK', 'SGD', 'THB', 'MXN', 'ILS', 'PHP', 'TWD', 'BRL', 'MYR', 'TRY');
+    $ec_currencies = array('CAD', 'EUR', 'GBP', 'JPY', 'USD', 'AUD', 'CHF', 'CZK', 'DKK', 'HKD', 'HUF', 'NOK', 'NZD', 'PLN', 'SEK', 'SGD', 'THB', 'MXN', 'ILS', 'PHP', 'TWD', 'BRL', 'MYR');
     $dp_currencies = array('CAD', 'EUR', 'GBP', 'JPY', 'USD', 'AUD', 'CHF', 'CZK', 'DKK', 'HKD', 'HUF', 'NOK', 'NZD', 'PLN', 'SEK', 'SGD');
     $dpus_currencies = array('CAD', 'EUR', 'GBP', 'JPY', 'USD', 'AUD');
 
-    // in USA, only 6 currencies are supported. But UK and Canada support 16 currencies (as of Jan 2011):
+    // in USA, only 6 currencies are supported. But UK and Canada support 16 currencies (as of Jan 2010):
     $paypalSupportedCurrencies = (MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY == 'UK' || MODULE_PAYMENT_PAYPALDP_MERCHANT_COUNTRY == 'Canada') ? $dp_currencies : $dpus_currencies;
 
     $my_currency = substr(MODULE_PAYMENT_PAYPALDP_CURRENCY, 5);
@@ -1401,8 +1349,8 @@ class paypaldp extends base {
    */
   function calc_order_amount($amount, $paypalCurrency, $applyFormatting = false) {
     global $currencies;
-    $amount = ($amount * $currencies->get_value($paypalCurrency));
-    if (in_array($paypalCurrency, array('JPY', 'HUF', 'TWD')) || (int)$currencies->get_decimal_places($paypalCurrency) == 0) {
+    $amount = ($amount) * $currencies->get_value($paypalCurrency);
+    if ($paypalCurrency == 'JPY') {
       $amount = (int)$amount;
       $applyFormatting = FALSE;
     }
@@ -1436,7 +1384,6 @@ class paypaldp extends base {
       case 'CH':
       $info['state'] = '';
       break;
-      case 'MX':
       case 'GB':
       break;
       default:
@@ -1446,11 +1393,11 @@ class paypaldp extends base {
   /**
    * Prepare subtotal and line-item detail content to send to PayPal
    */
-  function getLineItemDetails($restrictedCurrency) {
+  function getLineItemDetails() {
     global $order, $currencies, $order_totals, $order_total_modules;
 
     // if not default currency, do not send subtotals or line-item details
-    if (DEFAULT_CURRENCY != $order->info['currency'] || $restrictedCurrency != DEFAULT_CURRENCY) {
+    if (DEFAULT_CURRENCY != $order->info['currency']) {
       $this->zcLog('getLineItemDetails 1', 'Not using default currency. Thus, no line-item details can be submitted.');
       return array();
     }
@@ -1489,7 +1436,7 @@ class paypaldp extends base {
         if (in_array($order_totals[$i]['code'], array('ot_total','ot_subtotal','ot_tax','ot_shipping')) || strstr($order_totals[$i]['code'], 'insurance')) {
           if ($order_totals[$i]['code'] == 'ot_shipping') $optionsST['SHIPPINGAMT'] = round($order_totals[$i]['value'],2);
           if ($order_totals[$i]['code'] == 'ot_total')    $optionsST['AMT']         = round($order_totals[$i]['value'],2);
-          if ($order_totals[$i]['code'] == 'ot_tax')      $optionsST['TAXAMT']     += strval(round($order_totals[$i]['value'],2));
+          if ($order_totals[$i]['code'] == 'ot_tax')      $optionsST['TAXAMT']      = round($order_totals[$i]['value'],2);
           if ($order_totals[$i]['code'] == 'ot_subtotal') $optionsST['ITEMAMT']     = round($order_totals[$i]['value'],2);
           if (strstr($order_totals[$i]['code'], 'insurance')) $optionsST['INSURANCEAMT'] += round($order_totals[$i]['value'],2);
           //$optionsST['SHIPDISCAMT'] = '';  // Not applicable
@@ -1545,53 +1492,60 @@ class paypaldp extends base {
       $flagSubtotalsUnknownYet = TRUE;
     }
 
-    $decimals = $currencies->get_decimal_places($_SESSION['currency']);
-
     // loop thru all products to prepare details of quantity and price.
-    for ($i=0, $n=sizeof($order->products), $k=-1; $i<$n; $i++) {
-      // PayPal is inconsistent in how it handles zero-value line-items, so skip this entry if price is zero
-      if ($order->products[$i]['final_price'] == 0) {
-        continue;
-      } else {
-        $k++;
-      }
+    for ($i=0, $n=sizeof($order->products), $k=0; $i<$n; $i++, $k++) {
+      // PayPal won't accept zero-value line-items, so skip this entry if price is zero
+      if ($order->products[$i]['final_price'] == 0) continue;
 
       $optionsLI["L_NUMBER$k"] = $order->products[$i]['model'];
-      $optionsLI["L_NAME$k"]   = $order->products[$i]['name'] . ' [' . (int)$order->products[$i]['id'] . ']';
+      $optionsLI["L_NAME$k"]   = $order->products[$i]['name'];
       // Append *** if out-of-stock.
       $optionsLI["L_NAME$k"]  .= ((zen_get_products_stock($order->products[$i]['id']) - $order->products[$i]['qty']) < 0 ? STOCK_MARK_PRODUCT_OUT_OF_STOCK : '');
       // if there are attributes, loop thru them and add to description
       if (isset($order->products[$i]['attributes']) && sizeof($order->products[$i]['attributes']) > 0 ) {
+        $optionsLI["L_DESC$k"] = '';
         for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-          $optionsLI["L_NAME$k"] .= "\n " . $order->products[$i]['attributes'][$j]['option'] .
+          $optionsLI["L_DESC$k"] .= "\n " . $order->products[$i]['attributes'][$j]['option'] .
                                         ': ' . $order->products[$i]['attributes'][$j]['value'];
         } // end loop
       } // endif attribute-info
 
-      // PayPal can't handle fractional-quantity values, so convert it to qty 1 here
-      if ($order->products[$i]['qty'] > 1 && ($order->products[$i]['qty'] != (int)$order->products[$i]['qty'] || $flag_treat_as_partial)) {
+      // check for rounding problems with taxes
+      $m1 = zen_round($order->products[$i]['qty'] * $order->products[$i]['final_price'], $currencies->currencies[$_SESSION['currency']]['decimal_places']);
+      $m2 = ($order->products[$i]['qty'] * zen_round($order->products[$i]['final_price'], $currencies->currencies[$_SESSION['currency']]['decimal_places']));
+      $n1 = $order->products[$i]['qty'] * zen_calculate_tax($order->products[$i]['final_price'], $order->products[$i]['tax']);
+      $n2 = zen_calculate_tax($order->products[$i]['qty'] * $order->products[$i]['final_price'], $order->products[$i]['tax']);
+      if ($m1 != $m2 || zen_round($n1, $currencies->currencies[$_SESSION['currency']]['decimal_places']) != zen_round($n2, $currencies->currencies[$_SESSION['currency']]['decimal_places'])) $flag_treat_as_partial = true;
+
+      // PayPal can't handle partial-quantity values, so fudge it here
+      if ($flag_treat_as_partial || $order->products[$i]['qty'] != (int)$order->products[$i]['qty']) {
         $optionsLI["L_NAME$k"] = '('.$order->products[$i]['qty'].' x ) ' . $optionsLI["L_NAME$k"];
-        // zen_add_tax already handles whether DISPLAY_PRICES_WITH_TAX is set
-        $optionsLI["L_AMT$k"] = zen_round(zen_round(zen_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), $decimals) * $order->products[$i]['qty'], $decimals);
+        $optionsLI["L_AMT$k"] = zen_round($order->products[$i]['qty'] * $order->products[$i]['final_price'], $currencies->currencies[$_SESSION['currency']]['decimal_places']);
+        $optionsLI["L_TAXAMT$k"] = zen_calculate_tax(zen_round($order->products[$i]['qty'] * $order->products[$i]['final_price'], $currencies->currencies[$_SESSION['currency']]['decimal_places']), $order->products[$i]['tax']);
         $optionsLI["L_QTY$k"] = 1;
-        // no line-item tax component
       } else {
+        $optionsLI["L_AMT$k"] = $order->products[$i]['final_price'];
         $optionsLI["L_QTY$k"] = $order->products[$i]['qty'];
-        $optionsLI["L_AMT$k"] = zen_round(zen_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), $decimals);
+        $optionsLI["L_TAXAMT$k"] = zen_calculate_tax(1 * $order->products[$i]['final_price'], $order->products[$i]['tax']);
       }
 
+      // For tax-included pricing, combine tax with price instead of treating separately:
+      if (DISPLAY_PRICE_WITH_TAX == 'true') {
+        $optionsLI["L_AMT$k"] += $optionsLI["L_TAXAMT$k"];
+        $optionsLI["L_TAXAMT$k"] = 0;
+      }
       $subTotalLI += ($optionsLI["L_QTY$k"] * $optionsLI["L_AMT$k"]);
-//      $subTotalTax += ($optionsLI["L_QTY$k"] * $optionsLI["L_TAXAMT$k"]);
+      $subTotalTax += ($optionsLI["L_QTY$k"] * $optionsLI["L_TAXAMT$k"]);
 
       // add line-item for one-time charges on this product
       if ($order->products[$i]['onetime_charges'] != 0 ) {
         $k++;
-        $optionsLI["L_NAME$k"]   = MODULES_PAYMENT_PAYPALWPP_LINEITEM_TEXT_ONETIME_CHARGES_PREFIX . substr(htmlentities($order->products[$i]['name'], ENT_QUOTES, 'UTF-8'), 0, 120);
-        $optionsLI["L_AMT$k"]    = zen_round(zen_add_tax($order->products[$i]['onetime_charges'], $order->products[$i]['tax']), $decimals);
+        $optionsLI["L_NAME$k"]   = MODULES_PAYMENT_PAYPALDP_LINEITEM_TEXT_ONETIME_CHARGES_PREFIX . substr(htmlentities($order->products[$i]['name'], ENT_QUOTES, 'UTF-8'), 0, 120);
+        $optionsLI["L_AMT$k"]    = $order->products[$i]['onetime_charges'];
         $optionsLI["L_QTY$k"]    = 1;
-//        $optionsLI["L_TAXAMT$k"] = zen_round(zen_calculate_tax($order->products[$i]['onetime_charges'], $order->products[$i]['tax']), $decimals);
-        $subTotalLI += $optionsLI["L_AMT$k"];
-//        $subTotalTax += $optionsLI["L_TAXAMT$k"];
+        $optionsLI["L_TAXAMT$k"] = zen_calculate_tax($order->products[$i]['onetime_charges'], $order->products[$i]['tax']);
+        $subTotalLI += $order->products[$i]['onetime_charges'];
+        $subTotalTax += $optionsLI["L_TAXAMT$k"];
       }
       $numberOfLineItemsProcessed = $k;
     }  // end for loopthru all products
@@ -1600,9 +1554,10 @@ class paypaldp extends base {
     if ($surcharges > 0) {
       $numberOfLineItemsProcessed++;
       $k = $numberOfLineItemsProcessed;
-      $optionsLI["L_NAME$k"] = MODULES_PAYMENT_PAYPALWPP_LINEITEM_TEXT_SURCHARGES_LONG;
-      $optionsLI["L_AMT$k"]  = $surcharges;
-      $optionsLI["L_QTY$k"]  = 1;
+      $optionsLI["L_NAME$k"]   = MODULES_PAYMENT_PAYPALDP_LINEITEM_TEXT_SURCHARGES_SHORT;
+      $optionsLI["L_DESC$k"]   = MODULES_PAYMENT_PAYPALDP_LINEITEM_TEXT_SURCHARGES_LONG;
+      $optionsLI["L_AMT$k"]    = $surcharges;
+      $optionsLI["L_QTY$k"]    = 1;
       $subTotalLI += $surcharges;
     }
 
@@ -1610,35 +1565,40 @@ class paypaldp extends base {
     if ($creditsApplied > 0) {
       $numberOfLineItemsProcessed++;
       $k = $numberOfLineItemsProcessed;
-      $optionsLI["L_NAME$k"]   = MODULES_PAYMENT_PAYPALWPP_LINEITEM_TEXT_DISCOUNTS_LONG;
+      $optionsLI["L_NAME$k"]   = MODULES_PAYMENT_PAYPALDP_LINEITEM_TEXT_DISCOUNTS_SHORT;
+      $optionsLI["L_DESC$k"]   = MODULES_PAYMENT_PAYPALDP_LINEITEM_TEXT_DISCOUNTS_LONG;
       $optionsLI["L_AMT$k"]    = (-1 * $creditsApplied);
       $optionsLI["L_QTY$k"]    = 1;
       $subTotalLI -= $creditsApplied;
     }
 
     // Reformat properly
-    // Replace & and = and % with * if found.
-    // reformat properly according to API specs
-    // Remove HTML markup from name if found
     for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
+      // Replace & and = and % with * if found.
       $optionsLI["L_NAME$k"] = str_replace(array('&','=','%'), '*', $optionsLI["L_NAME$k"]);
+      if (isset($optionsLI["L_DESC$k"])) $optionsLI["L_DESC$k"] = str_replace(array('&','=','%'), '*', $optionsLI["L_DESC$k"]);
+      if (isset($optionsLI["L_NUMBER$k"])) $optionsLI["L_NUMBER$k"] = str_replace(array('&','=','%'), '*', $optionsLI["L_NUMBER$k"]);
+
+      // Remove HTML markup if found
       $optionsLI["L_NAME$k"] = zen_clean_html($optionsLI["L_NAME$k"], 'strong');
+      if (isset($optionsLI["L_DESC$k"])) $optionsLI["L_DESC$k"] = zen_clean_html($optionsLI["L_DESC$k"], 'strong');
+
+      // reformat properly according to API specs
       $optionsLI["L_NAME$k"]   = substr($optionsLI["L_NAME$k"], 0, 127);
-      $optionsLI["L_AMT$k"] = round($optionsLI["L_AMT$k"], 2);
-
-      if (isset($optionsLI["L_NUMBER$k"])) {
-        if ($optionsLI["L_NUMBER$k"] == '') {
-          unset($optionsLI["L_NUMBER$k"]);
-        } else {
-          $optionsLI["L_NUMBER$k"] = str_replace(array('&','=','%'), '*', $optionsLI["L_NUMBER$k"]);
-          $optionsLI["L_NUMBER$k"] = substr($optionsLI["L_NUMBER$k"], 0, 127);
-        }
+      if (isset($optionsLI["L_NUMBER$k"])) $optionsLI["L_NUMBER$k"] = substr($optionsLI["L_NUMBER$k"], 0, 127);
+      if (isset($optionsLI["L_DESC$k"]) && $optionsLI["L_DESC$k"] == '') unset($optionsLI["L_DESC$k"]);
+      if (isset($optionsLI["L_DESC$k"])) $optionsLI["L_DESC$k"]   = substr($optionsLI["L_DESC$k"], 0, 127);
+      if (isset($optionsLI["L_TAXAMT$k"]) && ($optionsLI["L_TAXAMT$k"] != '' || $optionsLI["L_TAXAMT$k"] > 0)) {
+        $optionsLI["L_TAXAMT$k"] = round($optionsLI["L_TAXAMT$k"], 2);
       }
-
-//      if (isset($optionsLI["L_TAXAMT$k"]) && ($optionsLI["L_TAXAMT$k"] != '' || $optionsLI["L_TAXAMT$k"] > 0)) {
-//        $optionsLI["L_TAXAMT$k"] = round($optionsLI["L_TAXAMT$k"], 2);
-//      }
     }
+
+/**
+ * PayPal says their math works like this:
+ * a) ITEMAMT = L_AMTn * L_QTYn
+ * b) TAXAMT = L_QTYn * L_TAXAMTn
+ * c) AMT = ITEMAMT + SHIPPINGAMT + HANDLINGAMT + TAXAMT
+ */
 
     // Sanity Check of line-item subtotals
     for ($j=0; $j<$k; $j++) {
@@ -1660,59 +1620,56 @@ class paypaldp extends base {
       }
     }
 
-//    // Sanity check -- if tax-included pricing is causing problems, remove the numbers and put them in a comment instead:
-//    $stDiffTaxOnly = (strval($sumOfLineItems - $sumOfLineTax - round($optionsST['AMT'], 2)) + 0);
-//    $this->zcLog('tax sanity check', 'stDiffTaxOnly: ' . $stDiffTaxOnly . "\nsumOfLineItems: " . $sumOfLineItems . "\nsumOfLineTax: " . $sumOfLineTax . ' ' . $subTotalTax . ' ' . print_r(array_merge($optionsST, $optionsLI), true));
-//    if (DISPLAY_PRICE_WITH_TAX == 'true' && $stDiffTaxOnly == 0 && ($optionsST['TAXAMT'] != 0 && $sumOfLineTax != 0)) {
-//      $optionsNB['DESC'] = 'Tax included in prices: ' . $sumOfLineTax . ' (' . $optionsST['TAXAMT'] . ') ';
-//      $optionsST['TAXAMT'] = 0;
-//      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
-//        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
-//      }
-//    }
-
-//    // Do sanity check -- if any of the line-item subtotal math doesn't add up properly, skip line-item details,
-//    // so that the order can go through even though PayPal isn't being flexible to handle Zen Cart's diversity
-//    if ((strval($subTotalTax) - strval($sumOfLineTax)) > 0.02) {
-//      $this->zcLog('getLineItemDetails 3', 'Tax Subtotal does not match sum of taxes for line-items. Tax details are being removed from line-item submission data.' . "\n" . $sumOfLineTax . ' ' . $subTotalTax . print_r(array_merge($optionsST, $optionsLI), true));
-//      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
-//        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
-//      }
-//      $subTotalTax = 0;
-//      $sumOfLineTax = 0;
-//    }
-
-//    // If coupons exist and there's a calculation problem, then it's likely that taxes are incorrect, so reset L_TAXAMTn values
-//    if ($creditsApplied > 0 && (strval($optionsST['TAXAMT']) != strval($sumOfLineTax))) {
-//      $pre = $optionsLI;
-//      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
-//        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
-//      }
-//      $this->zcLog('getLineItemDetails 4', 'Coupons/Discounts have affected tax calculations, so tax details are being removed from line-item submission data.' . "\n" . $sumOfLineTax . ' ' . $optionsST['TAXAMT'] . "\n" . print_r(array_merge($optionsST, $pre, $optionsNB), true) . "\nAFTER:" . print_r(array_merge($optionsST, $optionsLI, $optionsNB), TRUE));
-//      $subTotalTax = 0;
-//      $sumOfLineTax = 0;
-//    }
-
-    // disable line-item tax details, leaving only TAXAMT subtotal as tax indicator
-    for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
-      if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
+    // Sanity check -- if tax-included pricing is causing problems, remove the numbers and put them in a comment instead:
+    $stDiffTaxOnly = (strval($sumOfLineItems - $sumOfLineTax - round($optionsST['AMT'], 2)) + 0);
+    if (DISPLAY_PRICE_WITH_TAX == 'true' && $stDiffTaxOnly == 0) {
+      $optionsNB['DESC'] = 'Tax included in prices: ' . $sumOfLineTax . ' (' . $optionsST['TAXAMT'] . ') ';
+      $optionsST['TAXAMT'] = 0;
+      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
+        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
+      }
     }
-    // if ITEMAMT >0 and subTotalLI > 0 and they're not equal ... OR subTotalLI minus sumOfLineItems isn't 0
+
+    // Do sanity check -- if any of the line-item subtotal math doesn't add up properly, skip line-item details,
+    // so that the order can go through even though PayPal isn't being flexible to handle Zen Cart's diversity
+    if ((strval($subTotalTax) - strval($sumOfLineTax)) > 0.02) {
+      $this->zcLog('getLineItemDetails 3', 'Tax Subtotal does not match sum of taxes for line-items. Tax details are being removed from line-item submission data.' . "\n" . $sumOfLineTax . ' ' . $subTotalTax . print_r(array_merge($optionsST, $optionsLI), true));
+      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
+        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
+      }
+      $subTotalTax = 0;
+      $sumOfLineTax = 0;
+    }
+
+    // If coupons exist and there's a calculation problem, then it's likely that taxes are incorrect, so reset L_TAXAMTn values
+    if ($creditsApplied > 0 && (strval($optionsST['TAXAMT']) != strval($sumOfLineTax))) {
+      $pre = $optionsLI;
+      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
+        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
+      }
+      $this->zcLog('getLineItemDetails 4', 'Coupons/Discounts have affected tax calculations, so tax details are being removed from line-item submission data.' . "\n" . $sumOfLineTax . ' ' . $optionsST['TAXAMT'] . "\n" . print_r(array_merge($optionsST, $pre, $optionsNB), true) . "\nAFTER:" . print_r(array_merge($optionsST, $optionsLI, $optionsNB), TRUE));
+      $subTotalTax = 0;
+      $sumOfLineTax = 0;
+    }
+
+    if (TRUE) {
+      // disable line-item tax details, leaving only TAXAMT subtotal as tax indicator
+      for ($k=0, $n=$numberOfLineItemsProcessed+1; $k<$n; $k++) {
+        if (isset($optionsLI["L_TAXAMT$k"])) unset($optionsLI["L_TAXAMT$k"]);
+      }
+    }
+
     // check subtotals
-    if ((strval($optionsST['ITEMAMT']) > 0 && strval($subTotalLI) > 0 && strval($subTotalLI) != strval($optionsST['ITEMAMT'])) || strval($subTotalLI) - strval($sumOfLineItems) != 0) {
-      $this->zcLog('getLineItemDetails 5', 'Line-item subtotals do not add up properly. Line-item-details skipped.' . "\n" . strval($sumOfLineItems) . ' ' . strval($subTotalLI) . ' ' . print_r(array_merge($optionsST, $optionsLI), true));
+    if (strval($subTotalLI) - strval($sumOfLineItems) > 0.02) {
+      $this->zcLog('getLineItemDetails 5', 'Line-item subtotals do not add up properly. Line-item-details skipped.' . "\n" . (float)$sumOfLineItems . ' ' . (float)$subTotalTax . print_r(array_merge($optionsST, $optionsLI), true));
       $optionsLI = array();
-      $optionsLI["L_NAME0"] = MODULES_PAYMENT_PAYPALWPP_AGGREGATE_CART_CONTENTS;
-      $optionsLI["L_AMT0"]  = $sumOfLineItems = $subTotalLI = $optionsST['ITEMAMT'];
     }
 
     // check whether discounts are causing a problem
     if (strval($optionsST['ITEMAMT']) < 0) {
       $pre = (array_merge($optionsST, $optionsLI));
-      $optionsST['ITEMAMT'] = $optionsST['AMT'];
       $optionsLI = array();
-      $optionsLI["L_NAME0"] = MODULES_PAYMENT_PAYPALWPP_AGGREGATE_CART_CONTENTS;
-      $optionsLI["L_AMT0"]  = $sumOfLineItems = $subTotalLI = $optionsST['ITEMAMT'];
+      $optionsST['ITEMAMT'] = $optionsST['AMT'];
       if ($optionsST['AMT'] < $optionsST['TAXAMT']) $optionsST['TAXAMT'] = 0;
       if ($optionsST['AMT'] < $optionsST['SHIPPINGAMT']) $optionsST['SHIPPINGAMT'] = 0;
       $discountProblemsFlag = TRUE;
@@ -1726,10 +1683,10 @@ class paypaldp extends base {
       if ($subTotalShipping > 0) $optionsST['SHIPPINGAMT'] = $subTotalShipping;
       $optionsST['AMT'] = $sumOfLineItems + $optionsST['TAXAMT'] + $optionsST['SHIPPINGAMT'];
     }
-    $this->zcLog('getLineItemDetails 7 - subtotal comparisons', 'BEFORE line-item calcs: ' . print_r($subtotalPRE, true) . ($flagSubtotalsUnknownYet == TRUE ? 'Subtotals Unknown Yet - ' : '') . 'AFTER doing line-item calcs: ' . print_r(array_merge($optionsST, $optionsLI, $optionsNB), true));
+    $this->zcLog('getLineItemDetails 7 - subtotal comparisons', 'BEFORE line-item calcs: ' . print_r($subtotalPRE, true) . ($flagSubtotalsUnknownYet == TRUE ? 'Subtotals Unknown Yet' : '') . ' - AFTER doing line-item calcs: ' . print_r(array_merge($optionsST, $optionsLI, $optionsNB), true));
 
     // if subtotals are not adding up correctly, then skip sending any line-item or subtotal details to PayPal
-    $stAll = round(strval($optionsST['ITEMAMT']) + strval($optionsST['TAXAMT']) + strval($optionsST['SHIPPINGAMT']) + strval($optionsST['SHIPDISCAMT']) + strval($optionsST['HANDLINGAMT']) + strval($optionsST['INSURANCEAMT']), 2);
+    $stAll = round(strval($optionsST['ITEMAMT'] + $optionsST['TAXAMT'] + $optionsST['SHIPPINGAMT'] + $optionsST['SHIPDISCAMT'] + $optionsST['HANDLINGAMT'] + $optionsST['INSURANCEAMT']), 2);
     $stDiff = strval($optionsST['AMT'] - $stAll);
     $stDiffRounded = (strval($stAll - round($optionsST['AMT'], 2)) + 0);
 
@@ -1742,20 +1699,20 @@ class paypaldp extends base {
     if (isset($optionsST['INSURANCEAMT']) && $optionsST['INSURANCEAMT'] == 0) unset($optionsST['INSURANCEAMT']);
 
     // tidy up all values so that they comply with proper format (number_format(xxxx,2) for PayPal US use )
-    if (!defined('PAYPALWPP_SKIP_LINE_ITEM_DETAIL_FORMATTING') || PAYPALWPP_SKIP_LINE_ITEM_DETAIL_FORMATTING != 'true' || in_array($order->info['currency'], array('JPY', 'NOK', 'HUF', 'TWD'))) {
+    if (!defined('PAYPALWPP_SKIP_LINE_ITEM_DETAIL_FORMATTING') || PAYPALWPP_SKIP_LINE_ITEM_DETAIL_FORMATTING != 'true' || in_array($order->info['currency'], array('JPY', 'NOK'))) {
       if (is_array($optionsST)) foreach ($optionsST as $key=>$value) {
-        $optionsST[$key] = number_format($value, ((int)$currencies->get_decimal_places($restrictedCurrency) == 0 ? 0 : 2));
+        $optionsST[$key] = number_format($value, ($order->info['currency'] == 'JPY' ? 0 : 2));
       }
       if (is_array($optionsLI)) foreach ($optionsLI as $key=>$value) {
         if (substr($key, 0, 8) == 'L_TAXAMT' && ($optionsLI[$key] == '' || $optionsLI[$key] == 0)) {
           unset($optionsLI[$key]);
         } else {
-          if (strstr($key, 'AMT')) $optionsLI[$key] = number_format($value, ((int)$currencies->get_decimal_places($restrictedCurrency) == 0 ? 0 : 2));
+          if (strstr($key, 'AMT')) $optionsLI[$key] = number_format($value, ($order->info['currency'] == 'JPY' ? 0 : 2));
         }
       }
     }
 
-    $this->zcLog('getLineItemDetails 8', 'checking subtotals... ' . "\n" . print_r(array_merge(array('calculated total'=>number_format($stAll, ((int)$currencies->get_decimal_places($restrictedCurrency) == 0 ? 0 : 2))), $optionsST), true) . "\n-------------------\ndifference: " . ($stDiff + 0) . '  (abs+rounded: ' . ($stDiffRounded + 0) . ')');
+    $this->zcLog('getLineItemDetails 8', 'checking subtotals... ' . "\n" . print_r(array_merge(array('calculated total'=>number_format($stAll, ($order->info['currency'] == 'JPY' ? 0 : 2))), $optionsST), true) . "\n-------------------\ndifference: " . ($stDiff + 0) . '  (abs+rounded: ' . ($stDiffRounded + 0) . ')');
 
     if ( $stDiffRounded != 0) {
       $this->zcLog('getLineItemDetails 9', 'Subtotals Bad. Skipping line-item/subtotal details');
@@ -1767,6 +1724,7 @@ class paypaldp extends base {
     // Send Subtotal and LineItem results back to be submitted to PayPal
     return array_merge($optionsST, $optionsLI, $optionsNB);
   }
+
   /**
    * If the account was created only for temporary purposes to place the PayPal order, delete it.
    */
@@ -1877,12 +1835,11 @@ class paypaldp extends base {
           }
           if ($response['RESPMSG'] != '') $errorText = MODULE_PAYMENT_PAYPALDP_TEXT_DECLINED . ' ' . $errorText;
 
-          $detailedMessage = ($errorText == MODULE_PAYMENT_PAYPALDP_INVALID_RESPONSE || $errorText == MODULE_PAYMENT_PAYPALDP_TEXT_DECLINED || (int)trim($errorNum) > 0 || $this->enableDebugging || $response['CURL_ERRORS'] != '' || $this->emailAlerts) ? (isset($response['RESULT']) && $response['RESULT'] != 0 ? MODULE_PAYMENT_PAYPALDP_CANNOT_BE_COMPLETED . ' (' . $errorNum . ')' : $errorNum) . ' ' . urldecode(' ' . $response['L_SHORTMESSAGE0'] . ' - ' . $response['L_LONGMESSAGE0'] . ' ' . $response['CURL_ERRORS']) : '';
+          $detailedMessage = ($errorText == MODULE_PAYMENT_PAYPALDP_INVALID_RESPONSE || $errorText == MODULE_PAYMENT_PAYPALDP_TEXT_DECLINED || $this->enableDebugging || $response['CURL_ERRORS'] != '' || $this->emailAlerts) ? (isset($response['RESULT']) && $response['RESULT'] != 0 ? MODULE_PAYMENT_PAYPALDP_CANNOT_BE_COMPLETED . ' (' . $errorNum . ')' : $errorNum) . ' ' . urldecode(' ' . $response['L_SHORTMESSAGE0'] . ' - ' . $response['L_LONGMESSAGE0'] . ' ' . $response['CURL_ERRORS']) : '';
           $explain = "\n\nProblem occurred while customer #" . $_SESSION['customer_id'] . ' -- ' . $_SESSION['customer_first_name'] . ' ' . $_SESSION['customer_last_name'] . ' -- was attempting checkout.' . "\n";
           $detailedEmailMessage = MODULE_PAYMENT_PAYPALDP_TEXT_EMAIL_ERROR_MESSAGE . urldecode($response['L_ERRORCODE0']  . ' ' . $response['RESPMSG']. "\n" . $response['L_SHORTMESSAGE0'] . "\n" . $response['L_LONGMESSAGE0'] . $response['L_ERRORCODE1'] . "\n" . $response['L_SHORTMESSAGE1'] . "\n" . $response['L_LONGMESSAGE1'] . $response['L_ERRORCODE2'] . "\n" . $response['L_SHORTMESSAGE2'] . "\n" . $response['L_LONGMESSAGE2'] . ($response['CURL_ERRORS'] != '' ? "\n" . $response['CURL_ERRORS'] : '') . "\n\n" . 'Zen Cart message: ' . $detailedMessage . "\n\n" . $errorInfo . "\n\n" . 'Transaction Response Details: ' . print_r($response, true) . "\n\n" . 'Transaction Submission: ' . urldecode($doPayPal->_sanitizeLog($doPayPal->_parseNameValueList($doPayPal->lastParamList), true)));
           $detailedEmailMessage .= $explain;
-          if (!isset($response['L_ERRORCODE0']) && isset($response['RESULT'])) $detailedEmailMessage .= "\n\n" . print_r($response, TRUE);
-          zen_mail(STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, MODULE_PAYMENT_PAYPALDP_TEXT_EMAIL_ERROR_SUBJECT . ' (' . zen_uncomment($errorNum) . ')', zen_uncomment($detailedEmailMessage), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, array('EMAIL_MESSAGE_HTML'=>nl2br(zen_uncomment($detailedEmailMessage))), 'paymentalert');
+          zen_mail(STORE_NAME, STORE_OWNER_EMAIL_ADDRESS, MODULE_PAYMENT_PAYPALDP_TEXT_EMAIL_ERROR_SUBJECT . ' (' . zen_uncomment($errorNum) . ')', zen_uncomment($detailedMessage . $explain), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, array('EMAIL_MESSAGE_HTML'=>nl2br(zen_uncomment($detailedEmailMessage))), 'paymentalert');
           if ($response['L_ERRORCODE0'] == 15012) $detailedEmailMessage = '';
           $this->terminateEC(($detailedEmailMessage == '' ? $errorText . ' (' . $errorNum . ') ' : $detailedMessage), ($gateway_mode ? true : false), FILENAME_CHECKOUT_PAYMENT);
           return true;
@@ -1948,9 +1905,6 @@ class paypaldp extends base {
         break;
       case 'GetTransactionDetails':
         if ($basicError) {
-          if (isset($response['RESPMSG']) && $response['RESPMSG'] == 'Field format error: ORIGID missing') {
-            return FALSE;
-          }
           // if error, display error message. If debug options enabled, email dump to store owner
           if ($this->enableDebugging) {
             $this->_doDebug('PayPal Error Log - ' . $operation, "Value List:\r\n" . str_replace('&',"\r\n", $doPayPal->_sanitizeLog($doPayPal->_parseNameValueList($doPayPal->lastParamList))) . "\r\n\r\nResponse:\r\n" . print_r($response, true));
@@ -2106,7 +2060,7 @@ class paypaldp extends base {
    */
   function get3DSecureLookupResponse($lookup_data_array) {
     // Set some defaults
-    if (!isset($lookup_data_array['order_desc']) || $lookup_data_array['order_desc'] == '') $lookup_data_array['order_desc'] = 'Zen Cart(R) Transaction';
+    if (!isset($lookup_data_array['order_desc']) || $lookup_data_array['order_desc'] == '') $lookup_data_array['order_desc'] = 'Zen Cart(tm) Transaction';
     if (!isset($lookup_data_array['order_number']) || $lookup_data_array['order_number'] == '') $lookup_data_array['order_number'] = zen_session_id();
     // format the card expiration
     $lookup_data_array['cc3d_exp_year'] = (strlen($lookup_data_array['cc3d_exp_year']) == 2 ? '20' : '') . $lookup_data_array['cc3d_exp_year'];
@@ -2145,8 +2099,8 @@ class paypaldp extends base {
     $data .= '<CardExpMonth>' . $this->escapeXML($lookup_data_array['cc3d_exp_month']) . '</CardExpMonth>';
     $data .= '<CardExpYear>' . $this->escapeXML($lookup_data_array['cc3d_exp_year']) . '</CardExpYear>';
     $data .= '<UserAgent>' . $this->escapeXML($_SERVER["HTTP_USER_AGENT"]) . '</UserAgent>';
-    $ipAddress = current(explode(':', str_replace(',', ':', zen_get_ip_address())));
-    $data .= '<IPAddress>' . $this->escapeXML($ipAddress) . '</IPAddress>';
+    $ipAddress = explode(',', zen_get_ip_address());
+    $data .= '<IPAddress>' . $this->escapeXML($ipAddress[0]) . '</IPAddress>';
     $data .= '<BrowserHeader>' . $this->escapeXML($_SERVER["HTTP_ACCEPT"]) . '</BrowserHeader>';
     $data .= '<OrderChannel>' . $this->escapeXML('MARK') . '</OrderChannel>';
     if (isset($lookup_data_array['merchantData'])) $data .= '<MerchantData>' . $this->escapeXML($lookup_data_array['merchantData']) . '</MerchantData>';
@@ -2335,11 +2289,10 @@ class paypaldp extends base {
       $ch = curl_init($url);
       curl_setopt($ch, CURLOPT_POST,1);
       curl_setopt($ch, CURLOPT_POSTFIELDS, "cmpi_msg=".urlencode($data));
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  2);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-//   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // NOTE: Leave commented-out! or set to TRUE!  This should NEVER be set to FALSE in production!!!!
-//   curl_setopt($ch, CURLOPT_CAINFO, '/local/path/to/cacert.pem'); // for offline testing, this file can be obtained from http://curl.haxx.se/docs/caextract.html ... should never be used in production!
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
       curl_setopt($ch, CURLOPT_TIMEOUT, 8);
-      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
 
       // Execute the request.
       $result = curl_exec($ch);

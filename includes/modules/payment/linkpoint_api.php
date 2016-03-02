@@ -3,11 +3,11 @@
  * FirstData/Linkpoint/Yourpay API Payment Module
  *
  * @package paymentMethod
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2010 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @copyright Portions Copyright 2003 Jason LeBaron
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: Ian Wilson  Modified in v1.5.4 $
+ * @version $Id: linkpoint_api.php 18013 2010-10-22 03:38:29Z drbyte $
  */
   if (!defined('TABLE_LINKPOINT_API')) define('TABLE_LINKPOINT_API', DB_PREFIX . 'linkpoint_api');
   @define('MODULE_PAYMENT_LINKPOINT_API_CODE_DEBUG' ,'off'); // debug for programmer use only
@@ -15,10 +15,6 @@
 class linkpoint_api {
   var $code, $title, $description, $enabled, $payment_status, $auth_code, $transaction_id;
   var $_logDir = DIR_FS_SQL_CACHE;
-  /**
-   * this module collects card-info onsite
-   */
-  var $collectsCardDataOnsite = TRUE;
 
   // class constructor
   function linkpoint_api() {
@@ -59,7 +55,7 @@ class linkpoint_api {
       }
     }
 
-    $this->_logDir = defined('DIR_FS_LOGS') ? DIR_FS_LOGS : DIR_FS_SQL_CACHE;
+    $this->_logDir = DIR_FS_SQL_CACHE;
   }
 
 
@@ -67,12 +63,8 @@ class linkpoint_api {
 
   function update_status() {
     global $order, $db;
-    if (IS_ADMIN_FLAG === false) {
-      // if store is not running in SSL, cannot offer credit card module, for PCI reasons
-      if (!defined('ENABLE_SSL') || ENABLE_SSL != 'true') $this->enabled = FALSE;
-    }
-    // check other reasons for the module to be deactivated:
-    if ($this->enabled && (int)$this->zone > 0 && isset($order->billing['country']['id'])) {
+
+    if ( $this->enabled && $this->zone > 0 ) {
       $check_flag = false;
       $sql = "SELECT zone_id
               FROM " . TABLE_ZONES_TO_GEO_ZONES . "
@@ -255,26 +247,18 @@ class linkpoint_api {
   /**
    * Prepare the hidden fields comprising the parameters for the Submit button on the checkout confirmation page
    */
-  function process_button_ajax() {
-    $processButton = array('ccFields'=>array('cc_owner'=>'linkpoint_api_cc_owner',
-        'cc_cvv'=>'linkpoint_api_cc_cvv',
-        'cc_number'=>'linkpoint_api_cc_number',
-        'cc_expires_month'=>'linkpoint_api_cc_expires_month',
-        'cc_expires_year'=>'linkpoint_api_cc_expires_year'),
-        'extraFields'=>array(zen_session_name()=>zen_session_id()));
-    return $processButton;
-  }
   function process_button() {
-        $process_button_string = zen_draw_hidden_field('cc_owner', $_POST['linkpoint_api_cc_owner']) .
-                                 zen_draw_hidden_field('cc_expires', $this->cc_expiry_month . substr($this->cc_expiry_year, -2)) .
-                                 zen_draw_hidden_field('cc_expires_month', $this->cc_expiry_month) .
-                                 zen_draw_hidden_field('cc_expires_year', substr($this->cc_expiry_year, -2)) .
-                                 zen_draw_hidden_field('cc_type', $this->cc_card_type) .
-                                 zen_draw_hidden_field('cc_number', $this->cc_card_number) .
-                                 zen_draw_hidden_field('cc_cvv', $_POST['linkpoint_api_cc_cvv']);
-        $process_button_string .= zen_draw_hidden_field(zen_session_name(), zen_session_id());
+    // These are hidden fields on the checkout confirmation page
+    $process_button_string = zen_draw_hidden_field('cc_owner', $_POST['linkpoint_api_cc_owner']) .
+                             zen_draw_hidden_field('cc_expires', $this->cc_expiry_month . substr($this->cc_expiry_year, -2)) .
+                             zen_draw_hidden_field('cc_expires_month', $this->cc_expiry_month) .
+                             zen_draw_hidden_field('cc_expires_year', substr($this->cc_expiry_year, -2)) .
+                             zen_draw_hidden_field('cc_type', $this->cc_card_type) .
+                             zen_draw_hidden_field('cc_number', $this->cc_card_number) .
+                             zen_draw_hidden_field('cc_cvv', $_POST['linkpoint_api_cc_cvv']);
+    $process_button_string .= zen_draw_hidden_field(zen_session_name(), zen_session_id());
 
-        return $process_button_string;
+    return $process_button_string;
   }
 
   /**
@@ -313,7 +297,7 @@ class linkpoint_api {
       if ($order_totals[$i]['code'] == '') continue;
       if (in_array($order_totals[$i]['code'], array('ot_total','ot_subtotal','ot_tax','ot_shipping'))) {
         if ($order_totals[$i]['code'] == 'ot_subtotal') $myorder["subtotal"]    = round($order_totals[$i]['value'],2);
-        if ($order_totals[$i]['code'] == 'ot_tax')      $myorder["tax"]        += round($order_totals[$i]['value'],2);
+        if ($order_totals[$i]['code'] == 'ot_tax')      $myorder["tax"]         = round($order_totals[$i]['value'],2);
         if ($order_totals[$i]['code'] == 'ot_shipping') $myorder["shipping"]    = round($order_totals[$i]['value'],2);
         if ($order_totals[$i]['code'] == 'ot_total')    $myorder["chargetotal"] = round($order_totals[$i]['value'],2);
       } else {
@@ -339,12 +323,12 @@ class linkpoint_api {
 
         $myorder["items"][$num_line_items]['description'] = substr(htmlentities($order->products[$i]['name'], ENT_QUOTES, 'UTF-8'), 0, 128);
         $myorder["items"][$num_line_items]['quantity']    = $order->products[$i]['qty'];
-        $myorder["items"][$num_line_items]['price']       = number_format(zen_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), 2, '.', '');
+        $myorder["items"][$num_line_items]['price']       = number_format($order->products[$i]['final_price'], 2, '.', '');
         // check and adjust for fractional quantities, which cannot be submitted as line-item details
         $q = $order->products[$i]['qty']; $q1 = strval($q); $q2 = (int)$q; $q3 = strval($q2);
         if ($q1 != $q3 || $myorder["items"][$num_line_items]['quantity'] * $myorder["items"][$num_line_items]['price'] != number_format($order->products[$i]['qty'] * $order->products[$i]['final_price'], 2, '.', '')) {
           $myorder["items"][$num_line_items]['quantity']    = 1;
-          $myorder["items"][$num_line_items]['price']       = number_format(zen_round(zen_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), $decimals) * $order->products[$i]['qty'], 2, '.', '');
+          $myorder["items"][$num_line_items]['price']       = number_format($order->products[$i]['qty'] * $order->products[$i]['final_price'], 2, '.', '');
           $myorder["items"][$num_line_items]['description'] = '(' . $order->products[$i]['qty'] . ' x )' . substr($myorder["items"][$num_line_items]['description'], 115);
         }
 
@@ -366,7 +350,7 @@ class linkpoint_api {
           $myorder["items"][$num_line_items]['id']          = 'OTC';
           $myorder["items"][$num_line_items]['description'] = 'One Time Charges';
           $myorder["items"][$num_line_items]['quantity']    = 1;
-          $myorder["items"][$num_line_items]['price']       = number_format(zen_add_tax($order->products[$i]['onetime_charges'], $order->products[$i]['tax']), 2, '.', '');
+          $myorder["items"][$num_line_items]['price']       = number_format($order->products[$i]['onetime_charges'], 2, '.', '');
         }
       }
 /*
@@ -394,7 +378,7 @@ class linkpoint_api {
       }
     }
 
-    // Subtotal Sanity Check in case there are addon modules affecting calculations
+    // Subtotal Sanity Check
     $sum1 = strval($myorder['subtotal'] + $myorder['shipping'] + $myorder['tax']);
     if ($sum1 > $myorder['chargetotal']) {
       foreach(array('subtotal', 'tax', 'shipping', 'items') as $i) {
@@ -420,7 +404,7 @@ class linkpoint_api {
       if (isset($myorder[$i]) && $myorder[$i] == 0) unset($myorder[$i]);
     }
 
-    $myorder["ip"]  = current(explode(':', str_replace(',', ':', zen_get_ip_address())));
+    $myorder["ip"]  = zen_get_ip_address();
     $myorder["ponumber"]    = "";
 
     // CARD INFO
@@ -500,9 +484,6 @@ class linkpoint_api {
     $cc_number = substr($myorder["cardnumber"], 0, 4) . str_repeat('X', abs(strlen($myorder["cardnumber"]) - 8)) . substr($myorder["cardnumber"], -4);
     foreach($myorder as $key=>$value) {
       if ($key != 'cardnumber') {
-        if ($key == 'cvmvalue') {
-          $value = '****';
-        }
         if ($key == 'cardexpmonth') {
           $cc_month = $value;
         }
@@ -522,7 +503,7 @@ class linkpoint_api {
 
     $order->info['cc_type'] = $_POST['cc_type'];
     $order->info['cc_owner'] = $_POST['cc_owner'];
-    $order->info['cc_cvv'] = '***';
+    $order->info['cc_cvv'] = '***'; // $_POST['cc_cvv'];
     $order->info['cc_expires'] = '';// $_POST['cc_expires'];
 
 
@@ -551,7 +532,7 @@ class linkpoint_api {
                            array('fieldName'=>'cc_number', 'value' => $cc_number, 'type'=>'string'),
                            array('fieldName'=>'cust_info', 'value' => $cust_info, 'type'=>'string'),
                            array('fieldName'=>'chargetotal', 'value' => $chargetotal, 'type'=>'string'),
-//                            array('fieldName'=>'cc_expire', 'value' => $cc_month . '/' . $cc_year, 'type'=>'string'),
+                           array('fieldName'=>'cc_expire', 'value' => $cc_month . '/' . $cc_year, 'type'=>'string'),
                            array('fieldName'=>'ordertype', 'value' => $myorder['ordertype'], 'type'=>'string'), // transaction type: PREAUTH or SALE
                            array('fieldName'=>'date_added', 'value' => 'now()', 'type'=>'noquotestring'));
     if (MODULE_PAYMENT_LINKPOINT_API_STORE_DATA == 'True') {
@@ -652,7 +633,7 @@ class linkpoint_api {
      $output = '';
      $sql = "select * from " . TABLE_LINKPOINT_API . " where order_id = '" . $zf_order_id . "' and transaction_result = 'APPROVED' order by date_added";
      $lp_api = $db->Execute($sql);
-     if (!$lp_api->EOF && $lp_api->RecordCount() > 0) require(DIR_FS_CATALOG. DIR_WS_MODULES . 'payment/linkpoint_api/linkpoint_api_admin_notification.php');
+     if ($lp_api->RecordCount() > 0) require(DIR_FS_CATALOG. DIR_WS_MODULES . 'payment/linkpoint_api/linkpoint_api_admin_notification.php');
      return $output;
    }
 
@@ -790,7 +771,7 @@ class linkpoint_api {
   function _log($msg, $suffix = '') {
     static $key;
     if (!isset($key) || $key == '') $key = time() . '_' . zen_create_random_value(4);
-    $file = $this->_logDir . '/' . 'Linkpoint_Debug_' . $suffix . '_' . $key . '.log';
+    $file = $this->_logDir . '/' . 'Linkpoint_Debug_' . $suffix . $key . '.log';
     if ($fp = @fopen($file, 'a')) {
       @fwrite($fp, $msg);
       @fclose($fp);
@@ -906,7 +887,7 @@ class linkpoint_api {
       $myorder["oid"] = $query->fields['lp_trans_num'];
       if ($_POST['trans_id'] != '') $myorder["tdate"] = $_POST['trans_id'];
       $myorder["chargetotal"] = number_format($refundAmt, 2, '.', '');
-      $myorder["comments"]  = htmlentities($refundNote, ENT_QUOTES, 'UTF-8');
+      $myorder["comments"]  = htmlentities($refundNote);
 
       $result = $this->_sendRequest($myorder);
       $response_alert = $result['r_approved'] . ' ' . $result['r_error'] . ($this->commError == '' ? '' : ' Communications Error - Please notify webmaster.');
@@ -967,7 +948,7 @@ class linkpoint_api {
       $myorder["ordertype"] = 'POSTAUTH';
       $myorder["oid"] = $query->fields['lp_trans_num'];
       $myorder["chargetotal"] = number_format($captureAmt, 2, '.', '');
-      $myorder["comments"]  = htmlentities($captureNote, ENT_QUOTES, 'UTF-8');
+      $myorder["comments"]  = htmlentities($captureNote);
 
       $result = $this->_sendRequest($myorder);
       $response_alert = $result['r_approved'] . ' ' . $result['r_error'] . ($this->commError == '' ? '' : ' Communications Error - Please notify webmaster.');
@@ -1018,7 +999,7 @@ class linkpoint_api {
       $myorder["ordertype"] = 'VOID';
       $myorder["oid"] = $query->fields['lp_trans_num'];
       if ($voidAuthID != '') $myorder["tdate"] = $voidAuthID;
-      $myorder["comments"]  = htmlentities($voidNote, ENT_QUOTES, 'UTF-8');
+      $myorder["comments"]  = htmlentities($voidNote);
 
       $result = $this->_sendRequest($myorder);
       $response_alert = $result['r_approved'] . ' ' . $result['r_error'] . ($this->commError == '' ? '' : ' Communications Error - Please notify webmaster.');

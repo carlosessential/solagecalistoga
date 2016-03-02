@@ -3,13 +3,14 @@
  * Checkout Shipping Page
  *
  * @package page
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2009 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Modified in v1.5.4 $
+ * @version $Id: header_php.php 18007 2010-10-21 06:41:51Z drbyte $
  */
 // This should be first line of the script:
   $zco_notifier->notify('NOTIFY_HEADER_START_CHECKOUT_SHIPPING');
+
   require_once(DIR_WS_CLASSES . 'http_client.php');
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
@@ -44,12 +45,6 @@
       if (zen_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
         zen_redirect(zen_href_link(FILENAME_SHOPPING_CART));
         break;
-      } else {
-// extra check on stock for mixed YES
-        if ( zen_get_products_stock($products[$i]['id']) - $_SESSION['cart']->in_cart_mixed($products[$i]['id']) < 0) {
-          zen_redirect(zen_href_link(FILENAME_SHOPPING_CART));
-          break;
-        }
       }
     }
   }
@@ -69,7 +64,7 @@
 
     if ($check_address->fields['total'] != '1') {
       $_SESSION['sendto'] = $_SESSION['customer_default_address_id'];
-      unset($_SESSION['shipping']);
+      $_SESSION['shipping'] = '';
     }
   }
 
@@ -89,7 +84,7 @@ if (isset($_SESSION['cart']->cartID)) {
 // if the order contains only virtual products, forward the customer to the billing page as
 // a shipping address is not needed
   if ($order->content_type == 'virtual') {
-    $_SESSION['shipping']['id'] = 'free_free';
+    $_SESSION['shipping'] = 'free_free';
     $_SESSION['shipping']['title'] = 'free_free';
     $_SESSION['sendto'] = false;
     zen_redirect(zen_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
@@ -140,7 +135,7 @@ if (isset($_SESSION['cart']->cartID)) {
 // process the selected shipping method
   if ( isset($_POST['action']) && ($_POST['action'] == 'process') ) {
     if (zen_not_null($_POST['comments'])) {
-      $_SESSION['comments'] = zen_output_string_protected($_POST['comments']);
+      $_SESSION['comments'] = zen_db_prepare_input($_POST['comments']);
     }
     $comments = $_SESSION['comments'];
     $quote = array();
@@ -152,21 +147,23 @@ if (isset($_SESSION['cart']->cartID)) {
          */
         if ($_POST['shipping'] == 'free_free' && ($order->content_type != 'virtual' && !$pass)) {
           $quote['error'] = 'Invalid input. Please make another selection.';
+        } else {
+          $_SESSION['shipping'] = $_POST['shipping'];
         }
-        list($module, $method) = explode('_', $_POST['shipping']);
-        if ( is_object($$module) || ($_POST['shipping'] == 'free_free') ) {
-          if ($_POST['shipping'] == 'free_free') {
+
+        list($module, $method) = explode('_', $_SESSION['shipping']);
+        if ( is_object($$module) || ($_SESSION['shipping'] == 'free_free') ) {
+          if ($_SESSION['shipping'] == 'free_free') {
             $quote[0]['methods'][0]['title'] = FREE_SHIPPING_TITLE;
             $quote[0]['methods'][0]['cost'] = '0';
-            $quote[0]['methods'][0]['icon'] = '';
           } else {
             $quote = $shipping_modules->quote($method, $module);
           }
           if (isset($quote['error'])) {
-            unset($_SESSION['shipping']);
+            $_SESSION['shipping'] = '';
           } else {
             if ( (isset($quote[0]['methods'][0]['title'])) && (isset($quote[0]['methods'][0]['cost'])) ) {
-              $_SESSION['shipping'] = array('id' => $_POST['shipping'],
+              $_SESSION['shipping'] = array('id' => $_SESSION['shipping'],
                                 'title' => (($free_shipping == true) ?  $quote[0]['methods'][0]['title'] : $quote[0]['module'] . ' (' . $quote[0]['methods'][0]['title'] . ')'),
                                 'cost' => $quote[0]['methods'][0]['cost']);
 
@@ -174,11 +171,11 @@ if (isset($_SESSION['cart']->cartID)) {
             }
           }
         } else {
-          unset($_SESSION['shipping']);
+          $_SESSION['shipping'] = false;
         }
       }
     } else {
-      unset($_SESSION['shipping']);
+      $_SESSION['shipping'] = false;
 
       zen_redirect(zen_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
     }
@@ -187,29 +184,11 @@ if (isset($_SESSION['cart']->cartID)) {
 // get all available shipping quotes
   $quotes = $shipping_modules->quote();
 
-  // check that the currently selected shipping method is still valid (in case a zone restriction has disabled it, etc)
-  if (isset($_SESSION['shipping'])) {
-    $checklist = array();
-    foreach ($quotes as $key=>$val) {
-      if ($val['methods'] != '') {
-        foreach($val['methods'] as $key2=>$method) {
-          $checklist[] = $val['id'] . '_' . $method['id'];
-        }
-      } else {
-        // skip
-      }
-    }
-    $checkval = $_SESSION['shipping']['id'];
-    if (!in_array($checkval, $checklist) && $_SESSION['shipping']['id'] != 'free_free') {
-      $messageStack->add('checkout_shipping', ERROR_PLEASE_RESELECT_SHIPPING_METHOD, 'error');
-    }
-  }
-
 // if no shipping method has been selected, automatically select the cheapest method.
 // if the modules status was changed when none were available, to save on implementing
 // a javascript force-selection method, also automatically select the cheapest shipping
 // method if more than one module is now enabled
-  if ( !isset($_SESSION['shipping']) && (zen_count_shipping_modules() > 1) )  $_SESSION['shipping'] = $shipping_modules->cheapest();
+  if ( !$_SESSION['shipping'] || ( $_SESSION['shipping'] && ($_SESSION['shipping'] == false) && (zen_count_shipping_modules() > 1) ) ) $_SESSION['shipping'] = $shipping_modules->cheapest();
 
 
   // Should address-edit button be offered?
@@ -224,9 +203,6 @@ if (isset($_SESSION['cart']->cartID)) {
       $displayAddressEdit = true;
     }
   }
-
-  require(DIR_WS_CLASSES . 'payment.php');
-  $payment_modules = new payment;
 
   $breadcrumb->add(NAVBAR_TITLE_1, zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);

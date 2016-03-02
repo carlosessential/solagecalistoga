@@ -1,1 +1,1 @@
-Please see http://www.zen-cart.com/wiki/index.php/Customisation_-_Templates_-_Javascript for documentation.
+Please see the /docs/read_me_onload.html file for documentation.

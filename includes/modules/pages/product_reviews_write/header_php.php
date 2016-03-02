@@ -3,13 +3,14 @@
  * reviews Write
  *
  * @package page
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2006 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Wed Nov 6 21:44:06 2013 -0500 Modified in v1.5.2 $
+ * @version $Id: header_php.php 4274 2006-08-26 03:16:53Z drbyte $
  */
 /**
  * Header code file for product reviews "write" page
+ *
  */
 
 // This should be first line of the script:
@@ -41,32 +42,29 @@ if (!$product_info->RecordCount()) {
 $customer_query = "SELECT customers_firstname, customers_lastname, customers_email_address
                    FROM " . TABLE_CUSTOMERS . "
                    WHERE customers_id = :customersID";
+
+
 $customer_query = $db->bindVars($customer_query, ':customersID', $_SESSION['customer_id'], 'integer');
 $customer = $db->Execute($customer_query);
 
-$error = false;
 if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
-  $rating = (int)$_POST['rating'];
-  $review_text = $_POST['review_text'];
-  $antiSpam = isset($_POST['should_be_empty']) ? zen_db_prepare_input($_POST['should_be_empty']) : '';
-  $zco_notifier->notify('NOTIFY_REVIEWS_WRITE_CAPTCHA_CHECK');
+  $rating = zen_db_prepare_input($_POST['rating']);
+  $review_text = zen_db_prepare_input($_POST['review_text']);
 
+  $error = false;
   if (strlen($review_text) < REVIEW_TEXT_MIN_LENGTH) {
     $error = true;
+
     $messageStack->add('review_text', JS_REVIEW_TEXT);
   }
 
   if (($rating < 1) || ($rating > 5)) {
     $error = true;
+
     $messageStack->add('review_text', JS_REVIEW_RATING);
   }
 
   if ($error == false) {
-   if ($antiSpam != '') {
-    $zco_notifier->notify('NOTIFY_SPAM_DETECTED_DURING_WRITE_REVIEW');
-    $messageStack->add_session('header', (defined('ERROR_WRITE_REVIEW_SPAM_DETECTED') ? ERROR_WRITE_REVIEW_SPAM_DETECTED : 'Thank you, your post has been submitted for review.'), 'success');
-   } else {
-
     if (REVIEWS_APPROVAL == '1') {
       $review_status = '0';
     } else {
@@ -92,8 +90,8 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     $sql = $db->bindVars($sql, ':insertID', $insert_id, 'integer');
     $sql = $db->bindVars($sql, ':languagesID', $_SESSION['languages_id'], 'integer');
     $sql = $db->bindVars($sql, ':reviewText', $review_text, 'string');
-    $db->Execute($sql);
 
+    $db->Execute($sql);
     // send review-notification email to admin
     if (REVIEWS_APPROVAL == '1' && SEND_EXTRA_REVIEW_NOTIFICATION_EMAILS_TO_STATUS == '1' and defined('SEND_EXTRA_REVIEW_NOTIFICATION_EMAILS_TO') and SEND_EXTRA_REVIEW_NOTIFICATION_EMAILS_TO !='') {
       $email_text  = sprintf(EMAIL_PRODUCT_REVIEW_CONTENT_INTRO, $product_info->fields['products_name']) . "\n\n" ;
@@ -109,7 +107,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
       $email_text . $extra_info['TEXT'], STORE_NAME, EMAIL_FROM, $html_msg, 'reviews_extra');
     }
     // end send email
-   }
+
     zen_redirect(zen_href_link(FILENAME_PRODUCT_REVIEWS, zen_get_all_get_params(array('action'))));
   }
 }
@@ -136,3 +134,4 @@ $breadcrumb->add(NAVBAR_TITLE);
 
 // This should be last line of the script:
 $zco_notifier->notify('NOTIFY_HEADER_END_PRODUCT_REVIEWS_WRITE');
+?>

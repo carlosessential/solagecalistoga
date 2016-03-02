@@ -3,18 +3,14 @@
  * checkout_payment header_php.php
  *
  * @package page
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @copyright Copyright 2003-2007 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: ajeh  Modified in v1.5.4 $
+ * @version $Id: header_php.php 16397 2010-05-26 11:21:22Z drbyte $
  */
 
 // This should be first line of the script:
 $zco_notifier->notify('NOTIFY_HEADER_START_CHECKOUT_PAYMENT');
-// if (!isset($_SESSION['jscript_enabled'])) {
-//     $messageStack->add_session ('shopping_cart', PAYMENT_JAVASCRIPT_DISABLED, 'error');
-//   zen_redirect(zen_href_link(FILENAME_SHOPPING_CART));
-// }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($_SESSION['cart']->count_contents() <= 0) {
@@ -34,10 +30,10 @@ if ($_SESSION['cart']->count_contents() <= 0) {
   }
 
 // if no shipping method has been selected, redirect the customer to the shipping method selection page
-if (!isset($_SESSION['shipping'])) {
+if (!$_SESSION['shipping']) {
   zen_redirect(zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 }
-if (isset($_SESSION['shipping']['id']) && $_SESSION['shipping']['id'] == 'free_free' && $_SESSION['cart']->get_content_type() != 'virtual' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING') && MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING == 'true' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER') && $_SESSION['cart']->show_total() < MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER) {
+if (isset($_SESSION['shipping']['id']) && $_SESSION['shipping']['id'] == 'free_free' && defined('MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER') && $_SESSION['cart']->show_total() < MODULE_ORDER_TOTAL_SHIPPING_FREE_SHIPPING_OVER) {
   zen_redirect(zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 }
 
@@ -55,12 +51,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     if (zen_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
       zen_redirect(zen_href_link(FILENAME_SHOPPING_CART));
       break;
-    } else {
-// extra check on stock for mixed YES
-      if ( zen_get_products_stock($products[$i]['id']) - $_SESSION['cart']->in_cart_mixed($products[$i]['id']) < 0) {
-        zen_redirect(zen_href_link(FILENAME_SHOPPING_CART));
-        break;
-      }
     }
   }
 }
@@ -121,6 +111,7 @@ require(DIR_WS_MODULES . zen_get_module_directory('require_languages.php'));
 if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
   $messageStack->add('checkout_payment', $error['error'], 'error');
 }
+
 $breadcrumb->add(NAVBAR_TITLE_1, zen_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 $breadcrumb->add(NAVBAR_TITLE_2);
 

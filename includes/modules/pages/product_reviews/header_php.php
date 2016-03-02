@@ -3,10 +3,10 @@
  * Product Reviews
  *
  * @package page
- * @copyright Copyright 2003-2013 Zen Cart Development Team
+ * @copyright Copyright 2003-2006 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version GIT: $Id: Author: DrByte  Wed Aug 28 23:29:28 2013 -0400 Modified in v1.5.3 $
+ * @version $Id: header_php.php 3117 2006-03-05 20:38:44Z ajeh $
  */
 
   // This should be first line of the script:
@@ -38,14 +38,12 @@
   $review = $db->Execute($review_query_raw);
 
   $products_price = zen_get_products_display_price($review->fields['products_id']);
-  $products_name = $review->fields['products_name'];
 
-  if ($review->fields['products_model'] != '') {
-    $products_model = '<br /><span class="smallText">[' . $review->fields['products_model'] . ']</span>';
+  if (zen_not_null($review->fields['products_model'])) {
+    $products_name = $review->fields['products_name'] . '<br /><span class="smallText">[' . $review->fields['products_model'] . ']</span>';
   } else {
-    $products_model = '';
+    $products_name = $review->fields['products_name'];
   }
-
 
 // set image
 //  $products_image = $review->fields['products_image'];
@@ -70,11 +68,11 @@
   $reviews = $db->Execute($reviews_split->sql_query);
   $reviewsArray = array();
   while (!$reviews->EOF) {
-    $reviewsArray[] = array('id'=>$reviews->fields['reviews_id'],
-                            'customersName'=>$reviews->fields['customers_name'],
-                            'dateAdded'=>$reviews->fields['date_added'],
-                            'reviewsText'=>$reviews->fields['reviews_text'],
-                            'reviewsRating'=>$reviews->fields['reviews_rating']);
+  	$reviewsArray[] = array('id'=>$reviews->fields['reviews_id'],
+  	                        'customersName'=>$reviews->fields['customers_name'],
+  	                        'dateAdded'=>$reviews->fields['date_added'],
+  	                        'reviewsText'=>$reviews->fields['reviews_text'],
+  	                        'reviewsRating'=>$reviews->fields['reviews_rating']);
     $reviews->MoveNext();
   }
 
@@ -86,3 +84,4 @@
 
   // This should be last line of the script:
   $zco_notifier->notify('NOTIFY_HEADER_END_PRODUCT_REVIEWS');
+?>
