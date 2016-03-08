@@ -37,12 +37,13 @@ define('TITLE_GENERAL','General Info');
 define('TITLE_CUSTOMERS','Customers');
 define('TITLE_NEWSLETTERS','Newsletters');
 define('TITLE_CONTACT','Contact');
+define('TITLE_MY_ACCPUNT','My Account');
 
 /*bof customer service*/
 define('HEADER_TITLE_CUSTOMER_SERVICE','Customer Service');
 
 /*bof top specials*/
-define('HEADER_TITLE_SPECIALS','<a href="index.php?main_page=specials">Specials</a>');
+define('HEADER_TITLE_SPECIALS','<a href="https://www.solagecalistoga.com/">Solage Calistoga Home</a>');
 define('HEADER_TITLE_TOP_TEXT','FREE Shipping on all orders over $50.00!');
 
 /*bof column grid*/

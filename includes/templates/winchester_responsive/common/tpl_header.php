@@ -54,22 +54,31 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
 <div id="top-wrapper">
 <div class="onerow-fluid <?php echo $fluidisFixed; ?>" id="top-inner">
 <div id="top-inner-wrapper">
-    <div class="top-specials"><?php echo HEADER_TITLE_SPECIALS; ?></div>
-     <?php echo HEADER_TITLE_TOP_TEXT; ?>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/">Solage Calistoga Home</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/resort">Resort</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/gallery">Gallery</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/dine">Dine</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/stay">Stay</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/spa">Spa</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/explore">Explore</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/events">Events</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/getaways">Getaways</a></div>
+    <div class="top-specials"><a href="https://www.solagecalistoga.com/contact">Contact</a></div>
+    <div class="top-specials"><a href="https://gc.synxis.com/rez.aspx?Hotel=60898&Chain=16771&_ga=1.1640945.1765826002.1454649472">Book Now</a></div>
 </div>
 </div>
 </div>
 
 
 <div id="top-middle">
-<div class="onerow-fluid <?php echo $fluidisFixed; ?>">
+<div class="onerow-fluid logo<?php echo $fluidisFixed; ?>">
 
 
 
 
 <!--bof-branding display-->
 <div id="logoWrapper">
-    <div id="logo"><?php echo '<a href="' . HTTP_SERVER . DIR_WS_CATALOG . '">' . zen_image($template->get_template_dir(HEADER_LOGO_IMAGE, DIR_WS_TEMPLATE, $current_page_base,'images'). '/' . HEADER_LOGO_IMAGE, HEADER_ALT_TEXT) . '</a>'; ?>
+    <div id="logo"><?php echo '<a href="' . HTTP_SERVER . DIR_WS_CATALOG . '">' . zen_image($template->get_template_dir(HEADER_LOGO_IMAGE, DIR_WS_TEMPLATE, $current_page_base,'images'). '/' . HEADER_LOGO_IMAGE, HEADER_ALT_TEXT, HEADER_LOGO_WIDTH, HEADER_LOGO_HEIGHT) . '</a>'; ?>
     </div>
 <?php if (HEADER_SALES_TEXT != '' || (SHOW_BANNERS_GROUP_SET2 != '' && $banner = zen_banner_exists('dynamic', SHOW_BANNERS_GROUP_SET2))) { ?>
     <div id="taglineWrapper">
@@ -96,7 +105,8 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
     </div>
 <?php } // no HEADER_SALES_TEXT or SHOW_BANNERS_GROUP_SET2 ?>
 </div>
-
+</div>
+<div class="onerow-fluid menu<?php echo $fluidisFixed; ?>">
 
 <!--bof handheld menu display-->
 <?php require($template->get_template_dir('tpl_modules_mobile_categories_tabs.php',DIR_WS_TEMPLATE, $current_page_base,'templates'). '/tpl_modules_mobile_categories_tabs.php'); ?>
@@ -132,22 +142,8 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
 
 <!--bof-navigation display-->
 <div id="navMainWrapper">
-<div id="navMain">
-    <ul>
-<?php if ($_SESSION['customer_id']) { ?>
-    <li><a href="<?php echo zen_href_link(FILENAME_LOGOFF, '', 'SSL'); ?>"><?php echo HEADER_TITLE_LOGOFF; ?></a></li>
-    <li><a href="<?php echo zen_href_link(FILENAME_ACCOUNT, '', 'SSL'); ?>"><?php echo HEADER_TITLE_MY_ACCOUNT; ?></a></li>
-<?php
-      } else {
-        if (STORE_STATUS == '0') {
-?>
-    <li class="h-login"><a href="<?php echo zen_href_link(FILENAME_LOGIN, '', 'SSL'); ?>"><?php echo HEADER_TITLE_LOGIN; ?></a></li>
-<?php } } ?>
-</ul>
-</div>
-<br class="clearBoth" />
 <div class="header-cart">
-    <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, '', 'NONSSL'); ?>"><?php echo $_SESSION['cart']->count_contents();?>  - <?php echo $currencies->format($_SESSION['cart']->show_total());?></a>
+    <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, '', 'NONSSL'); ?>"><?php echo $currencies->format($_SESSION['cart']->show_total());?> <?php echo $_SESSION['cart']->count_contents();?> Items <?php echo zen_image($template->get_template_dir(ICON_IMAGE_TINYCART, DIR_WS_TEMPLATE, $current_page_base,'images/icons'). '/' . ICON_IMAGE_TINYCART, ICON_TINYCART_ALT)?></a>
    <?php if ($_SESSION['cart']->count_contents() != 0) { ?>
 <?php }?>
 </div>

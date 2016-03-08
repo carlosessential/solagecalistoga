@@ -16,15 +16,15 @@
   define('HEADER_TITLE_TOP', 'Top');
   define('HEADER_TITLE_CATALOG', 'Home');
   define('HEADER_TITLE_LOGOFF', 'Log Out');
-  define('HEADER_TITLE_LOGIN', 'Log In / Register');
+  define('HEADER_TITLE_LOGIN', 'My Account');
 
 
 // added defines for header alt and text
-  define('HEADER_ALT_TEXT', 'Winchester Responsive Zen Cart Template by www.picaflor-azul.com');
-  define('HEADER_SALES_TEXT', 'free zen cart template');
-  define('HEADER_LOGO_WIDTH', '271px');
-  define('HEADER_LOGO_HEIGHT', '57px');
-  define('HEADER_LOGO_IMAGE', 'logo.png');
+  define('HEADER_ALT_TEXT', 'Solage Calistoga Shop');
+  define('HEADER_SALES_TEXT', '');
+  define('HEADER_LOGO_WIDTH', '115');
+  define('HEADER_LOGO_HEIGHT', '132.5');
+  define('HEADER_LOGO_IMAGE', 'retina.png');
 
 // header Search Button/Box Search Button
   define('HEADER_SEARCH_BUTTON','go');

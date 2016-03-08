@@ -89,6 +89,18 @@ echo $menulist;
     </ul>
     </li>
     <li class="menu-contact"><a href="<?php echo zen_href_link(FILENAME_CONTACT_US, '', 'NONSSL'); ?>" class="mcontact"><?php echo TITLE_CONTACT; ?></a></li>
+    <li class="menu-contact">
+      
+<?php if ($_SESSION['customer_id']) { ?>
+    <a href="<?php echo zen_href_link(FILENAME_LOGOFF, '', 'SSL'); ?>" class="mcontact"><?php echo HEADER_TITLE_LOGOFF; ?></a>
+    <a href="<?php echo zen_href_link(FILENAME_ACCOUNT, '', 'SSL'); ?>" class="mcontact"><?php echo HEADER_TITLE_MY_ACCOUNT; ?></a>
+<?php
+      } else {
+        if (STORE_STATUS == '0') {
+?>
+    <a href="<?php echo zen_href_link(FILENAME_LOGIN, '', 'SSL'); ?>" class="mcontact"><?php echo HEADER_TITLE_LOGIN; ?></a>
+<?php } } ?>
+    </li>
 
 </ul>
 
