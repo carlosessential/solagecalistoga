@@ -43,6 +43,7 @@
 // the following IF statement can be duplicated/modified as needed to set additional flags
   if (in_array($current_page_base,explode(",",'shopping_cart')) ) {
     $flag_disable_right = true;
+    $flag_disable_left = true;
   }
 
   if (in_array($current_page_base,explode(",",'login')) ) {
