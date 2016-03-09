@@ -224,12 +224,6 @@ if (!isset($flag_disable_left) || !$flag_disable_left) {
 
 <!--(EOF - 2.1) Responsive DIY Template Default for 1.5.x (65)-->
 
-<!-- bof  breadcrumb -->
-<?php if (DEFINE_BREADCRUMB_STATUS == '1' || (DEFINE_BREADCRUMB_STATUS == '2' && !$this_is_home_page) ) { ?>
-    <div id="navBreadCrumb"><?php echo $breadcrumb->trail(BREAD_CRUMBS_SEPARATOR); ?></div>
-<?php } ?>
-<!-- eof breadcrumb -->
-
 <?php
   if (SHOW_BANNERS_GROUP_SET3 != '' && $banner = zen_banner_exists('dynamic', SHOW_BANNERS_GROUP_SET3)) {
     if ($banner->RecordCount() > 0) {
@@ -382,9 +376,9 @@ if (!isset($flag_disable_right) || !$flag_disable_right) {
 
     </script>
 
-   <div class="slide-out-div">
+   <!-- <div class="slide-out-div">
     <a class="handle" href="http://link-for-non-js-users.html">Content</a>
 <?php echo SLIDE_OUT_CONTENT; ?>
-         </div>
+         </div> -->
         
 </body>

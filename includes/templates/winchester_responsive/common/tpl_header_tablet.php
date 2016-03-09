@@ -123,7 +123,11 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
 </div>
 <br class="clearBoth" />
 <div class="header-cart">
-    <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, '', 'NONSSL'); ?>"><?php echo $_SESSION['cart']->count_contents();?>  - <?php echo $currencies->format($_SESSION['cart']->show_total());?></a>
+    <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, '', 'NONSSL'); ?>">
+      <div style="display:inline-block;"><?php echo $currencies->format($_SESSION['cart']->show_total());?></div>
+      <div class="items-amount" style="display:inline-block;"><?php echo $_SESSION['cart']->count_contents();?> Items </div>
+      <div style="display:inline-block;"><?php echo zen_image($template->get_template_dir(ICON_IMAGE_TINYCART, DIR_WS_TEMPLATE, $current_page_base,'images/icons'). '/' . ICON_IMAGE_TINYCART, ICON_TINYCART_ALT)?></div>
+    </a>
    <?php if ($_SESSION['cart']->count_contents() != 0) { ?>
 <?php }?>
 </div>

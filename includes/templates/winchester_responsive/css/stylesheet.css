@@ -1,4 +1,4 @@
-body {margin: 0;background: #fff;font-family: Asap, Helvetica Neue, Helvetica, sans-serif;font-size: 85%;color: #171717;line-height:22px;}
+body {margin: 0;background: #fff;font-family: Asap, Helvetica Neue, Helvetica, sans-serif;font-size: 0.9em;color: #171717;line-height:22px;}
 
 /*bof basic elements*/
 a img {border: none; transition: all ease-in-out 0.2s;}
@@ -73,8 +73,9 @@ input [type=submit], input[type=submit]{ -webkit-appearance: none;-webkit-border
 .top-specials{border-radius:3px;line-height:34px;font-size:.7em;float:left;border-right: 1px solid #444444;}
 #top-middle{width:100%;background:#fff;border-bottom:1px solid #dbdbce;}
 #top-middle .onerow-fluid.logo{padding-top:45px;padding-bottom:45px;}
-#top-middle .onerow-fluid.menu{background: #f7f7f7;margin-bottom:45px;}
-#navMainWrapper {margin:0 auto;background:transparent;color:#171717;width:25%;border:0px solid #000;float:right;}
+#top-middle .onerow-fluid.menu{background: #f7f7f7;}
+#top-middle .onerow-fluid.breadcrumb{padding-bottom: 15px;}
+#navMainWrapper {margin:0 auto;background:transparent;color:#171717;border:0px solid #000;float:right;}
 #navMain ul  {margin:0 auto;padding: 0px 0 0.5em 0;list-style-type:none;text-align:right;line-height: 1.5em;float:right;}
 #navMain ul li {display:inline;}
 #navMain ul li a {margin:0;padding:0em 1.0em;color: #444;text-decoration:none;white-space:nowrap;font-size:100%;text-transform:uppercase;}
@@ -93,7 +94,8 @@ input [type=submit], input[type=submit]{ -webkit-appearance: none;-webkit-border
 .search-box {padding-left:5px;background:#fff;width:160px;height:40px;color:#a0a0a0;border:1px solid #dbdbce;text-transform:lowercase;font-size:80%;}
 .search-header-box:focus{background:#fff;}
 #navMainSearch-mobile{display:none;}
-.header-cart{font-size:180% !important;text-align:right;margin-top:10px;margin-bottom:10px;margin-right:5px;}
+.header-cart{font-size:100% !important; text-align:right; padding: 1em 1.618em;}
+.header-cart:hover{-webkit-box-shadow:0 0.327em 0 0 #333333;}
 
 /*bof ezpages*/
 #navEZPagesTOCWrapper {height:1%;border:1px solid #000;font-weight:bold;float:right;}
@@ -302,19 +304,19 @@ LABEL#textAreaReviews {font-weight:normal;margin: 1em 0;}
 #menu{float:left;width:50%;}
 ul.slimmenu, ul.slimmenu1 {list-style-type: none;margin: 0;padding: 0;width: 100%;}
 ul.slimmenu li, ul.slimmenu1 li {position: relative;display: inline-block;background:transparent;}
-ul.slimmenu > li, ul.slimmenu1 > li { margin-right: -5px; border-left: 0px solid #999 }
-ul.slimmenu > li:first-child, ul.slimmenu1 > li:first-child { border-left: 0 }
+ul.slimmenu > li, ul.slimmenu1 > li { border-left: 0px solid #999 }
+ul.slimmenu > li:first-child, ul.slimmenu1 > li:first-child { border-left: 0;}
 ul.slimmenu > li:last-child, ul.slimmenu1 > li:last-child { margin-right: 0 }
-ul.slimmenu li a {display: block;color: #444;padding: 12px 34px 12px 6px;font-size: 120%;font-weight: normal;text-shadow: 0 1px 0 rgba(255,255,255,0.2);transition: background-color 0.5s ease-out;-o-transition: background-color 0.5s ease-out;-moz-transition: background-color 0.5s ease-out;-webkit-transition: background-color 0.5s ease-out;}
-ul.slimmenu1 li a{display: block;color: #444;padding: 12px 34px 12px 6px;font-size: 16px;font-weight: normal;text-shadow: 0 1px 0 rgba(255,255,255,0.2);transition: background-color 0.5s ease-out;-o-transition: background-color 0.5s ease-out;-moz-transition: background-color 0.5s ease-out;-webkit-transition: background-color 0.5s ease-out;}
-ul.slimmenu li a:hover, ul.slimmenu1 li a:hover {background-color: #fff;text-decoration: none;color:#ff6938;}
-ul.slimmenu li .sub-collapser, ul.slimmenu1 li .sub-collapser {background: none;position: absolute;right: 0;top: 0;width: 28px;height: 100%;text-align: center;z-index: 999;cursor: pointer;}
-ul.slimmenu li .sub-collapser:before, ul.slimmenu1 li .sub-collapser:before {content: '';display: inline-block;height: 100%;vertical-align: middle;margin-right: -0.25em;}
-ul.slimmenu li .sub-collapser > i, ul.slimmenu1 li .sub-collapser > i {color:#ff6938;font-size:11px;display:inline-block;vertical-align:middle;}
+ul.slimmenu li a {display: block;color: #555555;padding: 1em 1.618em;font-size: 100%;font-weight: normal;text-shadow: 0 1px 0 rgba(255,255,255,0.2);transition: background-color 0.5s ease-out;-o-transition: background-color 0.5s ease-out;-moz-transition: background-color 0.5s ease-out;-webkit-transition: background-color 0.5s ease-out;}
+ul.slimmenu1 li a{display: block;color: #555555;padding: 1em 1.618em;font-size: 16px;font-weight: normal;text-shadow: 0 1px 0 rgba(255,255,255,0.2);transition: background-color 0.5s ease-out;-o-transition: background-color 0.5s ease-out;-moz-transition: background-color 0.5s ease-out;-webkit-transition: background-color 0.5s ease-out;}
+ul.slimmenu li a:hover{background-color: #f2f2f2;text-decoration: none;-webkit-box-shadow:0 0.327em 0 0 #333333;}
+ul.slimmenu li .sub-collapser, ul.slimmenu1 li .sub-collapser {background: none;position: absolute;right: 0;top: 0;width: 28px;text-align: center;z-index: 999;cursor: pointer;}
+ul.slimmenu li .sub-collapser:after, ul.slimmenu1 li .sub-collapser:after {font-family: "FontAwesome";font-weight: normal;font-style: normal;text-decoration: inherit;speak: none;width: 1.5em;display: inline-block;text-align: right;line-height: 1;content: "\f107";color: #bbbbbb;margin-top: 18px;}
+ul.slimmenu li .sub-collapser > i, ul.slimmenu1 li .sub-collapser > i {font-size:11px;display:inline-block;vertical-align:middle;}
 ul.slimmenu li ul, ul.slimmenu1 li ul {margin: 0;list-style-type: none;}
-ul.slimmenu li ul li, ul.slimmenu1 li ul li {background:#f4f4f4;width:190px;padding-left:20px;font-size:95%;}
-ul.slimmenu li ul li a:hover, ul.slimmenu1 li ul li a:hover{color:#ff6938;}
-ul.slimmenu li > ul, ul.slimmenu1 li > ul {display: none;position: absolute;left: -40px;top: 100%;z-index: 9999;width: 100%;}
+ul.slimmenu li ul li, ul.slimmenu1 li ul li {background:#f4f4f4;width:190px;font-size:95%;}
+ul.slimmenu li ul li a:hover, ul.slimmenu1 li ul li a:hover{}
+ul.slimmenu li > ul, ul.slimmenu1 li > ul {display: none;position: absolute;top: 100%;z-index: 9999; padding: 0.327em 0 0 0;}
 ul.slimmenu li > ul > li ul, ul.slimmenu1 li > ul > li ul {display: none;position: absolute;left: 75%;top: 0;z-index: 999;width: 100%;}
 ul.slimmenu.collapsed li, ul.slimmenu1.collapsed li {display: block;width: 99%;box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box}
 ul.slimmenu.collapsed li a, ul.slimmenu1.collapsed li a {display: block;border-bottom: 1px solid rgba(0, 0, 0, 0.075);box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box}
@@ -473,3 +475,5 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 .ie8 .button_search{top:10px;}
 .win .webkit .image_carousel .panel{height:auto;}
 
+/*Custom Calistoga css*/
+.items-amount{font-size: 0.9em; color: #bbbbbb; padding: 0 5px;}
