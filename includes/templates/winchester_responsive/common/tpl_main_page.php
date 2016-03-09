@@ -52,7 +52,7 @@
 
 if ($this_is_home_page) {
   $flag_disable_right = true;
-  $flag_disable_left = true;
+  $flag_disable_left = false;
 }
 
 

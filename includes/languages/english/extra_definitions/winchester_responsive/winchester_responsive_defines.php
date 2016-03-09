@@ -37,7 +37,7 @@ define('TITLE_GENERAL','General Info');
 define('TITLE_CUSTOMERS','Customers');
 define('TITLE_NEWSLETTERS','Newsletters');
 define('TITLE_CONTACT','Contact');
-define('TITLE_MY_ACCPUNT','My Account');
+define('TITLE_MY_ACCOUNT','My Account');
 
 /*bof customer service*/
 define('HEADER_TITLE_CUSTOMER_SERVICE','Customer Service');
