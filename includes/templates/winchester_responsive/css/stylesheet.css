@@ -368,7 +368,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
     font-weight: normal;
     text-transform: uppercase;}
 #siteinfoLegal a, #footer-bottom a {padding: 0 0.5em 0 0.5em;color: #171717;white-space: nowrap;}
-#siteinfoLegal a:hover, #footer-bottom a:hover {color: #fa6938;}
+#siteinfoLegal a:hover, #footer-bottom a:hover {color: #7B9FAA;}
 #bannerSix {margin-top:0px;padding-bottom:30px;background:#f4f4f4;}
 #flex-navSupp ul {margin: 0;padding: 0.5em 0em;list-style-type: none;text-align: center;line-height: 1.5em;}
 #flex-navSupp ul li {display: inline;}
@@ -389,7 +389,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 #flex-navSupp .flexFooterCol.ffCcol1 li span.flexFooterColImage {text-align:left;}
 #flex-navSupp .flexFooterCol.ffCcol1 {border:0;}
 #flex-navSupp a.activePage {}
-#flex-navSupp a:hover {color: #fa6938;}
+#flex-navSupp a:hover {color: #7B9FAA;}
 
 /*bof css buttons*/
 .cssButton, .cssButtonHover, .more-info {background-color:#171717;transition:background 2s ease;-webkit-transition:background 2s ease;-moz-transition:background 2s ease;-o-transition:background 2s ease;color:#fffffd;text-align:center;white-space:nowrap;text-decoration:none;font-weight:normal;padding:0.8em 1.2em;}
