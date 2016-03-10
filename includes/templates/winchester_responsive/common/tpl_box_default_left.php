@@ -24,7 +24,6 @@
 <?php }else{ ?>
 <div class="leftBoxContainer <?php echo $minWidthHide; ?>" id="<?php echo str_replace('_', '-', $box_id ); ?>">
 <?php } ?>
-<h3 class="leftBoxHeading" id="<?php echo str_replace('_', '-', $box_id) . 'Heading'; ?>"><?php echo $title; ?></h3>
 <?php echo $content; ?>
 </div>
 <!--// eof: <?php echo $box_id; ?> //-->

@@ -14,7 +14,7 @@
 //define('CUSTOM_KEYWORDS', 'ecommerce, open source, shop, online shopping');
 // END: moved to meta_tags.php
 
-  define('FOOTER_TEXT_BODY', 'Copyright &copy; ' . date('Y') . ' <a href="' . zen_href_link(FILENAME_DEFAULT) . '" target="_blank">' . STORE_NAME . '</a>.  Powered by <a href="http://www.zen-cart.com" target="_blank">Zen Cart</a>.  <a href="http://www.picaflor-azul.com" target="_blank">Responsive Zen cart templates</a> by Picaflor Azul.');
+  define('FOOTER_TEXT_BODY', '<p>©2015 Solage Calistoga 755 Silverado Trail &nbsp;&nbsp;Calistoga, California 94515 T <span class="phone">(866) 942-7442</span></p>');
 
 // look in your $PATH_LOCALE/locale directory for available locales..
   $locales = array('en_US', 'en_US.utf8', 'en', 'English_United States.1252');
@@ -586,7 +586,7 @@
   define('TABLE_HEADING_DOWNLOAD_COUNT', 'Remaining');
   define('HEADING_DOWNLOAD', 'To download your files click the download button and choose "Save to Disk" from the popup menu.');
   define('TABLE_HEADING_DOWNLOAD_FILENAME','Filename');
-  define('TABLE_HEADING_PRODUCT_NAME','Item Name');
+  define('TABLE_HEADING_PRODUCT_NAME','Product');
   define('TABLE_HEADING_BYTE_SIZE','File Size');
   define('TEXT_DOWNLOADS_UNLIMITED', 'Unlimited');
   define('TEXT_DOWNLOADS_UNLIMITED_COUNT', '--- *** ---');
@@ -596,8 +596,8 @@
   define('PAYMENT_JAVASCRIPT_DISABLED', 'We could not continue with checkout as Javascript is disabled. You must enable it to continue');
 
 // table headings for cart display and upcoming products
-  define('TABLE_HEADING_QUANTITY', 'Qty.');
-  define('TABLE_HEADING_PRODUCTS', 'Item Name');
+  define('TABLE_HEADING_QUANTITY', 'Quantity');
+  define('TABLE_HEADING_PRODUCTS', 'Product');
   define('TABLE_HEADING_TOTAL', 'Total');
 
 // create account - login shared

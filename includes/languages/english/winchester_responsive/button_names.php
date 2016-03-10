@@ -101,5 +101,5 @@ define('BUTTON_UPDATE_ALT', 'Update');
 define('BUTTON_VIEW_SMALL_ALT', 'View');
 define('BUTTON_WRITE_REVIEW_ALT', 'Write a Review');
 define('BUTTON_READ_REVIEWS_ALT', 'Read the Review');
-define('BUTTON_GOTO_PROD_DETAILS_ALT', 'Details');
+define('BUTTON_GOTO_PROD_DETAILS_ALT', 'Select options');
 define('BUTTON_MORE_REVIEWS_ALT', 'Read More Reviews');

@@ -90,16 +90,6 @@ $center_column_width = $center_column - $side_columns_total;
 ?>
 <body id="<?php echo $body_id . 'Body'; ?>"<?php if($zv_onload !='') echo ' onload="'.$zv_onload.'"'; ?>>
 
-<script src="<?php echo $template->get_template_dir('back_to_top.min.js',DIR_WS_TEMPLATE, $current_page_base,'jscript') . '/back_to_top.min.js' ?>" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-BackToTop({
-text : '<?php echo BACK_TO_TOP; ?>',
-autoShow : true,
-timeEffect : 750
-});
-});
-</script> 
 
 <?php
   if (SHOW_BANNERS_GROUP_SET1 != '' && $banner = zen_banner_exists('dynamic', SHOW_BANNERS_GROUP_SET1)) {
@@ -341,7 +331,7 @@ if (!isset($flag_disable_right) || !$flag_disable_right) {
   if (SHOW_BANNERS_GROUP_SET6 != '' && $banner = zen_banner_exists('dynamic', SHOW_BANNERS_GROUP_SET6)) {
     if ($banner->RecordCount() > 0) {
 ?>
-<div id="bannerSix" class="banners"><?php echo zen_display_banner('static', $banner); ?></div>
+<!-- <div id="bannerSix" class="banners"><?php echo zen_display_banner('static', $banner); ?></div> -->
 <?php
     }
   }

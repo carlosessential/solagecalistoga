@@ -7,10 +7,10 @@
  * @version $Id: shopping_cart.php 3183 2006-03-14 07:58:59Z birdbrain $
  */
 
-define('NAVBAR_TITLE', 'Shopping Cart');
-define('HEADING_TITLE', 'Shopping Cart');
+define('NAVBAR_TITLE', 'Cart');
+define('HEADING_TITLE', 'Cart');
 define('HEADING_TITLE_EMPTY', 'Your Shopping Cart');
-define('TEXT_INFORMATION', 'You may want to add some instructions for using the shopping cart here. (defined in includes/languages/english/shopping_cart.php)');
+define('TEXT_INFORMATION', 'Our online store is currently undergoing maintenance, but will be back up shortly. Please call (855) 790-6023 to place your order.');
 define('TABLE_HEADING_REMOVE', 'Remove');
 define('TABLE_HEADING_QUANTITY', 'Qty.');
 define('TABLE_HEADING_MODEL', 'Model');

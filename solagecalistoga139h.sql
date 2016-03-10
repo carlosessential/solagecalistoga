@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2016 at 08:20 AM
+-- Generation Time: Mar 10, 2016 at 10:56 AM
 -- Server version: 5.5.38
 -- PHP Version: 5.6.2
 
@@ -40,7 +40,7 @@ CREATE TABLE `address_book` (
   `entry_state` varchar(32) COLLATE latin1_general_ci DEFAULT NULL,
   `entry_country_id` int(11) NOT NULL DEFAULT '0',
   `entry_zone_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `address_book`
@@ -48,7 +48,8 @@ CREATE TABLE `address_book` (
 
 INSERT INTO `address_book` (`address_book_id`, `customers_id`, `entry_gender`, `entry_company`, `entry_firstname`, `entry_lastname`, `entry_street_address`, `entry_suburb`, `entry_postcode`, `entry_city`, `entry_state`, `entry_country_id`, `entry_zone_id`) VALUES
 (1, 1, 'm', 'JustaDemo', 'Bill', 'Smith', '123 Any Avenue', '', '12345', 'Here', '', 223, 12),
-(2, 2, 'm', '', 'Carlos', 'Artavia', 'Resid. Las Flores E1', '', '0000', 'San Pablo', '', 223, 18);
+(2, 2, 'm', '', 'Carlos', 'Artavia', 'Resid. Las Flores E1', '', '0000', 'San Pablo', '', 223, 18),
+(3, 3, 'm', 'Ian Bowers', 'Hiram', 'Mckenzie', 'Asperiores natus fuga Qui cillum dolor inventore quos sed quia', 'Esse doloremque quod ut eveniet', '66608', 'Officia amet quam dicta aut qua', '', 223, 2);
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,7 @@ CREATE TABLE `admin_activity_log` (
   `page_accessed` varchar(80) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `page_parameters` text COLLATE latin1_general_ci,
   `ip_address` varchar(15) COLLATE latin1_general_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM AUTO_INCREMENT=296 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=531 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `admin_activity_log`
@@ -409,7 +410,242 @@ INSERT INTO `admin_activity_log` (`log_id`, `access_date`, `admin_id`, `page_acc
 (292, '2016-03-09 00:56:30', 1, 'configuration.php', 'gID=19&cID=402&', '::1'),
 (293, '2016-03-09 00:56:41', 1, 'configuration.php', 'gID=19&cID=402&action=edit&', '::1'),
 (294, '2016-03-09 00:56:43', 1, 'configuration.php', 'gID=19&cID=402&action=save&', '::1'),
-(295, '2016-03-09 00:56:43', 1, 'configuration.php', 'gID=19&cID=402&', '::1');
+(295, '2016-03-09 00:56:43', 1, 'configuration.php', 'gID=19&cID=402&', '::1'),
+(296, '2016-03-09 17:45:47', 0, 'login.php ', '', '::1'),
+(297, '2016-03-09 17:45:49', 0, 'login.php admin', '', '::1'),
+(298, '2016-03-09 17:45:57', 1, 'define_pages_editor.php', '', '::1'),
+(299, '2016-03-09 17:46:00', 1, 'define_pages_editor.php', 'securityToken=6b111ff16ecf7a37f0829c4e07d67790&define_it=5&action=new_page&', '::1'),
+(300, '2016-03-09 17:46:11', 1, 'define_pages_editor.php', 'lngdir=english&filename=define_main_page.php&action=save&', '::1'),
+(301, '2016-03-09 17:46:11', 1, 'define_pages_editor.php', '', '::1'),
+(302, '2016-03-09 23:54:45', 0, 'login.php ', '', '::1'),
+(303, '2016-03-09 23:54:47', 0, 'login.php admin', '', '::1'),
+(304, '2016-03-09 23:54:56', 1, 'define_pages_editor.php', '', '::1'),
+(305, '2016-03-09 23:55:00', 1, 'define_pages_editor.php', 'securityToken=826943ec16e918a16504d06fefac6dc4&define_it=5&action=new_page&', '::1'),
+(306, '2016-03-10 00:38:31', 1, 'layout_controller.php', '', '::1'),
+(307, '2016-03-10 00:38:38', 1, 'layout_controller.php', 'page=&cID=98&', '::1'),
+(308, '2016-03-10 00:38:41', 1, 'layout_controller.php', 'page=&cID=98&action=edit&', '::1'),
+(309, '2016-03-10 00:38:43', 1, 'layout_controller.php', 'page=&cID=98&layout_box_name=categories.php&', '::1'),
+(310, '2016-03-10 00:38:51', 1, 'specials.php', '', '::1'),
+(311, '2016-03-10 01:07:08', 1, 'banner_manager.php', '', '::1'),
+(312, '2016-03-10 01:07:42', 1, 'banner_manager.php', '', '::1'),
+(313, '2016-03-10 01:07:46', 1, 'banner_manager.php', 'page=1&bID=6&action=setflag&flag=0&', '::1'),
+(314, '2016-03-10 01:07:46', 1, 'banner_manager.php', 'page=1&bID=6&', '::1'),
+(315, '2016-03-10 01:36:56', 1, 'login.php', '', '::1'),
+(316, '2016-03-10 01:36:57', 1, 'login.php', '', '::1'),
+(317, '2016-03-10 01:37:01', 1, 'define_pages_editor.php', '', '::1'),
+(318, '2016-03-10 02:03:02', 1, 'login.php', '', '::1'),
+(319, '2016-03-10 02:03:03', 1, 'login.php', '', '::1'),
+(320, '2016-03-10 02:03:07', 1, 'layout_controller.php', '', '::1'),
+(321, '2016-03-10 02:03:18', 1, 'alt_nav.php', '', '::1'),
+(322, '2016-03-10 02:03:22', 1, 'coupon_admin.php', '', '::1'),
+(323, '2016-03-10 02:31:48', 1, 'login.php', '', '::1'),
+(324, '2016-03-10 02:31:49', 1, 'login.php', '', '::1'),
+(325, '2016-03-10 02:33:41', 1, 'modules.php', 'set=payment&', '::1'),
+(326, '2016-03-10 02:33:44', 1, 'modules.php', 'set=payment&module=shift4&', '::1'),
+(327, '2016-03-10 02:33:46', 1, 'modules.php', 'set=payment&module=shift4&action=edit&', '::1'),
+(328, '2016-03-10 02:35:13', 1, 'modules.php', 'set=payment&module=shift4&action=save&', '::1'),
+(329, '2016-03-10 02:35:13', 1, 'modules.php', 'set=payment&module=shift4&', '::1'),
+(330, '2016-03-10 02:36:00', 1, 'modules.php', 'set=payment&module=moneyorder&', '::1'),
+(331, '2016-03-10 02:36:03', 1, 'modules.php', 'set=payment&module=moneyorder&action=edit&', '::1'),
+(332, '2016-03-10 02:36:10', 1, 'modules.php', 'set=payment&module=moneyorder&action=save&', '::1'),
+(333, '2016-03-10 02:36:10', 1, 'modules.php', 'set=payment&module=moneyorder&', '::1'),
+(334, '2016-03-10 02:36:13', 1, 'modules.php', 'set=payment&module=freecharger&', '::1'),
+(335, '2016-03-10 02:36:16', 1, 'modules.php', 'set=payment&module=freecharger&action=edit&', '::1'),
+(336, '2016-03-10 02:36:19', 1, 'modules.php', 'set=payment&module=freecharger&action=save&', '::1'),
+(337, '2016-03-10 02:36:19', 1, 'modules.php', 'set=payment&module=freecharger&', '::1'),
+(338, '2016-03-10 02:36:43', 1, 'modules.php', 'set=payment&module=freecharger&', '::1'),
+(339, '2016-03-10 02:41:56', 1, 'template_select.php', '', '::1'),
+(340, '2016-03-10 02:41:59', 1, 'template_select.php', 'page=1&tID=1&action=edit&', '::1'),
+(341, '2016-03-10 02:42:01', 1, 'layout_controller.php', '', '::1'),
+(342, '2016-03-10 02:42:14', 1, 'define_pages_editor.php', '', '::1'),
+(343, '2016-03-10 02:46:47', 1, 'ezpages.php', '', '::1'),
+(344, '2016-03-10 02:47:12', 1, 'configuration.php', 'gID=19&', '::1'),
+(345, '2016-03-10 02:47:20', 1, 'configuration.php', 'gID=19&cID=424&action=edit&', '::1'),
+(346, '2016-03-10 03:01:47', 1, 'login.php', '', '::1'),
+(347, '2016-03-10 03:01:47', 1, 'login.php', '', '::1'),
+(348, '2016-03-10 03:01:53', 1, 'categories.php', '', '::1'),
+(349, '2016-03-10 03:01:55', 1, 'categories.php', 'cPath=65&', '::1'),
+(350, '2016-03-10 03:02:00', 1, 'categories.php', 'cPath=65&action=new_category&', '::1'),
+(351, '2016-03-10 03:02:05', 1, 'categories.php', 'action=insert_category&cPath=65&', '::1'),
+(352, '2016-03-10 03:02:06', 1, 'categories.php', 'cPath=65&cID=66&', '::1'),
+(353, '2016-03-10 03:02:13', 1, 'categories.php', '', '::1'),
+(354, '2016-03-10 03:02:23', 1, 'categories.php', 'cPath=65&', '::1'),
+(355, '2016-03-10 03:02:26', 1, 'categories.php', 'cPath=65&cID=66&action=delete_category&', '::1'),
+(356, '2016-03-10 03:02:27', 1, 'categories.php', 'action=delete_category_confirm&cPath=65&', '::1'),
+(357, '2016-03-10 03:02:27', 1, 'categories.php', 'cPath=65&', '::1'),
+(358, '2016-03-10 03:02:29', 1, 'categories.php', '', '::1'),
+(359, '2016-03-10 03:02:33', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(360, '2016-03-10 03:02:36', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(361, '2016-03-10 03:02:36', 1, 'categories.php', 'cPath=&cID=67&', '::1'),
+(362, '2016-03-10 03:02:39', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=67&cPath=&', '::1'),
+(363, '2016-03-10 03:02:40', 1, 'categories.php', 'action=update_category_status&cPath=&cID=67&', '::1'),
+(364, '2016-03-10 03:02:40', 1, 'categories.php', 'cPath=&cID=67&', '::1'),
+(365, '2016-03-10 03:02:42', 1, 'categories.php', 'cPath=67&', '::1'),
+(366, '2016-03-10 03:02:45', 1, 'categories.php', 'cPath=&cID=67&', '::1'),
+(367, '2016-03-10 03:02:48', 1, 'categories.php', 'cPath=&cID=67&action=edit_category&', '::1'),
+(368, '2016-03-10 03:03:14', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(369, '2016-03-10 03:03:14', 1, 'categories.php', 'cPath=&cID=67&', '::1'),
+(370, '2016-03-10 03:13:05', 1, 'login.php', '', '::1'),
+(371, '2016-03-10 03:13:06', 1, 'login.php', '', '::1'),
+(372, '2016-03-10 03:13:09', 1, 'categories.php', '', '::1'),
+(373, '2016-03-10 03:13:13', 1, 'categories.php', 'cPath=&cID=67&action=edit_category&', '::1'),
+(374, '2016-03-10 03:13:16', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(375, '2016-03-10 03:13:16', 1, 'categories.php', 'cPath=&cID=67&', '::1'),
+(376, '2016-03-10 03:13:24', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(377, '2016-03-10 03:13:31', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(378, '2016-03-10 03:13:31', 1, 'categories.php', 'cPath=&cID=68&', '::1'),
+(379, '2016-03-10 03:13:34', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=68&cPath=&', '::1'),
+(380, '2016-03-10 03:13:38', 1, 'categories.php', 'action=update_category_status&cPath=&cID=68&', '::1'),
+(381, '2016-03-10 03:13:38', 1, 'categories.php', 'cPath=&cID=68&', '::1'),
+(382, '2016-03-10 03:13:40', 1, 'categories.php', 'cPath=&cID=68&action=edit_category&', '::1'),
+(383, '2016-03-10 03:13:47', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(384, '2016-03-10 03:13:47', 1, 'categories.php', 'cPath=&cID=68&', '::1'),
+(385, '2016-03-10 03:27:46', 1, 'login.php', '', '::1'),
+(386, '2016-03-10 03:27:47', 1, 'login.php', '', '::1'),
+(387, '2016-03-10 03:27:51', 1, 'categories.php', '', '::1'),
+(388, '2016-03-10 03:27:54', 1, 'categories.php', 'cPath=&cID=68&action=edit_category&', '::1'),
+(389, '2016-03-10 03:35:56', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(390, '2016-03-10 03:35:56', 1, 'categories.php', 'cPath=&cID=68&', '::1'),
+(391, '2016-03-10 03:36:02', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(392, '2016-03-10 03:36:20', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(393, '2016-03-10 03:36:20', 1, 'categories.php', 'cPath=&cID=69&', '::1'),
+(394, '2016-03-10 03:36:23', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=69&cPath=&', '::1'),
+(395, '2016-03-10 03:36:25', 1, 'categories.php', 'action=update_category_status&cPath=&cID=69&', '::1'),
+(396, '2016-03-10 03:36:25', 1, 'categories.php', 'cPath=&cID=69&', '::1'),
+(397, '2016-03-10 03:36:28', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(398, '2016-03-10 03:36:45', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(399, '2016-03-10 03:36:45', 1, 'categories.php', 'cPath=&cID=70&', '::1'),
+(400, '2016-03-10 03:36:49', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=70&cPath=&', '::1'),
+(401, '2016-03-10 03:36:50', 1, 'categories.php', 'action=update_category_status&cPath=&cID=70&', '::1'),
+(402, '2016-03-10 03:36:50', 1, 'categories.php', 'cPath=&cID=70&', '::1'),
+(403, '2016-03-10 03:36:53', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(404, '2016-03-10 03:37:05', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(405, '2016-03-10 03:37:05', 1, 'categories.php', 'cPath=&cID=71&', '::1'),
+(406, '2016-03-10 03:37:07', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=71&cPath=&', '::1'),
+(407, '2016-03-10 03:37:09', 1, 'categories.php', 'action=update_category_status&cPath=&cID=71&', '::1'),
+(408, '2016-03-10 03:37:09', 1, 'categories.php', 'cPath=&cID=71&', '::1'),
+(409, '2016-03-10 03:37:11', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(410, '2016-03-10 03:37:24', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(411, '2016-03-10 03:37:24', 1, 'categories.php', 'cPath=&cID=72&', '::1'),
+(412, '2016-03-10 03:37:27', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=72&cPath=&', '::1'),
+(413, '2016-03-10 03:37:28', 1, 'categories.php', 'action=update_category_status&cPath=&cID=72&', '::1'),
+(414, '2016-03-10 03:37:28', 1, 'categories.php', 'cPath=&cID=72&', '::1'),
+(415, '2016-03-10 03:37:30', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(416, '2016-03-10 03:37:52', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(417, '2016-03-10 03:37:52', 1, 'categories.php', 'cPath=&cID=73&', '::1'),
+(418, '2016-03-10 03:37:54', 1, 'categories.php', 'cPath=73&', '::1'),
+(419, '2016-03-10 03:37:56', 1, 'categories.php', 'cPath=&cID=73&', '::1'),
+(420, '2016-03-10 03:37:58', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=73&cPath=&', '::1'),
+(421, '2016-03-10 03:37:59', 1, 'categories.php', 'action=update_category_status&cPath=&cID=73&', '::1'),
+(422, '2016-03-10 03:37:59', 1, 'categories.php', 'cPath=&cID=73&', '::1'),
+(423, '2016-03-10 03:38:01', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(424, '2016-03-10 03:38:17', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(425, '2016-03-10 03:38:17', 1, 'categories.php', 'cPath=&cID=74&', '::1'),
+(426, '2016-03-10 03:38:19', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=74&cPath=&', '::1'),
+(427, '2016-03-10 03:38:20', 1, 'categories.php', 'action=update_category_status&cPath=&cID=74&', '::1'),
+(428, '2016-03-10 03:38:21', 1, 'categories.php', 'cPath=&cID=74&', '::1'),
+(429, '2016-03-10 03:38:22', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(430, '2016-03-10 03:38:36', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(431, '2016-03-10 03:38:36', 1, 'categories.php', 'cPath=&cID=75&', '::1'),
+(432, '2016-03-10 03:38:38', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=75&cPath=&', '::1'),
+(433, '2016-03-10 03:38:42', 1, 'categories.php', 'action=update_category_status&cPath=&cID=75&', '::1'),
+(434, '2016-03-10 03:38:42', 1, 'categories.php', 'cPath=&cID=75&', '::1'),
+(435, '2016-03-10 03:42:03', 1, 'categories.php', 'cPath=69&', '::1'),
+(436, '2016-03-10 03:42:08', 1, 'categories.php', 'cID=69&', '::1'),
+(437, '2016-03-10 03:42:12', 1, 'categories.php', 'cPath=&cID=69&action=edit_category&', '::1'),
+(438, '2016-03-10 03:42:19', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(439, '2016-03-10 03:42:19', 1, 'categories.php', 'cPath=&cID=69&', '::1'),
+(440, '2016-03-10 03:42:28', 1, 'categories.php', 'cPath=&cID=69&action=edit_category&', '::1'),
+(441, '2016-03-10 03:42:36', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(442, '2016-03-10 03:42:36', 1, 'categories.php', 'cPath=&cID=69&', '::1'),
+(443, '2016-03-10 03:42:40', 1, 'categories.php', 'cPath=&cID=69&action=edit_category&', '::1'),
+(444, '2016-03-10 03:42:45', 1, 'categories.php', 'cPath=&cID=69&', '::1'),
+(445, '2016-03-10 03:42:48', 1, 'categories.php', 'cPath=&cID=68&action=edit_category&', '::1'),
+(446, '2016-03-10 03:43:12', 1, 'categories.php', '', '::1'),
+(447, '2016-03-10 03:43:28', 1, 'categories.php', 'cPath=&cID=72&action=delete_category&', '::1'),
+(448, '2016-03-10 03:43:30', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(449, '2016-03-10 03:43:30', 1, 'categories.php', 'cPath=&', '::1'),
+(450, '2016-03-10 03:43:34', 1, 'categories.php', 'cPath=&cID=74&action=delete_category&', '::1'),
+(451, '2016-03-10 03:43:36', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(452, '2016-03-10 03:43:36', 1, 'categories.php', 'cPath=&', '::1'),
+(453, '2016-03-10 03:43:46', 1, 'categories.php', 'cPath=&cID=73&action=delete_category&', '::1'),
+(454, '2016-03-10 03:43:48', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(455, '2016-03-10 03:43:48', 1, 'categories.php', 'cPath=&', '::1'),
+(456, '2016-03-10 03:43:50', 1, 'categories.php', 'cPath=&cID=70&action=delete_category&', '::1'),
+(457, '2016-03-10 03:43:51', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(458, '2016-03-10 03:43:51', 1, 'categories.php', 'cPath=&', '::1'),
+(459, '2016-03-10 03:43:55', 1, 'categories.php', 'cPath=&cID=75&action=delete_category&', '::1'),
+(460, '2016-03-10 03:43:56', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(461, '2016-03-10 03:43:56', 1, 'categories.php', 'cPath=&', '::1'),
+(462, '2016-03-10 03:43:58', 1, 'categories.php', 'cPath=&cID=71&action=delete_category&', '::1'),
+(463, '2016-03-10 03:43:59', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(464, '2016-03-10 03:44:00', 1, 'categories.php', 'cPath=&', '::1'),
+(465, '2016-03-10 03:44:03', 1, 'categories.php', 'cPath=&cID=69&action=delete_category&', '::1'),
+(466, '2016-03-10 03:44:05', 1, 'categories.php', 'action=delete_category_confirm&cPath=&', '::1'),
+(467, '2016-03-10 03:44:05', 1, 'categories.php', 'cPath=&', '::1'),
+(468, '2016-03-10 03:44:13', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(469, '2016-03-10 03:44:19', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(470, '2016-03-10 03:44:19', 1, 'categories.php', 'cPath=&cID=76&', '::1'),
+(471, '2016-03-10 03:44:22', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=76&cPath=&', '::1'),
+(472, '2016-03-10 03:44:24', 1, 'categories.php', 'action=update_category_status&cPath=&cID=76&', '::1'),
+(473, '2016-03-10 03:44:24', 1, 'categories.php', 'cPath=&cID=76&', '::1'),
+(474, '2016-03-10 03:44:26', 1, 'categories.php', 'cPath=&cID=76&action=edit_category&', '::1'),
+(475, '2016-03-10 03:44:32', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(476, '2016-03-10 03:44:33', 1, 'categories.php', 'cPath=&cID=76&', '::1'),
+(477, '2016-03-10 03:44:46', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(478, '2016-03-10 03:44:53', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(479, '2016-03-10 03:44:53', 1, 'categories.php', 'cPath=&cID=77&', '::1'),
+(480, '2016-03-10 03:44:56', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=77&cPath=&', '::1'),
+(481, '2016-03-10 03:44:57', 1, 'categories.php', 'action=update_category_status&cPath=&cID=77&', '::1'),
+(482, '2016-03-10 03:44:58', 1, 'categories.php', 'cPath=&cID=77&', '::1'),
+(483, '2016-03-10 03:45:00', 1, 'categories.php', 'cPath=&cID=77&action=edit_category&', '::1'),
+(484, '2016-03-10 03:45:07', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(485, '2016-03-10 03:45:07', 1, 'categories.php', 'cPath=&cID=77&', '::1'),
+(486, '2016-03-10 03:45:15', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(487, '2016-03-10 03:45:29', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(488, '2016-03-10 03:45:29', 1, 'categories.php', 'cPath=&cID=78&', '::1'),
+(489, '2016-03-10 03:45:32', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=78&cPath=&', '::1'),
+(490, '2016-03-10 03:45:33', 1, 'categories.php', 'action=update_category_status&cPath=&cID=78&', '::1'),
+(491, '2016-03-10 03:45:33', 1, 'categories.php', 'cPath=&cID=78&', '::1'),
+(492, '2016-03-10 03:45:37', 1, 'categories.php', 'cPath=&cID=78&action=edit_category&', '::1'),
+(493, '2016-03-10 03:45:43', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(494, '2016-03-10 03:45:43', 1, 'categories.php', 'cPath=&cID=78&', '::1'),
+(495, '2016-03-10 03:45:58', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(496, '2016-03-10 03:46:04', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(497, '2016-03-10 03:46:04', 1, 'categories.php', 'cPath=&cID=79&', '::1'),
+(498, '2016-03-10 03:46:06', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=79&cPath=&', '::1'),
+(499, '2016-03-10 03:46:08', 1, 'categories.php', 'action=update_category_status&cPath=&cID=79&', '::1'),
+(500, '2016-03-10 03:46:08', 1, 'categories.php', 'cPath=&cID=79&', '::1'),
+(501, '2016-03-10 03:46:11', 1, 'categories.php', 'cPath=&cID=79&action=edit_category&', '::1'),
+(502, '2016-03-10 03:46:18', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(503, '2016-03-10 03:46:18', 1, 'categories.php', 'cPath=&cID=79&', '::1'),
+(504, '2016-03-10 03:46:25', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(505, '2016-03-10 03:46:34', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(506, '2016-03-10 03:46:34', 1, 'categories.php', 'cPath=&cID=80&', '::1'),
+(507, '2016-03-10 03:46:36', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=80&cPath=&', '::1'),
+(508, '2016-03-10 03:46:37', 1, 'categories.php', 'action=update_category_status&cPath=&cID=80&', '::1'),
+(509, '2016-03-10 03:46:37', 1, 'categories.php', 'cPath=&cID=80&', '::1'),
+(510, '2016-03-10 03:46:40', 1, 'categories.php', 'cPath=&cID=80&action=edit_category&', '::1'),
+(511, '2016-03-10 03:46:47', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(512, '2016-03-10 03:46:47', 1, 'categories.php', 'cPath=&cID=80&', '::1'),
+(513, '2016-03-10 03:46:55', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(514, '2016-03-10 03:47:02', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(515, '2016-03-10 03:47:02', 1, 'categories.php', 'cPath=&cID=81&', '::1'),
+(516, '2016-03-10 03:47:05', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=81&cPath=&', '::1'),
+(517, '2016-03-10 03:47:06', 1, 'categories.php', 'action=update_category_status&cPath=&cID=81&', '::1'),
+(518, '2016-03-10 03:47:06', 1, 'categories.php', 'cPath=&cID=81&', '::1'),
+(519, '2016-03-10 03:47:08', 1, 'categories.php', 'cPath=&cID=81&action=edit_category&', '::1'),
+(520, '2016-03-10 03:47:15', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(521, '2016-03-10 03:47:15', 1, 'categories.php', 'cPath=&cID=81&', '::1'),
+(522, '2016-03-10 03:47:18', 1, 'categories.php', 'cPath=&action=new_category&', '::1'),
+(523, '2016-03-10 03:47:22', 1, 'categories.php', 'action=insert_category&cPath=&', '::1'),
+(524, '2016-03-10 03:47:22', 1, 'categories.php', 'cPath=&cID=82&', '::1'),
+(525, '2016-03-10 03:47:24', 1, 'categories.php', 'action=setflag_categories&flag=0&cID=82&cPath=&', '::1'),
+(526, '2016-03-10 03:47:25', 1, 'categories.php', 'action=update_category_status&cPath=&cID=82&', '::1'),
+(527, '2016-03-10 03:47:25', 1, 'categories.php', 'cPath=&cID=82&', '::1'),
+(528, '2016-03-10 03:47:28', 1, 'categories.php', 'cPath=&cID=82&action=edit_category&', '::1'),
+(529, '2016-03-10 03:47:35', 1, 'categories.php', 'action=update_category&cPath=&', '::1'),
+(530, '2016-03-10 03:47:35', 1, 'categories.php', 'cPath=&cID=82&', '::1');
 
 -- --------------------------------------------------------
 
@@ -465,7 +701,7 @@ INSERT INTO `banners` (`banners_id`, `banners_title`, `banners_url`, `banners_im
 (3, 'Zen Cart the art of e-commerce', 'http://www.zen-cart.com', 'banners/125x125_zen_logo.gif', 'SideBox-Banners', '', 0, NULL, NULL, '2004-01-11 20:59:12', NULL, 1, 1, 1, 0),
 (4, 'if you have to think ... you haven''t been Zenned!', 'http://www.zen-cart.com', 'banners/think_anim.gif', 'Wide-Banners', '', 0, NULL, NULL, '2004-01-12 20:53:18', NULL, 1, 1, 1, 0),
 (5, 'Zen Cart the art of e-commerce', 'http://www.zen-cart.com', 'banners/bw_zen_88wide.gif', 'BannersAll', '', 0, NULL, NULL, '2005-05-13 10:54:38', NULL, 1, 1, 1, 10),
-(6, 'Start Accepting Credit Cards For Your Business Today!', 'http://www.zen-cart.com/partners/payment', 'banners/cardsvcs_468x60.gif', 'Wide-Banners', '', 0, NULL, NULL, '2006-03-13 11:02:43', NULL, 1, 1, 1, 0),
+(6, 'Start Accepting Credit Cards For Your Business Today!', 'http://www.zen-cart.com/partners/payment', 'banners/cardsvcs_468x60.gif', 'Wide-Banners', '', 0, NULL, NULL, '2006-03-13 11:02:43', '2016-03-10 01:07:46', 0, 1, 1, 0),
 (7, 'eStart Your Web Store with Zen Cart(tm)', 'http://www.lulu.com/content/466605', 'banners/big-book-ad.gif', 'Wide-Banners', '', 0, NULL, NULL, '2007-02-10 00:00:00', NULL, 1, 1, 1, 1),
 (8, 'eStart Your Web Store with Zen Cart(tm)', 'http://www.lulu.com/content/466605', 'banners/tall-book.gif', 'SideBox-Banners', '', 0, NULL, NULL, '2007-02-10 00:00:00', NULL, 1, 1, 1, 1),
 (9, 'eStart Your Web Store with Zen Cart(tm)', 'http://www.lulu.com/content/466605', 'banners/tall-book.gif', 'BannersAll', '', 0, NULL, NULL, '2007-02-10 00:00:00', NULL, 1, 1, 1, 15),
@@ -488,7 +724,7 @@ CREATE TABLE `banners_history` (
   `banners_shown` int(5) NOT NULL DEFAULT '0',
   `banners_clicked` int(5) NOT NULL DEFAULT '0',
   `banners_history_date` datetime NOT NULL DEFAULT '0001-01-01 00:00:00'
-) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `banners_history`
@@ -537,11 +773,16 @@ INSERT INTO `banners_history` (`banners_history_id`, `banners_id`, `banners_show
 (40, 4, 44, 0, '2016-03-08 00:05:57'),
 (41, 1, 49, 0, '2016-03-08 00:07:19'),
 (42, 14, 1, 0, '2016-03-08 23:32:32'),
-(43, 7, 22, 0, '2016-03-09 00:00:35'),
-(44, 4, 22, 0, '2016-03-09 00:01:38'),
-(45, 6, 20, 0, '2016-03-09 00:07:22'),
+(43, 7, 39, 0, '2016-03-09 00:00:35'),
+(44, 4, 37, 0, '2016-03-09 00:01:38'),
+(45, 6, 38, 0, '2016-03-09 00:07:22'),
 (46, 14, 27, 0, '2016-03-09 00:10:32'),
-(47, 1, 14, 0, '2016-03-09 00:11:47');
+(47, 1, 31, 0, '2016-03-09 00:11:47'),
+(48, 7, 78, 0, '2016-03-10 00:01:47'),
+(49, 4, 81, 0, '2016-03-10 00:03:12'),
+(50, 1, 92, 0, '2016-03-10 00:04:43'),
+(51, 6, 22, 1, '2016-03-10 00:32:15'),
+(52, 14, 48, 0, '2016-03-10 00:37:09');
 
 -- --------------------------------------------------------
 
@@ -557,7 +798,7 @@ CREATE TABLE `categories` (
   `date_added` datetime DEFAULT NULL,
   `last_modified` datetime DEFAULT NULL,
   `categories_status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=83 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `categories`
@@ -624,7 +865,16 @@ INSERT INTO `categories` (`categories_id`, `categories_image`, `parent_id`, `sor
 (62, 'sample_image.gif', 0, 1520, '2003-12-23 03:18:19', '2004-05-22 21:14:57', 1),
 (63, 'categories/subcategory.gif', 0, 1530, '2003-12-23 03:18:19', '2004-07-12 17:45:24', 1),
 (64, 'categories/subcategory.gif', 0, 1550, '2004-07-12 15:22:27', NULL, 1),
-(65, 'ShopInterior1.jpg', 0, 0, '2016-03-09 00:03:34', '2016-03-09 00:06:52', 0);
+(65, 'ShopInterior1.jpg', 0, 0, '2016-03-09 00:03:34', '2016-03-09 00:06:52', 0),
+(67, 'rewards-2015.png', 0, 0, '2016-03-10 03:02:36', '2016-03-10 03:13:16', 0),
+(68, 'social-icon_1fb.png', 0, 0, '2016-03-10 03:13:31', '2016-03-10 03:35:56', 0),
+(77, 'social-icon_3pinterest.png', 0, 0, '2016-03-10 03:44:53', '2016-03-10 03:45:07', 0),
+(78, 'social-icon_4ta.png', 0, 0, '2016-03-10 03:45:29', '2016-03-10 03:45:43', 0),
+(79, 'social-icon_5yt.png', 0, 0, '2016-03-10 03:46:04', '2016-03-10 03:46:18', 0),
+(80, 'social-icon_6instagram.png', 0, 0, '2016-03-10 03:46:34', '2016-03-10 03:46:47', 0),
+(81, 'social-icon_7g.png', 0, 0, '2016-03-10 03:47:02', '2016-03-10 03:47:15', 0),
+(82, 'social-icon_8share.png', 0, 0, '2016-03-10 03:47:22', '2016-03-10 03:47:35', 0),
+(76, 'social-icon_2twitter.png', 0, 0, '2016-03-10 03:44:19', '2016-03-10 03:44:32', 0);
 
 -- --------------------------------------------------------
 
@@ -704,7 +954,16 @@ INSERT INTO `categories_description` (`categories_id`, `language_id`, `categorie
 (62, 1, 'Music', ''),
 (63, 1, 'Documents', 'Documents can now be added to the category tree. For example you may want to add servicing/Technical documents. Or use Documents as an integrated FAQ system on your site. The implemetation here is fairly spartan, but could be expanded to offer PDF downloads, links to purchaseable download files. The possibilities are endless and left to your imagination.'),
 (64, 1, 'Mixed Product Types', 'This is a category with mixed product types.\r\n\r\nThis includes both products and documents. There are two types of documents - Documents that are for reading and Documents that are for reading and purchasing.'),
-(65, 1, 'Images', '');
+(65, 1, 'Images', ''),
+(67, 1, 'Rewards', ''),
+(68, 1, 'Social-Fb', ''),
+(76, 1, 'Social-Tw', ''),
+(77, 1, 'Social-Pi', ''),
+(79, 1, 'Social-Yt', ''),
+(78, 1, 'Social-Ta', ''),
+(80, 1, 'Social-Instagram', ''),
+(81, 1, 'Social-G', ''),
+(82, 1, 'Social-Sh', '');
 
 -- --------------------------------------------------------
 
@@ -901,11 +1160,11 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (168, 'Tax Basis', 'MODULE_SHIPPING_ITEM_TAX_BASIS', 'Shipping', 'On what basis is Shipping Tax calculated. Options are<br />Shipping - Based on customers Shipping Address<br />Billing Based on customers Billing address<br />Store - Based on Store address if Billing/Shipping Zone equals Store zone', 6, 0, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''Shipping'', ''Billing'', ''Store''), '),
 (169, 'Shipping Zone', 'MODULE_SHIPPING_ITEM_ZONE', '0', 'If a zone is selected, only enable this shipping method for that zone.', 6, 0, NULL, '2016-03-02 13:03:31', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes('),
 (170, 'Sort Order', 'MODULE_SHIPPING_ITEM_SORT_ORDER', '0', 'Sort order of display.', 6, 0, NULL, '2016-03-02 13:03:31', NULL, NULL),
-(171, 'Enable Free Charge Module', 'MODULE_PAYMENT_FREECHARGER_STATUS', 'True', 'Do you want to accept Free Charge payments?', 6, 1, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
+(171, 'Enable Free Charge Module', 'MODULE_PAYMENT_FREECHARGER_STATUS', 'False', 'Do you want to accept Free Charge payments?', 6, 1, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
 (172, 'Sort order of display.', 'MODULE_PAYMENT_FREECHARGER_SORT_ORDER', '0', 'Sort order of display. Lowest is displayed first.', 6, 0, NULL, '2016-03-02 13:03:31', NULL, NULL),
 (173, 'Payment Zone', 'MODULE_PAYMENT_FREECHARGER_ZONE', '0', 'If a zone is selected, only enable this payment method for that zone.', 6, 2, NULL, '2016-03-02 13:03:31', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes('),
 (174, 'Set Order Status', 'MODULE_PAYMENT_FREECHARGER_ORDER_STATUS_ID', '0', 'Set the status of orders made with this payment module to this value', 6, 0, NULL, '2016-03-02 13:03:31', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses('),
-(175, 'Enable Check/Money Order Module', 'MODULE_PAYMENT_MONEYORDER_STATUS', 'True', 'Do you want to accept Check/Money Order payments?', 6, 1, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
+(175, 'Enable Check/Money Order Module', 'MODULE_PAYMENT_MONEYORDER_STATUS', 'False', 'Do you want to accept Check/Money Order payments?', 6, 1, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
 (176, 'Make Payable to:', 'MODULE_PAYMENT_MONEYORDER_PAYTO', 'the Store Owner/Website Name', 'Who should payments be made payable to?', 6, 1, NULL, '2016-03-02 13:03:31', NULL, NULL),
 (177, 'Sort order of display.', 'MODULE_PAYMENT_MONEYORDER_SORT_ORDER', '0', 'Sort order of display. Lowest is displayed first.', 6, 0, NULL, '2016-03-02 13:03:31', NULL, NULL),
 (178, 'Payment Zone', 'MODULE_PAYMENT_MONEYORDER_ZONE', '0', 'If a zone is selected, only enable this payment method for that zone.', 6, 2, NULL, '2016-03-02 13:03:31', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes('),
@@ -1273,19 +1532,19 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (538, 'Use root path for cookie path', 'SESSION_USE_ROOT_COOKIE_PATH', 'False', 'Normally Zen Cart will use the directory that a store resides in as the cookie path. This can cause problems with some servers. This setting allows you to set the cookie path to the root of the server, rather than the store directory. It should only be used if you have problems with sessions. <strong>Default Value = False</strong><br /><br /><strong>Changing this setting may mean you have problems logging into your admin, you should clear your browser cookies to overcome this.</strong>', 15, 999, NULL, '0001-01-01 00:00:00', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
 (539, 'Add period prefix to cookie domain', 'SESSION_ADD_PERIOD_PREFIX', 'True', 'Normally Zen Cart will add a period prefix to the cookie domain, e.g.  .www.mydomain.com. This can sometimes cause problems with some server configurations. If you are having session problems you may want to try setting this to False. <strong>Default Value = True</strong>', 15, 999, NULL, '0001-01-01 00:00:00', NULL, 'zen_cfg_select_option(array(''True'', ''False''), '),
 (569, 'Log Gateway Data', 'MODULE_PAYMENT_SHIFT4_LOG_GATEWAY', 'No', 'Set to ''Yes'' if you want to save all gateway communications data to the database. The database table is named "shift4_log" and will be viewable using phpMyAdmin.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Yes'', ''No''), '),
-(568, 'API Username', 'MODULE_PAYMENT_SHIFT4_USERNAME_PRODUCTION', 'admin', 'Your API username provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
+(568, 'API Username', 'MODULE_PAYMENT_SHIFT4_USERNAME_PRODUCTION', 'Interface2', 'Your API username provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
 (567, 'Transaction Mode', 'MODULE_PAYMENT_SHIFT4_TRANSACTION_MODE', 'Book and Ship', '''Immediate Charge'' authorizes and finalizes the transaction. ''Book and Ship'' authorizes the funds and will allow you to manually settle the transaction at <a href="http://www.dollarsonthenet.net">http://www.dollarsonthenet.net</a>. <br /><br />The ''Book and Ship'' option is often used when a merchant bills the shopper after shipment. Settlements should be done within a limited number of days of the original authorization to avoid expiration of the authorization hold.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Book and Ship'', ''Immediate Charge''), '),
 (555, 'Enable Shift4 Module', 'MODULE_PAYMENT_SHIFT4_STATUS', 'Enabled', 'Enable Shift4 module to accept and process credit card payments. ', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Enabled'', ''Disabled''), '),
-(556, 'i4Go Account ID', 'MODULE_PAYMENT_SHIFT4_I4GO_LOGIN_PRODUCTION', '', 'Your i4Go account ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
-(557, 'i4Go Site ID', 'MODULE_PAYMENT_SHIFT4_I4GO_SITE_PRODUCTION', '', 'Your i4Go site ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
+(556, 'i4Go Account ID', 'MODULE_PAYMENT_SHIFT4_I4GO_LOGIN_PRODUCTION', '12481', 'Your i4Go account ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
+(557, 'i4Go Site ID', 'MODULE_PAYMENT_SHIFT4_I4GO_SITE_PRODUCTION', 'https://s705.dollarsonthenet.net/', 'Your i4Go site ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
 (558, 'Processing Mode', 'MODULE_PAYMENT_SHIFT4_ORDER_MODE', 'Demo - no settings needed', '"Demo" mode allows you to test the module without entering any settings or creating any Shift4 accounts. While in "Demo" mode, transactions will be sent to a demo processor. Demo transactions will not be viewable in Dollars on the Net.<br /><br />While in "Live" mode, transactions will be sent to a live processor. Live transactions will be viewable at <a href="http://www.dollarsonthenet.net" target="_blank">http://www.dollarsonthenet.net</a>.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Demo - no settings needed'', ''Live''), '),
 (559, 'Sort order of display.', 'MODULE_PAYMENT_SHIFT4_SORT_ORDER', '0', 'The order of display for this payment option (1-first, 2-second, and so on). Entering ''0'' defaults to alphabetical order.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
 (560, 'Payment Zone Restriction', 'MODULE_PAYMENT_SHIFT4_ZONE', '0', 'If a zone is selected, this payment module will only be enabled for that zone. A setting of "--none--" allows payments from any location.', 6, 2, NULL, '2016-03-02 13:48:24', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes('),
 (561, 'Set Order Status', 'MODULE_PAYMENT_SHIFT4_ORDER_STATUS_ID', '0', 'Set the default status of orders made with this payment module.', 6, 0, NULL, '2016-03-02 13:48:24', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses('),
-(562, 'Debug Mode', 'MODULE_PAYMENT_SHIFT4_DEBUGGING', 'Off', 'Enabling debug mode logs information about each failed transaction in a separate file in the Cache folder and can be emailed to the store owner. These files can be deleted manually, or in the Store Manager page (Tools > Store Manager: ''Cleanup Debug Log Files'')', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Off'', ''Log File'', ''Log and Email''), '),
-(563, 'API Password', 'MODULE_PAYMENT_SHIFT4_PASSWORD_PRODUCTION', 'admin', 'Your API password provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', 'zen_cfg_password_display', 'zen_cfg_password_input_no_autocomplete('),
-(564, 'Account Number', 'MODULE_PAYMENT_SHIFT4_SERIAL_NUMBER_PRODUCTION', '', 'Your Account Number provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
-(565, 'Merchant ID', 'MODULE_PAYMENT_SHIFT4_MERCHANT_ID_PRODUCTION', '', 'Your Merchant ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
+(562, 'Debug Mode', 'MODULE_PAYMENT_SHIFT4_DEBUGGING', 'Log File', 'Enabling debug mode logs information about each failed transaction in a separate file in the Cache folder and can be emailed to the store owner. These files can be deleted manually, or in the Store Manager page (Tools > Store Manager: ''Cleanup Debug Log Files'')', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Off'', ''Log File'', ''Log and Email''), '),
+(563, 'API Password', 'MODULE_PAYMENT_SHIFT4_PASSWORD_PRODUCTION', 'Solage755', 'Your API password provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', 'zen_cfg_password_display', 'zen_cfg_password_input_no_autocomplete('),
+(564, 'Account Number', 'MODULE_PAYMENT_SHIFT4_SERIAL_NUMBER_PRODUCTION', '12481', 'Your Account Number provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
+(565, 'Merchant ID', 'MODULE_PAYMENT_SHIFT4_MERCHANT_ID_PRODUCTION', '12481', 'Your Merchant ID provided by Shift4.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, NULL),
 (566, 'Enforce Address Validation', 'MODULE_PAYMENT_SHIFT4_ENFORCE_AVS', 'Do not enforce', 'Set to ''Enforce'' to automatically void the transaction and cancel the order if shopper''s payment information fails the address validation. The shopper will be returned to the payment page with an error message.', 6, 0, NULL, '2016-03-02 13:48:24', NULL, 'zen_cfg_select_option(array(''Enforce'', ''Do not enforce''), '),
 (570, '<b>ACTIVATE Responsive Template</b>', 'COLUMN_WIDTH', '1', 'Column Width - Left Boxes &<br /> Column Width - Right Boxes<br /><b>DO NOT WORK WITH</b><br />(1)Responsive Template Settings<br /><br /><b>Use</b><br />Column Width - Left &<br /> Column Width - Right<br /><br /><br /> 0 = Use Default Template Settings<br />1 = Use Responsive Template Settings<br />', 19, NULL, NULL, '2016-03-02 14:01:39', NULL, 'zen_cfg_select_option(array(''0'', ''1''),'),
 (571, 'Define About Us Status', 'DEFINE_ABOUT_US_STATUS', '1', 'Enable the Defined About Us Link/Text?0= Link ON, Define Text OFF1= Link ON, Define Text ON2= Link OFF, Define Text ON3= Link OFF, Define Text OFF', 25, 90, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 'zen_cfg_select_option(array(''0'', ''1'', ''2'', ''3''),'),
@@ -1403,7 +1662,7 @@ CREATE TABLE `counter` (
 --
 
 INSERT INTO `counter` (`startdate`, `counter`) VALUES
-('20160302', 438);
+('20160302', 799);
 
 -- --------------------------------------------------------
 
@@ -1426,7 +1685,8 @@ INSERT INTO `counter_history` (`startdate`, `counter`, `session_counter`) VALUES
 ('20160306', 2, 2),
 ('20160307', 16, 3),
 ('20160308', 124, 10),
-('20160309', 196, 4);
+('20160309', 197, 5),
+('20160310', 360, 8);
 
 -- --------------------------------------------------------
 
@@ -1851,7 +2111,7 @@ CREATE TABLE `customers` (
   `customers_referral` varchar(32) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `customers_paypal_payerid` varchar(20) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `customers_paypal_ec` tinyint(1) unsigned NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `customers`
@@ -1859,7 +2119,8 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`customers_id`, `customers_gender`, `customers_firstname`, `customers_lastname`, `customers_dob`, `customers_email_address`, `customers_nick`, `customers_default_address_id`, `customers_telephone`, `customers_fax`, `customers_password`, `customers_newsletter`, `customers_group_pricing`, `customers_email_format`, `customers_authorization`, `customers_referral`, `customers_paypal_payerid`, `customers_paypal_ec`) VALUES
 (1, 'm', 'Bill', 'Smith', '2001-01-01 00:00:00', 'root@localhost.com', '', 1, '12345', '', 'd95e8fa7f20a009372eb3477473fcd34:1c', '0', 0, 'TEXT', 0, '', '', 0),
-(2, 'm', 'Carlos', 'Artavia', '1984-10-28 00:00:00', 'carlos@essentialinc.co', '', 2, '3055942222', '', 'dbaf2b8d5771137e36a73827540cd6fd:40', '0', 0, 'TEXT', 0, '', '', 0);
+(2, 'm', 'Carlos', 'Artavia', '1984-10-28 00:00:00', 'carlos@essentialinc.co', '', 2, '3055942222', '', 'dbaf2b8d5771137e36a73827540cd6fd:40', '0', 0, 'TEXT', 0, '', '', 0),
+(3, 'm', 'Hiram', 'Mckenzie', '1989-10-10 00:00:00', 'c_artavia@hotmail.com', '', 3, '+881-74-4260375', '+267-55-7161640', '45357b75f151fb3174f7fcc0a9e4e8e0:af', '0', 0, 'HTML', 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -1874,14 +2135,15 @@ CREATE TABLE `customers_basket` (
   `customers_basket_quantity` float NOT NULL DEFAULT '0',
   `final_price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `customers_basket_date_added` varchar(8) COLLATE latin1_general_ci DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `customers_basket`
 --
 
 INSERT INTO `customers_basket` (`customers_basket_id`, `customers_id`, `products_id`, `customers_basket_quantity`, `final_price`, `customers_basket_date_added`) VALUES
-(1, 2, '3', 1, 0.0000, '20160302');
+(1, 2, '3', 1, 0.0000, '20160302'),
+(2, 3, '85:6c0d32b3e49a7e907f0513df94832a11', 10, 0.0000, '20160310');
 
 -- --------------------------------------------------------
 
@@ -1897,7 +2159,14 @@ CREATE TABLE `customers_basket_attributes` (
   `products_options_value_id` int(11) NOT NULL DEFAULT '0',
   `products_options_value_text` blob,
   `products_options_sort_order` text COLLATE latin1_general_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Dumping data for table `customers_basket_attributes`
+--
+
+INSERT INTO `customers_basket_attributes` (`customers_basket_attributes_id`, `customers_id`, `products_id`, `products_options_id`, `products_options_value_id`, `products_options_value_text`, `products_options_sort_order`) VALUES
+(1, 3, '85:6c0d32b3e49a7e907f0513df94832a11', '2', 21, '', '20.00020');
 
 -- --------------------------------------------------------
 
@@ -1920,7 +2189,8 @@ CREATE TABLE `customers_info` (
 
 INSERT INTO `customers_info` (`customers_info_id`, `customers_info_date_of_last_logon`, `customers_info_number_of_logons`, `customers_info_date_account_created`, `customers_info_date_account_last_modified`, `global_product_notifications`) VALUES
 (1, '0001-01-01 00:00:00', 0, '2004-01-21 01:35:28', '0001-01-01 00:00:00', 0),
-(2, '2016-03-02 14:56:25', 2, '2016-03-02 13:41:38', NULL, 0);
+(2, '2016-03-02 14:56:25', 2, '2016-03-02 13:41:38', NULL, 0),
+(3, '2016-03-10 03:54:58', 3, '2016-03-10 02:26:56', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -3688,45 +3958,45 @@ CREATE TABLE `products_description` (
 
 INSERT INTO `products_description` (`products_id`, `language_id`, `products_name`, `products_description`, `products_url`, `products_viewed`) VALUES
 (1, 1, 'Matrox G200 MMS', 'Reinforcing its position as a multi-monitor trailblazer, Matrox Graphics Inc. has once again developed the most flexible and highly advanced solution in the industry. Introducing the new Matrox G200 Multi-Monitor Series; the first graphics card ever to support up to four DVI digital flat panel displays on a single 8&quot; PCI board.<br /><br />With continuing demand for digital flat panels in the financial workplace, the Matrox G200 MMS is the ultimate in flexible solutions. The Matrox G200 MMS also supports the new digital video interface (DVI) created by the Digital Display Working Group (DDWG) designed to ease the adoption of digital flat panels. Other configurations include composite video capture ability and onboard TV tuner, making the Matrox G200 MMS the complete solution for business needs.<br /><br />Based on the award-winning MGA-G200 graphics chip, the Matrox G200 Multi-Monitor Series provides superior 2D/3D graphics acceleration to meet the demanding needs of business applications such as real-time stock quotes (Versus), live video feeds (Reuters & Bloombergs), multiple windows applications, word processing, spreadsheets and CAD.', 'www.matrox.com/mga/products/g200_mms/home.cfm', 0),
-(2, 1, 'Matrox G400 32MB', 'Dramatically Different High Performance Graphics<br /><br />Introducing the Millennium G400 Series - a dramatically different, high performance graphics experience. Armed with the industry''s fastest graphics chip, the Millennium G400 Series takes explosive acceleration two steps further by adding unprecedented image quality, along with the most versatile display options for all your 3D, 2D and DVD applications. As the most powerful and innovative tools in your PC''s arsenal, the Millennium G400 Series will not only change the way you see graphics, but will revolutionize the way you use your computer.<br /><br />Key features:<ul><li>New Matrox G400 256-bit DualBus graphics chip</li><li>Explosive 3D, 2D and DVD performance</li><li>DualHead Display</li><li>Superior DVD and TV output</li><li>3D Environment-Mapped Bump Mapping</li><li>Vibrant Color Quality rendering </li><li>UltraSharp DAC of up to 360 MHz</li><li>3D Rendering Array Processor</li><li>Support for 16 or 32 MB of memory</li></ul>', 'www.matrox.com/mga/products/mill_g400/home.htm', 0),
-(3, 1, 'Microsoft IntelliMouse Pro', 'Every element of IntelliMouse Pro - from its unique arched shape to the texture of the rubber grip around its base - is the product of extensive customer and ergonomic research. Microsoft''s popular wheel control, which now allows zooming and universal scrolling functions, gives IntelliMouse Pro outstanding comfort and efficiency.', 'www.microsoft.com/hardware/mouse/intellimouse.asp', 3),
+(2, 1, 'Matrox G400 32MB', 'Dramatically Different High Performance Graphics<br /><br />Introducing the Millennium G400 Series - a dramatically different, high performance graphics experience. Armed with the industry''s fastest graphics chip, the Millennium G400 Series takes explosive acceleration two steps further by adding unprecedented image quality, along with the most versatile display options for all your 3D, 2D and DVD applications. As the most powerful and innovative tools in your PC''s arsenal, the Millennium G400 Series will not only change the way you see graphics, but will revolutionize the way you use your computer.<br /><br />Key features:<ul><li>New Matrox G400 256-bit DualBus graphics chip</li><li>Explosive 3D, 2D and DVD performance</li><li>DualHead Display</li><li>Superior DVD and TV output</li><li>3D Environment-Mapped Bump Mapping</li><li>Vibrant Color Quality rendering </li><li>UltraSharp DAC of up to 360 MHz</li><li>3D Rendering Array Processor</li><li>Support for 16 or 32 MB of memory</li></ul>', 'www.matrox.com/mga/products/mill_g400/home.htm', 5),
+(3, 1, 'Microsoft IntelliMouse Pro', 'Every element of IntelliMouse Pro - from its unique arched shape to the texture of the rubber grip around its base - is the product of extensive customer and ergonomic research. Microsoft''s popular wheel control, which now allows zooming and universal scrolling functions, gives IntelliMouse Pro outstanding comfort and efficiency.', 'www.microsoft.com/hardware/mouse/intellimouse.asp', 4),
 (4, 1, 'The Replacement Killers', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).<br />Languages: English, Deutsch.<br />Subtitles: English, Deutsch, Spanish.<br />Audio: Dolby Surround 5.1.<br />Picture Format: 16:9 Wide-Screen.<br />Length: (approx) 80 minutes.<br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.replacement-killers.com', 0),
 (5, 1, 'Blade Runner - Director''s Cut Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).<br />Languages: English, Deutsch.<br />Subtitles: English, Deutsch, Spanish.<br />Audio: Dolby Surround 5.1.<br />Picture Format: 16:9 Wide-Screen.<br />Length: (approx) 112 minutes.<br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.bladerunner.com', 0),
 (6, 1, 'The Matrix Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch.\r\n<br />\r\nAudio: Dolby Surround.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 131 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Making Of.', 'www.thematrix.com', 0),
 (7, 1, 'You''ve Got Mail Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch, Spanish. <br />Subtitles: English, Deutsch, Spanish, French, Nordic, Polish. <br />Audio: Dolby Digital 5.1. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 115 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.youvegotmail.com', 0),
-(8, 1, 'A Bug''s Life Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch. <br />Subtitles: English, Deutsch, Spanish. <br />Audio: Dolby Digital 5.1 / Dolby Surround Stereo. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 91 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.abugslife.com', 1),
+(8, 1, 'A Bug''s Life Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch. <br />Subtitles: English, Deutsch, Spanish. <br />Audio: Dolby Digital 5.1 / Dolby Surround Stereo. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 91 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.abugslife.com', 2),
 (9, 1, 'Under Siege Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch. <br />Subtitles: English, Deutsch, Spanish. <br />Audio: Dolby Surround 5.1. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 98 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
-(10, 1, 'Under Siege 2 - Dark Territory', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r<br />\nLanguages: English, Deutsch.\r<br />\nSubtitles: English, Deutsch, Spanish.\r<br />\nAudio: Dolby Surround 5.1.\r<br />\nPicture Format: 16:9 Wide-Screen.\r<br />\nLength: (approx) 98 minutes.\r<br />\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
-(11, 1, 'Fire Down Below Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 100 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
-(12, 1, 'Die Hard With A Vengeance Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch. <br />Subtitles: English, Deutsch, Spanish. <br />Audio: Dolby Surround 5.1. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 122 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 20),
+(10, 1, 'Under Siege 2 - Dark Territory', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r<br />\nLanguages: English, Deutsch.\r<br />\nSubtitles: English, Deutsch, Spanish.\r<br />\nAudio: Dolby Surround 5.1.\r<br />\nPicture Format: 16:9 Wide-Screen.\r<br />\nLength: (approx) 98 minutes.\r<br />\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 1),
+(11, 1, 'Fire Down Below Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 100 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 1),
+(12, 1, 'Die Hard With A Vengeance Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa). <br />Languages: English, Deutsch. <br />Subtitles: English, Deutsch, Spanish. <br />Audio: Dolby Surround 5.1. <br />Picture Format: 16:9 Wide-Screen. <br />Length: (approx) 122 minutes. <br />Other: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 46),
 (13, 1, 'Lethal Weapon Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 100 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
 (14, 1, 'Red Corner Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 117 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
-(15, 1, 'Frantic Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 115 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
+(15, 1, 'Frantic Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 115 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 1),
 (16, 1, 'Courage Under Fire Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 112 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
 (17, 1, 'Speed Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 112 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
 (18, 1, 'Speed 2: Cruise Control', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r<br />\nLanguages: English, Deutsch.\r<br />\nSubtitles: English, Deutsch, Spanish.\r<br />\nAudio: Dolby Surround 5.1.\r<br />\nPicture Format: 16:9 Wide-Screen.\r<br />\nLength: (approx) 120 minutes.\r<br />\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 1),
 (19, 1, 'There''s Something About Mary Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 114 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
 (20, 1, 'Beloved Linked', 'Regional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Surround 5.1.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 164 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', '', 0),
 (21, 1, 'SWAT 3: Close Quarters Battle Linked', 'Windows 95/98<br /><br />211 in progress with shots fired. Officer down. Armed suspects with hostages. Respond Code 3! Los Angles, 2005, In the next seven days, representatives from every nation around the world will converge on Las Angles to witness the signing of the United Nations Nuclear Abolishment Treaty. The protection of these dignitaries falls on the shoulders of one organization, LAPD SWAT. As part of this elite tactical organization, you and your team have the weapons and all the training necessary to protect, to serve, and &quot;When needed&quot; to use deadly force to keep the peace. It takes more than weapons to make it through each mission. Your arsenal includes C2 charges, flashbangs, tactical grenades. opti-Wand mini-video cameras, and other devices critical to meeting your objectives and keeping your men free of injury. Uncompromised Duty, Honor and Valor!', 'www.swat3.com', 0),
-(22, 1, 'Unreal Tournament Linked', 'From the creators of the best-selling Unreal, comes Unreal Tournament. A new kind of single player experience. A ruthless multiplayer revolution.<br /><br />This stand-alone game showcases completely new team-based gameplay, groundbreaking multi-faceted single player action or dynamic multi-player mayhem. It''s a fight to the finish for the title of Unreal Grand Master in the gladiatorial arena. A single player experience like no other! Guide your team of ''bots'' (virtual teamates) against the hardest criminals in the galaxy for the ultimate title - the Unreal Grand Master.', 'www.unrealtournament.net', 4),
+(22, 1, 'Unreal Tournament Linked', 'From the creators of the best-selling Unreal, comes Unreal Tournament. A new kind of single player experience. A ruthless multiplayer revolution.<br /><br />This stand-alone game showcases completely new team-based gameplay, groundbreaking multi-faceted single player action or dynamic multi-player mayhem. It''s a fight to the finish for the title of Unreal Grand Master in the gladiatorial arena. A single player experience like no other! Guide your team of ''bots'' (virtual teamates) against the hardest criminals in the galaxy for the ultimate title - the Unreal Grand Master.', 'www.unrealtournament.net', 7),
 (23, 1, 'The Wheel Of Time Linked', 'The world in which The Wheel of Time takes place is lifted directly out of Jordan''s pages; it''s huge and consists of many different environments. How you navigate the world will depend largely on which game - single player or multipayer - you''re playing. The single player experience, with a few exceptions, will see Elayna traversing the world mainly by foot (with a couple notable exceptions). In the multiplayer experience, your character will have more access to travel via Ter''angreal, Portal Stones, and the Ways. However you move around, though, you''ll quickly discover that means of locomotion can easily become the least of the your worries...<br /><br />During your travels, you quickly discover that four locations are crucial to your success in the game. Not surprisingly, these locations are the homes of The Wheel of Time''s main characters. Some of these places are ripped directly from the pages of Jordan''s books, made flesh with Legend''s unparalleled pixel-pushing ways. Other places are specific to the game, conceived and executed with the intent of expanding this game world even further. Either way, they provide a backdrop for some of the most intense first person action and strategy you''ll have this year.', 'www.wheeloftime.com', 0),
 (24, 1, 'Disciples: Sacred Lands Linked', 'A new age is dawning...<br /><br />Enter the realm of the Sacred Lands, where the dawn of a New Age has set in motion the most momentous of wars. As the prophecies long foretold, four races now clash with swords and sorcery in a desperate bid to control the destiny of their gods. Take on the quest as a champion of the Empire, the Mountain Clans, the Legions of the Damned, or the Undead Hordes and test your faith in battles of brute force, spellbinding magic and acts of guile. Slay demons, vanquish giants and combat merciless forces of the dead and undead. But to ensure the salvation of your god, the hero within must evolve.<br /><br />The day of reckoning has come... and only the chosen will survive.', '', 0),
 (25, 1, 'Microsoft Internet Keyboard PS/2', 'The Internet Keyboard has 10 Hot Keys on a comfortable standard keyboard design that also includes a detachable palm rest. The Hot Keys allow you to browse the web, or check e-mail directly from your keyboard. The IntelliType Pro software also allows you to customize your hot keys - make the Internet Keyboard work the way you want it to!', '', 0),
 (26, 1, 'Microsoft IntelliMouse Explorer', 'Microsoft introduces its most advanced mouse, the IntelliMouse Explorer! IntelliMouse Explorer features a sleek design, an industrial-silver finish, a glowing red underside and taillight, creating a style and look unlike any other mouse. IntelliMouse Explorer combines the accuracy and reliability of Microsoft IntelliEye optical tracking technology, the convenience of two new customizable function buttons, the efficiency of the scrolling wheel and the comfort of expert ergonomic design. All these great features make this the best mouse for the PC!', 'www.microsoft.com/hardware/mouse/explorer.asp', 0),
 (27, 1, 'Hewlett Packard LaserJet 1100Xi Linked', 'HP has always set the pace in laser printing technology. The new generation HP LaserJet 1100 series sets another impressive pace, delivering a stunning 8 pages per minute print speed. The 600 dpi print resolution with HP''s Resolution Enhancement technology (REt) makes every document more professional.<br /><br />Enhanced print speed and laser quality results are just the beginning. With 2MB standard memory, HP LaserJet 1100xi users will be able to print increasingly complex pages. Memory can be increased to 18MB to tackle even more complex documents with ease. The HP LaserJet 1100xi supports key operating systems including Windows 3.1, 3.11, 95, 98, NT 4.0, OS/2 and DOS. Network compatibility available via the optional HP JetDirect External Print Servers.<br /><br />HP LaserJet 1100xi also features The Document Builder for the Web Era from Trellix Corp. (featuring software to create Web documents).', 'www.pandi.hp.com/pandi-db/prodinfo.main?product=laserjet1100', 1),
-(28, 1, 'Gift Certificate $  5.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 0),
+(28, 1, 'Gift Certificate $  5.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 1),
 (29, 1, 'Gift Certificate $ 10.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 0),
 (30, 1, 'Gift Certificate $ 25.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 0),
 (31, 1, 'Gift Certificate $ 50.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 0),
 (32, 1, 'Gift Certificate $100.00', 'Purchase a Gift Certificate today to share with your family, friends or business associates!', '', 0),
-(34, 1, 'A Bug''s Life "Multi Pak" Special 2003 Collectors Edition', 'A Bug''s Life "Multi Pak" Special 2003 Collectors Edition\r\n<br />\r\nRegional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Digital 5.1 / Dolby Surround Stereo.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 91 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.abugslife.com', 2),
+(34, 1, 'A Bug''s Life "Multi Pak" Special 2003 Collectors Edition', 'A Bug''s Life "Multi Pak" Special 2003 Collectors Edition\r\n<br />\r\nRegional Code: 2 (Japan, Europe, Middle East, South Africa).\r\n<br />\r\nLanguages: English, Deutsch.\r\n<br />\r\nSubtitles: English, Deutsch, Spanish.\r\n<br />\r\nAudio: Dolby Digital 5.1 / Dolby Surround Stereo.\r\n<br />\r\nPicture Format: 16:9 Wide-Screen.\r\n<br />\r\nLength: (approx) 91 minutes.\r\n<br />\r\nOther: Interactive Menus, Chapter Selection, Subtitles (more languages).', 'www.abugslife.com', 7),
 (36, 1, 'Hewlett Packard - by attributes SALE', 'The Product Price is set to 0.00\r\n<br /><br />\r\n\r\nThe Product Priced by Attributes is set to YES\r\n<br /><br />\r\n\r\nThe attribute prices are defined without the price prefix of +\r\n<br /><br />\r\n\r\nThe Display Price is made up of the lowest attribute price from each Option Name group.\r\n<br /><br />\r\n\r\nIf there had been a Product Price, this would have been added together to the lowest attributes price from each of the Option Name groups to make up the display price.\r\n<br /><br />\r\n\r\nThe price prefix of the + is not used as we are not "adding" to the display price.\r\n<br /><br />\r\n\r\nThe Colors attributes are set for the discount to be applied, their prices before the discount are:<br />\r\nWhite $499.99<br />\r\nBlack $519.00<br />\r\nBlue $539.00<br />', 'www.pandi.hp.com/pandi-db/prodinfo.main?product=laserjet1100', 0),
 (57, 1, 'A Free Product - All', 'This is a free product where there are no prices at all.\r\n<br /><br />\r\n\r\nThe Always Free Shipping is also turned ON.\r\n<br /><br />\r\n\r\nIf this is bought separately, the Zen Cart Free Charge payment module will show if there is no charges on shipping.\r\n<br /><br />\r\n\r\nIf other products are purchased with a price or shipping charge, then the Zen Cart Free Charge payment module will not show and the shipping will be applied accordingly.', '', 0),
 (101, 1, 'TEST $120 Sale 10% Special off', 'Product is Priced by Attributes.\r\n<br /><br />\r\n\r\nAttribute Option Group: Color and Size are used for pricing by marking these as Included in Base Price.\r\n<br /><br />\r\n\r\nGift Options has everything marked included in base price also, but because None is set to $0.00 that groups lowest price is $0.00 so it is not affecting the Base Price.\r\n<br /><br />\r\n\r\nIf None was not part of this group and you did not want to include those prices, you would mark all of the Gift Option Attributes to NOT be included in the Base Price.\r\n<br /><br />\r\n\r\nProduct Product is $0.00\r\n<br /><br />\r\n\r\nSpecial does not exist\r\n<br /><br />\r\nSale Price is 10%\r\n<br /><br />\r\n\r\nAttributes:<br />\r\nColor:<br />\r\n- Red $100.00<br />\r\n- Orange $50.00<br />\r\n- Yellow $75\r\n<br /><br />\r\n\r\nSize:<br />\r\nSelect from Below:<br />\r\nSmall $50.00<br />\r\nMedium $75.00<br />\r\nLarge $100.00\r\n<br /><br />\r\n\r\nGift Options:<br />\r\n- Dated Collector''s Tin $50.00<br />\r\n- Autographed Memorabila Card $75.00<br />\r\n- Wrapping $100.00\r\n<br /><br />\r\n\r\nNOTE: Select from below is defined as a Display Only Attribute and NOT to be included in the base price. \r\n<br /><br />\r\nThe Display Only means, the customer may NOT select this option value. If they do not selected another option value, then the product cannot be added to the shopping cart.\r\n<br /><br />\r\nThe NOT included in base price means, if this product were priced by attributes, it would not be include. The reason for this is so that the lowest price of this group will be the Small at $50.00 and not Select from Below at $0.00\r\n<br /><br />', '', 0),
 (100, 1, 'Hewlett Packard - by attributes SALE with Special', 'The Product Price is set to 0.00\r\n<br /><br />\r\n\r\nThe Product Priced by Attributes is set to YES\r\n<br /><br />\r\n\r\nThe attribute prices are defined without the price prefix of +\r\n<br /><br />\r\n\r\nThe Display Price is made up of the lowest attribute price from each Option Name group.\r\n<br /><br />\r\n\r\nIf there had been a Product Price, this would have been added together to the lowest attributes price from each of the Option Name groups to make up the display price.\r\n<br /><br />\r\n\r\nThe price prefix of the + is not used as we are not "adding" to the display price.\r\n<br /><br />\r\n\r\nThe Colors attributes are set for the discount to be applied, their prices before the discount are:<br />\r\nWhite $499.99<br />\r\nBlack $519.00<br />\r\nBlue $539.00<br />', 'www.pandi.hp.com/pandi-db/prodinfo.main?product=laserjet1100', 0),
 (39, 1, 'A Free Product', 'This is a free product that is also on special.\r\n<br /><br />\r\n\r\nThis should show as having a price, special price but then be free.\r\n<br /><br />\r\n\r\nWhile this is a FREE product, this does have Shipping.', '', 0),
 (40, 1, 'A Call for Price Product', 'This is a Call for Price product that is also on special.\r\n<br />\r\n\r\nThis should show as having a price, special price but then be Call for Price. This means you cannot buy it.\r\n<br />', '', 0),
-(41, 1, 'A Call for Price Product SALE', 'This is a Call for Price product that is also on special and has a Sale price via Sale Maker.\r\n<br /><br />\r\n\r\nThis should show as having a price, special price but then be Call for Price. This means you cannot buy it.\r\n<br /><br />\r\n\r\nThe Add to Cart buttons automatically change to Call for Price, which is defined as: TEXT_CALL_FOR_PRICE\r\n<br /><br />\r\n\r\nThis link will take the customer to the Contact Us page.\r\n<br /><br />', '', 0),
+(41, 1, 'A Call for Price Product SALE', 'This is a Call for Price product that is also on special and has a Sale price via Sale Maker.\r\n<br /><br />\r\n\r\nThis should show as having a price, special price but then be Call for Price. This means you cannot buy it.\r\n<br /><br />\r\n\r\nThe Add to Cart buttons automatically change to Call for Price, which is defined as: TEXT_CALL_FOR_PRICE\r\n<br /><br />\r\n\r\nThis link will take the customer to the Contact Us page.\r\n<br /><br />', '', 1),
 (42, 1, 'A Free Product - SALE', 'This is a free product that is also on special.\r\n<br />\r\n\r\nThis should show as having a price, special price but then be free.\r\n<br />', '', 0),
 (43, 1, 'A Free Product with Attributes', 'This is a free product that is also on special.\r\n<br /><br />\r\n\r\nThis should show as having a price, special price but then be free.\r\n<br /><br />\r\n\r\nAttributes can be added that can optionally be set to free or not free\r\n<br /><br />\r\n\r\nThe Color Red attribute is priced at $5.00 but marked as a Free Attribute when the Product is Free\r\n<br /><br />\r\n\r\nThe Size Medium attribute is priced at $1.00 but marked as a Free Attribute when Product is Free', '', 0),
 (44, 1, 'A Mixed OFF Product with Attributes', 'This product has attributes and a minimum qty and units.\r\n<br /><br />\r\n\r\nMixed is OFF this means you CANNOT mix attributes to make the minimums and units.\r\n<br /><br />\r\n\r\nThe Size Option Value: Select from Below ... is a Display Only Attribute. \r\n<br /><br />\r\n\r\nThis means that the product cannot be added to the Shopping Cart if that Option Value is selected. If it is still selected, then an error is triggered when the Add to Cart is pressed with a warning to the customer on what the error is.\r\n<br /><br />\r\n\r\nNo checkout is allowed when errors exist.', '', 0),
@@ -3736,7 +4006,7 @@ INSERT INTO `products_description` (`products_id`, `language_id`, `products_name
 (49, 1, 'Test 2', 'This is a test product for copying and deleting attributes.\r\n<br /><br />\r\n\r\nThis was made using the Attributes Copy to Product in the new Admin ... Catalog ... Attributes Controller ... and copying the Attributes from the Test 1 product to Test 2.\r\n<br /><br />\r\n\r\nThis product does not have any additional images.\r\n<br /><br />\r\n\r\nIt does have a Large image located in /large\r\n<br /><br />\r\n\r\nThis uses the same name: 2_small plus the large image suffix _LRG plus the matching extension .jpg to give the new name: /images/large/2_small_LRG.jpg\r\n<br /><br />', '', 0),
 (50, 1, 'Test 3', 'This is a test product for copying and deleting attributes.\r\n<br /><br />\r\n\r\nThis was made using the Attributes Copy to Product in the new Admin ... Catalog ... Attributes Controller ... and copying the attributes from the Test 2 product to Test 3.\r\n<br /><br />\r\n\r\nThis product does not have any additional images.\r\n<br /><br />\r\n\r\nIt does NOT have a Large image located in /large\r\n<br /><br />\r\n\r\nThis means that when you click on the image for enlarge, unless the original image is larger than the small image settings you will see the same image in the popup.\r\n<br /><br />', '', 0),
 (51, 1, 'Free Ship & Payment Virtual weight 10', 'Free Shipping and Payment\r\n<br /><br />\r\n\r\nThe Price is set to 25.00 ... but what makes it Free is that this product has been marked as:\r\n<br />\r\nProduct is Free: Yes\r\n<br /><br />\r\n\r\nThis would allow the product to be listed with a price, but the actual charge is $0.00\r\n<br /><br />\r\n\r\nThe weight is set to 10 but could be set to 0. What really makes it truely Free Shipping is that it has been marked to be Always Free Shipping.\r\n<br /><br />\r\n\r\nAlways Free shipping is set to: Yes<br />\r\nThis will not charge for shipping, but requres a shipping address.\r\n<br /><br />\r\n\r\nBecause there is no shipping and the price is 0, the Zen Cart Free Charge comes up for the payment module and the other payment modules vanish.\r\n<br /><br />\r\n\r\nYou can change the text on the Zen Cart Free Charge module to read as you would prefer.\r\n<br /><br />\r\n\r\nNote: if you add products that incur a charge or shipping charge, then the Zen Cart Free Charge payment module will vanish and the regular payment modules will show.', '', 0),
-(52, 1, 'Free Ship & Payment Virtual', 'Product Price is set to 0\r\n<br /><br />\r\n\r\nPayment weight is set to 2 ...\r\n<br /><br />\r\n\r\nVirtual is ON ... this will skip shipping address\r\n<br /><br />', '', 0),
+(52, 1, 'Free Ship & Payment Virtual', 'Product Price is set to 0\r\n<br /><br />\r\n\r\nPayment weight is set to 2 ...\r\n<br /><br />\r\n\r\nVirtual is ON ... this will skip shipping address\r\n<br /><br />', '', 1),
 (53, 1, 'Min and Units MIX', 'This product is purchased based on minimums and units.\r\n<br /><br />\r\n\r\nThe Min is set to 6 and the units is set to 3\r\n<br /><br />\r\n\r\nQuantity Minimums and Units are designed to more or less force the customer to make purchases of a Minimum Quantity ... and if need be, in Units.\r\n<br /><br />\r\n\r\nThis product can only be purchased if you buy at least 6 ... and after that in units of 3 ... 9, 12, 15, 18, etc.\r\n<br /><br />\r\n\r\nIf you do not purchase it in the right Quantity, you will not be able to checkout.\r\n<br /><br />\r\n\r\nWhen adding to the cart, the quantity box on the product_info page is "smart". It will adjust itself based on what is in the cart.\r\n<br /><br />\r\n\r\nThe Add to Cart buttons are also smart on New Products and Product Listing ... these also will adjust what is added to the cart.\r\n<br /><br />\r\n\r\nFor example: If there is 1 in the cart, the next use of Add to Cart will add 5 more to make the Minimum of 6. Add again and 3 more will be added to keep the Units correct.\r\n<br /><br />\r\n\r\nProduct Quantity Min/Unit Mix is for when a product has attributes.\r\n<br /><br />\r\n\r\nIf Mix is ON then a mix of attributes options may be used to make up the Quantity Minimum and Units. This means you can mix 1 blue, 3 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nIf the Mix is OFF then you may not mix 2 blue, 2 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nThis product has the Product Qty Min/Unit Mix set to ON', '', 0),
 (54, 1, 'Min and Units NOMIX', 'This product is purchased based on minimums and units.\r\n<br /><br />\r\n\r\nThe Min is set to 6 and the units is set to 3\r\n<br /><br />\r\n\r\nQuantity Minimums and Units are designed to more or less force the customer to make purchases of a Minimum Quantity ... and if need be, in Units.\r\n<br /><br />\r\n\r\nThis product can only be purchased if you buy at least 6 ... and after that in units of 3 ... 9, 12, 15, 18, etc.\r\n<br /><br />\r\n\r\nIf you do not purchase it in the right Quantity, you will not be able to checkout.\r\n<br /><br />\r\n\r\nWhen adding to the cart, the quantity box on the product_info page is "smart". It will adjust itself based on what is in the cart.\r\n<br /><br />\r\n\r\nThe Add to Cart buttons are also smart on New Products and Product Listing ... these also will adjust what is added to the cart.\r\n<br /><br />\r\n\r\nFor example: If there is 1 in the cart, the next use of Add to Cart will add 5 more to make the Minimum of 6. Add again and 3 more will be added to keep the Units correct.\r\n<br /><br />\r\n\r\nProduct Quantity Min/Unit Mix is for when a product has attributes.\r\n<br /><br />\r\n\r\nIf Mix is ON then a mix of attributes options may be used to make up the Quantity Minimum and Units. This means you can mix 1 blue, 3 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nIf the Mix is OFF then you may not mix 2 blue, 2 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nThis product has the Product Qty Min/Unit Mix set to OFF', '', 0),
 (55, 1, 'Min and Units MIX - Sale', 'This product is purchased based on minimums and units.\r\n<br /><br />\r\n\r\nThe Min is set to 6 and the units is set to 3\r\n<br /><br />\r\n\r\nQuantity Minimums and Units are designed to more or less force the customer to make purchases of a Minimum Quantity ... and if need be, in Units.\r\n<br /><br />\r\n\r\nThis product can only be purchased if you buy at least 6 ... and after that in units of 3 ... 9, 12, 15, 18, etc.\r\n<br /><br />\r\n\r\nIf you do not purchase it in the right Quantity, you will not be able to checkout.\r\n<br /><br />\r\n\r\nWhen adding to the cart, the quantity box on the product_info page is "smart". It will adjust itself based on what is in the cart.\r\n<br /><br />\r\n\r\nThe Add to Cart buttons are also smart on New Products and Product Listing ... these also will adjust what is added to the cart.\r\n<br /><br />\r\n\r\nFor example: If there is 1 in the cart, the next use of Add to Cart will add 5 more to make the Minimum of 6. Add again and 3 more will be added to keep the Units correct.\r\n<br /><br />\r\n\r\nProduct Quantity Min/Unit Mix is for when a product has attributes.\r\n<br /><br />\r\n\r\nIf Mix is ON then a mix of attributes options may be used to make up the Quantity Minimum and Units. This means you can mix 1 blue, 3 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nIf the Mix is OFF then you may not mix 2 blue, 2 silver and 2 green to get 6.\r\n<br /><br />\r\n\r\nThis product has the Product Qty Min/Unit Mix set to ON\r\n<br /><br />\r\n\r\nThis product has been placed on Sale via Sale Maker', '', 0),
@@ -3753,7 +4023,7 @@ INSERT INTO `products_description` (`products_id`, `language_id`, `products_name
 (130, 1, 'Special Product', '<p>This is a Special product priced at $15 with a $10 Special</p><p>There are quantity discounts setup which will be discounted from the Special Price.</p><p>Discounts are added on the Products Price Manager.</p>', '', 0),
 (131, 1, 'Per word - required', '<p>Product is priced by attribute</p><p>The Option Name Line 1 is setup as Text</p><p>The attribute is added to the product as Required</p><p>The pricing is $0.05 per word</p><p>The Option Name Line2 is setup as Text</p><p>The attribute is added to the product as Required</p><p>The pricing is $0.05 per word with 3 words Free</p><p>The Colors are set up as radio buttons and Red is the Default.</p>', '', 0),
 (132, 1, 'Golf Clubs', '<p>Products Price is set to 0 and Products Weight is set to 1</p><p>This is marked Price by Attributes</p><p>This is priced by attribute at 14.45 per club with an added weight of 1 on the attributes.</p><p>This will make the shipping weight 1lb for the product plus 1lb for each attribute (club) added.</p><p>The attributes are sorted so the clubs read in order on the Product Info, Shopping Cart, Order, Email and Account History.</p>', '', 0),
-(85, 1, 'TEST $120 Special $90', 'Product is $120\r\n<br /><br />\r\n\r\nThere is a $90.00 or 25% Special and no sale on this product.\r\n<br /><br />\r\n\r\n\r\nAttributes:<br />\r\nColor:<br />\r\n- Red $100.00<br />\r\n- Orange $50.00<br />\r\n- Yellow $75\r\n<br /><br />\r\n\r\nSize:<br />\r\nSelect from Below:<br />\r\nSmall $50.00<br />\r\nMedium $75.00<br />\r\nLarge $100.00\r\n<br /><br />\r\n\r\nGift Options:<br />\r\n- Dated Collector''s Tin $50.00<br />\r\n- Autographed Memorabila Card $75.00<br />\r\n- Wrapping $100.00\r\n<br /><br />\r\n\r\nNOTE: Select from below is defined as a Display Only Attribute and NOT to be included in the base price. \r\n<br /><br />\r\nThe Display Only means, the customer may NOT select this option value. If they do not selected another option value, then the product cannot be added to the shopping cart.\r\n<br /><br />\r\nThe NOT included in base price means, if this product were priced by attributes, it would not be include. The reason for this is so that the lowest price of this group will be the Small at $50.00 and not Select from Below at $0.00\r\n<br /><br />', '', 0),
+(85, 1, 'TEST $120 Special $90', 'Product is $120\r\n<br /><br />\r\n\r\nThere is a $90.00 or 25% Special and no sale on this product.\r\n<br /><br />\r\n\r\n\r\nAttributes:<br />\r\nColor:<br />\r\n- Red $100.00<br />\r\n- Orange $50.00<br />\r\n- Yellow $75\r\n<br /><br />\r\n\r\nSize:<br />\r\nSelect from Below:<br />\r\nSmall $50.00<br />\r\nMedium $75.00<br />\r\nLarge $100.00\r\n<br /><br />\r\n\r\nGift Options:<br />\r\n- Dated Collector''s Tin $50.00<br />\r\n- Autographed Memorabila Card $75.00<br />\r\n- Wrapping $100.00\r\n<br /><br />\r\n\r\nNOTE: Select from below is defined as a Display Only Attribute and NOT to be included in the base price. \r\n<br /><br />\r\nThe Display Only means, the customer may NOT select this option value. If they do not selected another option value, then the product cannot be added to the shopping cart.\r\n<br /><br />\r\nThe NOT included in base price means, if this product were priced by attributes, it would not be include. The reason for this is so that the lowest price of this group will be the Small at $50.00 and not Select from Below at $0.00\r\n<br /><br />', '', 1),
 (78, 1, 'TEST 25% special 10% Sale Attribute Priced', 'Priced by Attributes - Product price is set to $0.00\r\n<br /><br />\r\nAll attributes are marked to make the price.\r\n\r\n<br /><br />\r\nProduct is $0\r\n<br /><br />\r\nSpecial is 25%\r\n<br /><br />\r\nSale is 10%\r\n<br /><br />', '', 0),
 (79, 1, 'TEST 25% Special Attribute Priced', 'Priced by Attributes - Product price is set to $0.00\r\n<br /><br />\r\nAll attributes are marked to make the price.\r\n\r\n<br /><br />\r\nProduct is $0\r\n<br /><br />\r\nSpecial is 25%\r\n<br /><br />', '', 0),
 (80, 1, 'TEST 25% Special', 'Product is $100.00\r\n<br /><br />\r\nSpecial is 25%\r\n<br /><br />', '', 0),
@@ -4787,8 +5057,13 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`sesskey`, `expiry`, `value`) VALUES
-('b6705bdf7a7b1475cdb1333819fbf411', 1457509156, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f69497759324534597a51305a4455314e7a59354d3252684e575a6d5a54426c4f5451344d545a6d4e7a45324e794937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f324e686447566e62334a705a584e6663484a765a48566a64484e666332397964463976636d526c636e787a4f6a4536496a41694f3252706333427359586c66593246305a576476636d6c6c6331396b636d39775a473933626e78704f6a41376257567a6332466e5a5652765533526859327438637a6f774f6949694f32563658334e76636e526662334a6b5a584a3861546f774f773d3d),
-('6970e20de4d6cb964f6a262469337f6d', 1457509256, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949794e44426959546c6a4e7a566c4e5751314d6d49344e5445305a445a6a5a544d345a446b794d7a4a6a4e5349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f774f6e7439637a6f314f694a30623352686243493761546f774f334d364e6a6f69643256705a326830496a74704f6a4137637a6f324f694a6a59584a30535551694f334d364e546f694e4467344e4449694f334d364d544936496d4e76626e526c626e526664486c775a534937637a6f344f694a7761486c7a61574e6862434937637a6f784f446f695a6e4a6c5a56397a61476c7763476c755a31397064475674496a74704f6a4137637a6f794d446f695a6e4a6c5a56397a61476c7763476c755a3139335a576c6e614851694f326b364d44747a4f6a45354f694a6d636d566c58334e6f615842776157356e5833427961574e6c496a74704f6a413766573568646d6c6e5958527062323538547a6f784e7a6f69626d46326157646864476c76626b687063335276636e6b694f6a493665334d364e446f69634746306143493759546f794f6e74704f6a413759546f304f6e747a4f6a5136496e42685a3255694f334d364d544936496e427962325231593352666157356d62794937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f3245364d6a7037637a6f314f694a6a5547463061434937637a6f304f69497a587a4577496a747a4f6a45784f694a77636d396b64574e30633139705a434937637a6f794f6949784d69493766584d364e446f696347397a6443493759546f774f6e743966576b364d5474684f6a513665334d364e446f696347466e5a534937637a6f314f694a70626d526c65434937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f334d364d446f69496a747a4f6a5136496e4276633351694f3245364d44703766583139637a6f344f694a7a626d4677633268766443493759546f304f6e747a4f6a5136496e42685a3255694f334d364d544936496e427962325231593352666157356d62794937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f3245364d6a7037637a6f314f694a6a5547463061434937637a6f304f69497a587a4577496a747a4f6a45784f694a77636d396b64574e30633139705a434937637a6f794f6949784d69493766584d364e446f696347397a6443493759546f774f6e74396658316a6147566a61313932595778705a48787a4f6a5136496e5279645755694f327868626d64315957646c66484d364e7a6f695a57356e62476c7a61434937624746755a3356685a32567a58326c6b66484d364d546f694d534937624746755a3356685a32567a58324e765a475638637a6f794f694a6c6269493759335679636d567559336c38637a6f7a4f694a56553051694f3352765a47463558326c7a66484d364d544136496a49774d5459744d444d744d446b694f3356775a4746305a55563463476c79595852706232357a664749364d54747a5a584e7a6157397558324e76645735305a584a38596a6f784f324e31633352766257567963313970634639685a4752795a584e7a66484d364d546f694d534937626d563358334279623252315933527a58326c6b58326c7558324e68636e5238637a6f794f6949784f434937646d467361575266644739665932686c5932747664585238596a6f784f324e68636e52665a584a7962334a7a66484d364d446f69496a746a59584a3058324e7664573530636e6c6661575238637a6f7a4f6949794d6a4d694f324e7664573530636e6c666157356d623378684f6a4d3665334d364d545136496d4e7664573530636d6c6c633139755957316c496a747a4f6a457a4f694a56626d6c305a575167553352686447567a496a747a4f6a49774f694a6a6233567564484a705a584e6661584e7658324e765a4756664d694937637a6f794f694a5655794937637a6f794d446f6959323931626e52796157567a58326c7a6231396a6232526c587a4d694f334d364d7a6f6956564e42496a74396257567a6332466e5a5652765533526859327438637a6f774f6949694f773d3d);
+('026d03cac34de23847dd0185da7fbdc0', 1457604107, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949344d6a59354e444e6c597a45325a546b784f4745784e6a55774e4751774e6d5a6c5a6d466a4e6d526a4e434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746c656c397a62334a30583239795a47567966476b364d44733d),
+('ee1cb08da2c12d9e4ef5fe67d30cbd51', 1457605109, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a684d324577596a4d774e6a51315a6a63314d32566a596a646c4e574e684d5467775a544d334e6a46694e5349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f774f6e7439637a6f314f694a30623352686243493761546f774f334d364e6a6f69643256705a326830496a74704f6a4137637a6f324f694a6a59584a30535551694f303437637a6f784d6a6f695932397564475675644639306558426c496a74694f6a4137637a6f784f446f695a6e4a6c5a56397a61476c7763476c755a31397064475674496a74704f6a4137637a6f794d446f695a6e4a6c5a56397a61476c7763476c755a3139335a576c6e614851694f326b364d44747a4f6a45354f694a6d636d566c58334e6f615842776157356e5833427961574e6c496a74704f6a413766573568646d6c6e5958527062323538547a6f784e7a6f69626d46326157646864476c76626b687063335276636e6b694f6a493665334d364e446f69634746306143493759546f304f6e74704f6a413759546f304f6e747a4f6a5136496e42685a3255694f334d364e546f696157356b5a5867694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a74684f6a453665334d364e546f6959314268644767694f334d364e446f694d6c38784f53493766584d364e446f696347397a6443493759546f774f6e743966576b364d5474684f6a513665334d364e446f696347466e5a534937637a6f784d6a6f6963484a765a48566a64463970626d5a76496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c6443493759546f794f6e747a4f6a5536496d4e515958526f496a747a4f6a5136496a4a664d546b694f334d364d544536496e4279623252315933527a58326c6b496a747a4f6a4936496a4979496a7439637a6f304f694a7762334e30496a74684f6a41366533313961546f794f3245364e447037637a6f304f694a775957646c496a747a4f6a45774f694a6a6232353059574e305833567a496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364d7a74684f6a513665334d364e446f696347466e5a534937637a6f314f694a736232647062694937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f3245364d547037637a6f324f694a6859335270623234694f334d364e7a6f6963484a765932567a6379493766584d364e446f696347397a6443493759546f774f6e74396658317a4f6a6736496e4e755958427a61473930496a74684f6a513665334d364e446f696347466e5a534937637a6f784d6a6f6963484a765a48566a64463970626d5a76496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c6443493759546f794f6e747a4f6a5536496d4e515958526f496a747a4f6a5136496a4a664d546b694f334d364d544536496e4279623252315933527a58326c6b496a747a4f6a4936496a4979496a7439637a6f304f694a7762334e30496a74684f6a41366533313966574e6f5a574e7258335a6862476c6b66484d364e446f6964484a315a534937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a746a64584a795a57356a6558787a4f6a4d36496c5654524349376447396b59586c6661584e38637a6f784d446f694d6a41784e6930774d7930784d4349376458426b5958526c5258687761584a6864476c76626e4e38596a6f784f334e6c63334e706232356659323931626e526c636e78694f6a45375933567a644739745a584a7a58326c775832466b5a484a6c63334e38637a6f784f694978496a733d),
+('3135e5943eb0d69f4d267475faa48768', 1457605686, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949344d6a59354e444e6c597a45325a546b784f4745784e6a55774e4751774e6d5a6c5a6d466a4e6d526a4e434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746c656c397a62334a30583239795a47567966476b364d44746a5958526c5a3239796157567a58334279623252315933527a58334e76636e526662334a6b5a584a38637a6f784f694977496a746b61584e776247463558324e686447566e62334a705a584e665a484a76634752766432353861546f774f773d3d),
+('aa1d0d51f898f47159bfd3b14cef8533', 1457605132, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a6a4e6d52685a44557a4e546377596a6b324e474978595464694d54597a4d5745314f4442684f5442695a5349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f774f6e7439637a6f314f694a30623352686243493761546f774f334d364e6a6f69643256705a326830496a74704f6a4137637a6f324f694a6a59584a30535551694f303437637a6f784d6a6f695932397564475675644639306558426c496a74694f6a4137637a6f784f446f695a6e4a6c5a56397a61476c7763476c755a31397064475674496a74704f6a4137637a6f794d446f695a6e4a6c5a56397a61476c7763476c755a3139335a576c6e614851694f326b364d44747a4f6a45354f694a6d636d566c58334e6f615842776157356e5833427961574e6c496a74704f6a413766573568646d6c6e5958527062323538547a6f784e7a6f69626d46326157646864476c76626b687063335276636e6b694f6a493665334d364e446f69634746306143493759546f794f6e74704f6a413759546f304f6e747a4f6a5136496e42685a3255694f334d364e6a6f696247396e62325a6d496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364d5474684f6a513665334d364e446f696347466e5a534937637a6f314f694a736232647062694937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f334d364d446f69496a747a4f6a5136496e4276633351694f3245364d44703766583139637a6f344f694a7a626d4677633268766443493759546f774f6e743966574e6f5a574e7258335a6862476c6b66484d364e446f6964484a315a534937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a746a64584a795a57356a6558787a4f6a4d36496c5654524349376447396b59586c6661584e38637a6f784d446f694d6a41784e6930774d7930784d4349376458426b5958526c5258687761584a6864476c76626e4e38596a6f784f334e6c63334e706232356659323931626e526c636e78694f6a45375933567a644739745a584a7a58326c775832466b5a484a6c63334e38637a6f784f694978496a733d),
+('4072e3098832a379a35b76295b12f38e', 1457605013, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949344d6a59354e444e6c597a45325a546b784f4745784e6a55774e4751774e6d5a6c5a6d466a4e6d526a4e434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746c656c397a62334a30583239795a47567966476b364d44746a5958526c5a3239796157567a58334279623252315933527a58334e76636e526662334a6b5a584a38637a6f784f694977496a746b61584e776247463558324e686447566e62334a705a584e665a484a76634752766432353861546f774f773d3d),
+('3a0c10330df31bad799c6cc1ef4b468c', 1457606567, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949344d6a59354e444e6c597a45325a546b784f4745784e6a55774e4751774e6d5a6c5a6d466a4e6d526a4e434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746c656c397a62334a30583239795a47567966476b364d44746a5958526c5a3239796157567a58334279623252315933527a58334e76636e526662334a6b5a584a38637a6f784f694977496a746b61584e776247463558324e686447566e62334a705a584e665a484a76634752766432353861546f774f773d3d),
+('f5f03ca6c1b0d6dddac8cf22acefd721', 1457605185, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a6a4e6d52685a44557a4e546377596a6b324e474978595464694d54597a4d5745314f4442684f5442695a5349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364e546f694d6a67784d5449694f324e68636e5238547a6f784d6a6f696332687663484270626d644459584a30496a6f344f6e747a4f6a6736496d4e76626e526c626e527a496a74684f6a453665334d364d7a5536496a67314f6a5a6a4d47517a4d6d497a5a5451355954646c4f5441335a6a41314d544e6b5a6a6b304f444d7959544578496a74684f6a493665334d364d7a6f6963585235496a746b4f6a45774f334d364d544136496d463064484a70596e56305a584d694f3245364d54703761546f794f334d364d6a6f694d6a45694f33313966584d364e546f6964473930595777694f3251364d5449334e54747a4f6a5936496e646c6157646f644349375a446f784d44747a4f6a5936496d4e68636e524a52434937637a6f314f6949794f4445784d694937637a6f784d6a6f695932397564475675644639306558426c496a747a4f6a6736496e426f65584e7059324673496a747a4f6a45344f694a6d636d566c58334e6f615842776157356e58326c305a5730694f326b364d44747a4f6a49774f694a6d636d566c58334e6f615842776157356e5833646c6157646f6443493761546f774f334d364d546b36496d5a795a5756666332687063484270626d646663484a70593255694f326b364d447439626d46326157646864476c76626e78504f6a45334f694a7559585a705a3246306157397553476c7a64473979655349364d6a7037637a6f304f694a775958526f496a74684f6a553665326b364d4474684f6a513665334d364e446f696347466e5a534937637a6f324f694a73623264765a6d59694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313961546f784f3245364e447037637a6f304f694a775957646c496a747a4f6a5536496d78765a326c75496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c6443493759546f784f6e747a4f6a5936496d466a64476c7662694937637a6f334f694a77636d396a5a584e7a496a7439637a6f304f694a7762334e30496a74684f6a41366533313961546f794f3245364e447037637a6f304f694a775957646c496a747a4f6a5536496d6c755a475634496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364d7a74684f6a513665334d364e446f696347466e5a534937637a6f784d7a6f696332687663484270626d64665932467964434937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f334d364d446f69496a747a4f6a5136496e4276633351694f3245364d447037665831704f6a513759546f304f6e747a4f6a5136496e42685a3255694f334d364d546336496d4e6f5a574e726233563058334e6f615842776157356e496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e74396658317a4f6a6736496e4e755958427a61473930496a74684f6a4136653331395932686c59327466646d467361575238637a6f304f694a30636e566c496a74735957356e6457466e5a58787a4f6a6336496d56755a327870633267694f327868626d64315957646c633139705a48787a4f6a4536496a45694f327868626d64315957646c6331396a6232526c66484d364d6a6f695a5734694f324e31636e4a6c626d4e3566484d364d7a6f6956564e45496a743062325268655639706333787a4f6a45774f6949794d4445324c54417a4c544577496a7431634752686447564665484270636d463061573975633378694f6a45376332567a63326c76626c396a6233567564475679664749364d54746a64584e306232316c636e4e66615842665957526b636d567a6333787a4f6a4536496a45694f324e31633352766257567958326c6b66484d364d546f694d7949375933567a644739745a584a665a47566d59585673644639685a4752795a584e7a58326c6b66484d364d546f694d7949375933567a644739745a584a7a5832463164476876636d6c365958527062323538637a6f784f694977496a746a64584e306232316c636c396d61584a7a644639755957316c66484d364e546f6953476c79595730694f324e3163335276625756795832786863335266626d46745a58787a4f6a6736496b316a61325675656d6c6c496a746a64584e306232316c636c396a6233567564484a3558326c6b66484d364d7a6f694d6a497a496a746a64584e306232316c636c39366232356c58326c6b66484d364d546f694d694937646d467361575266644739665932686c5932747664585238596a6f784f324e68636e52665a584a7962334a7a66484d364d446f69496a747a5a57356b64473938637a6f784f69497a496a746a59584a305832466b5a484a6c63334e6661575238637a6f784f69497a496a747759586c745a573530664534376332687063484270626d643859546f7a4f6e747a4f6a4936496d6c6b496a747a4f6a6b36496d6c305a5731666158526c62534937637a6f314f694a30615852735a534937637a6f784f546f695547567949456c305a5730674b454a6c63335167563246354b534937637a6f304f694a6a62334e30496a746b4f6a49314f33316a623231745a5735306333787a4f6a5936496b3576494739755a534937);
 
 -- --------------------------------------------------------
 
@@ -4997,7 +5272,7 @@ CREATE TABLE `whos_online` (
 --
 
 INSERT INTO `whos_online` (`customer_id`, `full_name`, `session_id`, `ip_address`, `time_entry`, `time_last_click`, `last_page_url`, `host_address`, `user_agent`) VALUES
-(0, '&yen;Guest', '6970e20de4d6cb964f6a262469337f6d', '1', '1457507675', '1457507816', '/shop.solagecalistoga139h/', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
+(3, 'Mckenzie, Hiram', 'f5f03ca6c1b0d6dddac8cf22acefd721', '1', '1457591289', '1457603745', '/shop.solagecalistoga139h/index.php?main_page=checkout_payment', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
 
 -- --------------------------------------------------------
 
@@ -5811,7 +6086,7 @@ ALTER TABLE `zones_to_geo_zones`
 -- AUTO_INCREMENT for table `address_book`
 --
 ALTER TABLE `address_book`
-MODIFY `address_book_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `address_book_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `address_format`
 --
@@ -5826,7 +6101,7 @@ MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `admin_activity_log`
 --
 ALTER TABLE `admin_activity_log`
-MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=296;
+MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=531;
 --
 -- AUTO_INCREMENT for table `authorizenet`
 --
@@ -5841,12 +6116,12 @@ MODIFY `banners_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 -- AUTO_INCREMENT for table `banners_history`
 --
 ALTER TABLE `banners_history`
-MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
+MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-MODIFY `categories_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=66;
+MODIFY `categories_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=83;
 --
 -- AUTO_INCREMENT for table `configuration`
 --
@@ -5896,17 +6171,17 @@ MODIFY `currencies_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-MODIFY `customers_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `customers_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `customers_basket`
 --
 ALTER TABLE `customers_basket`
-MODIFY `customers_basket_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `customers_basket_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `customers_basket_attributes`
 --
 ALTER TABLE `customers_basket_attributes`
-MODIFY `customers_basket_attributes_id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `customers_basket_attributes_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `email_archive`
 --

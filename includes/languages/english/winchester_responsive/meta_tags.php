@@ -9,13 +9,13 @@
  */
 
 // page title
-define('TITLE', 'Winchester Responsive Zen Cart Template');
+define('TITLE', 'Napa Valley Spa Products, Solage Gifts');
 
 // Site Tagline
-define('SITE_TAGLINE', 'by Picaflor Azul');
+define('SITE_TAGLINE', 'Solage Calistoga');
 
 // Custom Keywords
-define('CUSTOM_KEYWORDS', 'ecommerce, open source, shop, online shopping');
+define('CUSTOM_KEYWORDS', 'Solage Calistoga offers Napa Valley spa products and gifts with brands such as True Nature Botanicals, Organic Male, and more. Shop today.');
 
 // Home Page Only:
   define('HOME_PAGE_META_DESCRIPTION', '');

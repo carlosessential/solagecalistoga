@@ -17,7 +17,8 @@
   // $spacer .= '&nbsp;';
 
 
-  $content = "";
+  $content = "<h3><span>Shop by Category</span></h3>";
+
   
   $content .= '<div id="' . str_replace('_', '-', $box_id . 'Content') . '" class="sideBoxContent">' . "\n";
     for ($i=0;$i<sizeof($box_categories_array);$i++) {
@@ -44,26 +45,27 @@
 	  if ($box_categories_array[$i]['current']) {
         if ($box_categories_array[$i]['has_sub_cat']) {
           $content .= '<span class="category-subs-parent">';
-          $content .= cat_with_pointer($box_categories_array[$i]['name'], 'down', $spacer);
+          $content .= $box_categories_array[$i]['name'];
           $content .= '</span>';
         } else {
           $content .= '<span class="category-subs-selected">';
-          $content .= cat_with_pointer($box_categories_array[$i]['name'], 'nosub', $spacer);
+          $content .= $box_categories_array[$i]['name'];
           $content .= '</span>';
         }
       } else {
         if ($box_categories_array[$i]['has_sub_cat']) { 
-        $content .= cat_with_pointer($box_categories_array[$i]['name'], 'right', $spacer); }
+        $content .= $box_categories_array[$i]['name']; }
         else { 
-        $content .= cat_with_pointer($box_categories_array[$i]['name'], 'nosub', $spacer); }
+        $content .= $box_categories_array[$i]['name']; }
       }
 
       if ($box_categories_array[$i]['has_sub_cat']) {
         $content .= CATEGORIES_SEPARATOR;
+        $content .= '<hr id="catBoxDivider" />' . "\n";
       }
       //$content .= '</a>';
 
-      if (SHOW_COUNTS == 'true') {
+      if (SHOW_COUNTS == 'false') {
         if ((CATEGORIES_COUNT_ZERO == '1' and $box_categories_array[$i]['count'] == 0) or $box_categories_array[$i]['count'] >= 1) {
           $content .= CATEGORIES_COUNT_PREFIX . $box_categories_array[$i]['count'] . CATEGORIES_COUNT_SUFFIX;
         }
@@ -84,7 +86,6 @@
       $show_this = $db->Execute("select s.products_id from " . TABLE_SPECIALS . " s where s.status= 1 limit 1");
       if ($show_this->RecordCount() > 0) {
         $content .= '<div class="betterCategories"><a class="category-links" href="' . zen_href_link(FILENAME_SPECIALS) . '">';
-        $content .= zen_image(DIR_WS_TEMPLATE_IMAGES . 'bc_cat_boxes.gif') . $spacer;
         $content .= CATEGORIES_BOX_HEADING_SPECIALS . '</a></div>';
       }
     }
@@ -98,7 +99,6 @@
                                  where p.products_status = 1 " . $display_limit . " limit 1");
       if ($show_this->RecordCount() > 0) {
         $content .= '<div class="betterCategories"><a class="category-links" href="' . zen_href_link(FILENAME_PRODUCTS_NEW) . '">';
-        $content .= zen_image(DIR_WS_TEMPLATE_IMAGES . 'bc_cat_boxes.gif') . $spacer;
         $content .= CATEGORIES_BOX_HEADING_WHATS_NEW . '</a></div>';
       }
     }
@@ -106,13 +106,11 @@
       $show_this = $db->Execute("select products_id from " . TABLE_FEATURED . " where status= 1 limit 1");
       if ($show_this->RecordCount() > 0) {
         $content .= '<div class="betterCategories"><a class="category-links" href="' . zen_href_link(FILENAME_FEATURED_PRODUCTS) . '">';
-        $content .= zen_image(DIR_WS_TEMPLATE_IMAGES . 'bc_cat_boxes.gif') . $spacer;
         $content .= CATEGORIES_BOX_HEADING_FEATURED_PRODUCTS . '</a></div>';
       }
     }
     if (SHOW_CATEGORIES_BOX_PRODUCTS_ALL == 'true') {
       $content .= '<div class="betterCategories"><a class="category-links no-border" href="' . zen_href_link(FILENAME_PRODUCTS_ALL) . '">';
-        $content .= zen_image(DIR_WS_TEMPLATE_IMAGES . 'bc_cat_boxes.gif') . $spacer;
       $content .= CATEGORIES_BOX_HEADING_PRODUCTS_ALL . '</a></div>';
     }
   }

@@ -39,15 +39,96 @@ if (!isset($flag_disable_footer) || !$flag_disable_footer) {
 <div id="flex-navSupp">
 <div class="onerow-fluid <?php echo $fluidisFixed; ?>">
 
-<?php require($template->get_template_dir('tpl_flexible_footer_menu.php',DIR_WS_TEMPLATE, $current_page_base,'templates'). '/tpl_flexible_footer_menu.php'); ?>
-<br /><br />
+<div id="new-footer">
 
-<!--bof- site copyright display -->
-<div id="siteinfoLegal" class="legalCopyright"><?php echo FOOTER_TEXT_BODY; ?></div>
-<!--eof- site copyright display -->
+  <div class="footercontent">
+
+    <!-- right side footer content-->
+
+    <div class="footerright">
+
+      <div id="navcontainer">
+
+        <style>
+        .footersociallist { line-height: 3.5em; }
+
+        .visible-xs { display: none; }
+        @media (max-width: 767px) {
+          .visible-xs { display: inline; }
+        }
+        </style>
+
+
+
+        <ul class="footernavlist footersociallist">
+          <!-- bof AddThis -->
+          <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=" async="async"></script>
+
+          <li><a class="hide-text icon-fb addthis_button_facebook" href="http://www.facebook.com/SolageCalistoga" target="_blank"><img src="images/social-icon_1fb.png"  height="25" border="0" alt="Facebook"/></a></li>
+
+          <li><a class="hide-text icon-tw addthis_button_twitter" href="http://twitter.com/solagecalistoga" target="_blank"><img src="images/social-icon_2twitter.png"  height="25" border="0" alt="Twitter"/></a></li>
+
+          <li><a class="hide-text icon-pi addthis_button_pinterest_share" href="http://pinterest.com/solagecalistoga/" target="_blank"><img src="images/social-icon_3pinterest.png"  height="25" border="0" alt="Pinterest"/></a></li>
+
+          <li><a class="hide-text icon-ta" href="http://www.tripadvisor.com/Hotel_Review-g32143-d647781-Reviews-Solage_Calistoga-Calistoga_Napa_Valley_California.html" target="_blank"><img src="images/social-icon_4ta.png"  height="25" border="0" alt="Trip Advisor"/></a></li>
+
+          <br class="visible-xs">
+
+          <li><a class="hide-text icon-yt" href="https://www.youtube.com/channel/UC2wWKgwT0LjQOL6MDt9TbGA" target="_blank"><img src="images/social-icon_5yt.png"  height="25" border="0" alt="Youtube"/></a></li>
+
+          <li><a class="hide-text icon-insta" href="http://instagram.com/solagecalistoga" target="_blank"><img src="images/social-icon_6instagram.png"  height="25" border="0" alt="Instagram"/></a></li>
+
+          <li><a class="hide-text icon-gplus addthis_button_google" href="https://plus.google.com/u/0/+solagecalistoga/posts" target="_blank"><img src="images/social-icon_7g.png"  height="25" border="0" alt="Google+"/></a></li>
+
+          <li><a class="icon-share addthis_button_compact" onclick="return false;" style="background:transparent;" href="#"><span class="st_sharethis_custom" st_processed="yes"><img src="images/social-icon_8share.png"  height="25" border="0" alt="Share"/></span></a></li>
+
+        </ul>
+        <!--eof AddThis-->
+
+
+
+
+
+        <img style="padding: 0 5%; opacity: .75; margin:20px auto 30px; max-width: 90%; height: auto; display:block;" src="images/rewards-2015.png" alt="">
+
+
+
+
+        <ul class="footernavlist">
+
+          <li><a href="https://www.solagecalistoga.com/press_highlights">Press</a></li>
+
+          <li class="fancy"><a href="https://www.solagecalistoga.com/frames.php" target="_blank">Sign Up</a></li>
+
+          <li><a href="https://www.solagecalistoga.com/join_team_solage">Join Team Solage</a></li>
+
+          <li><a href="http://www.solagehotelsandresorts.com/" target="_blank">Solage Hotels &amp; Resorts</a></li>
+
+          <li><a href="https://www.solagecalistoga.com/privacy_p_d">Privacy</a></li>
+
+          <li><a href="https://www.solagecalistoga.com/site_map">Site Map</a></li>
+
+<script>
+  function resetMobileCookie () {
+    $.removeCookie('mredir');
+    return true;
+  }
+</script>
+
+        </ul>
+
+      </div><!-- navcontainer -->    
+
+    </div><!-- footerright -->
+
+  </div><!-- footercontent -->
+
+</div>
+<br />
+
 
 <!--bof sitemap, privacy, conditions -->
-<div id="footer-bottom">
+<!-- <div id="footer-bottom">
                        <?php if (DEFINE_SITE_MAP_STATUS <= 1) { ?>
                         <a href="<?php echo zen_href_link(FILENAME_SITE_MAP); ?>"><?php echo BOX_INFORMATION_SITE_MAP; ?></a>
                         <?php } ?>
@@ -58,9 +139,12 @@ if (!isset($flag_disable_footer) || !$flag_disable_footer) {
                         <a href="<?php echo zen_href_link(FILENAME_CONDITIONS); ?>"><?php echo BOX_INFORMATION_CONDITIONS; ?></a>
                         <?php } ?>
 
-</div>
+</div> -->
 <!--eof sitemap, privacy, conditions -->
 
+<!--bof- site copyright display -->
+<div id="siteinfoLegal" class="legalCopyright"><?php echo FOOTER_TEXT_BODY; ?></div>
+<!--eof- site copyright display -->
 
 </div>
 </div>

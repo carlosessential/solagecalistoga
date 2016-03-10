@@ -51,23 +51,34 @@
 
 <table  border="0" width="100%" cellspacing="0" cellpadding="0" id="cartContentsDisplay">
      <tr class="tableHeading">
+        <th scope="col" id="scRemoveHeading">&nbsp;</th>
 
         <th scope="col" id="scProductsHeading"><?php echo TABLE_HEADING_PRODUCTS; ?></th>
 
-        <th scope="col" id="scQuantityHeading"><?php echo TABLE_HEADING_QUANTITY; ?></th>
-
-        <th scope="col" id="scUpdateQuantity">&nbsp;</th>
         <th scope="col" id="scUnitHeading"><?php echo TABLE_HEADING_PRICE; ?></th>
+        
+        <th scope="col" id="scQuantityHeading"><?php echo TABLE_HEADING_QUANTITY; ?></th>
+        <th scope="col" id="scUpdateQuantity">&nbsp;</th>
 
         <th scope="col" id="scTotalHeading"><?php echo TABLE_HEADING_TOTAL; ?></th>
-        <th scope="col" id="scRemoveHeading">&nbsp;</th>
      </tr>
          <!-- Loop through all products /-->
 <?php
   foreach ($productArray as $product) {
 ?>
      <tr class="<?php echo $product['rowClass']; ?>">
-
+      <td class="cartRemoveItemDisplay product-remove">
+      <?php
+        if ($product['buttonDelete']) {
+      ?>
+                 <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, 'action=remove_product&product_id=' . $product['id']); ?>" title="Remove this item">x</a>
+      <?php
+        }
+        if ($product['checkBoxDelete'] ) {
+          echo zen_draw_checkbox_field('cart_delete[]', $product['id']);
+        }
+      ?>
+      </td>
 
        <td class="cartProductDisplay">
 	   <a href="<?php echo $product['linkProductsName']; ?>"><span id="cartImage" class="back"><?php echo $product['productsImage']; ?></span><span class="mobile-only"><?php echo TABLE_HEADING_PRODUCTS; ?>:</span><span id="cartProdTitle"><?php echo $product['productsName'] . '<span class="alert bold">' . $product['flagStockCheck'] . '</span>'; ?></span></a>
@@ -93,6 +104,9 @@
 ?>
        </td>
 
+       <td class="cartUnitDisplay">
+	   <span class="mobile-only"><?php echo TABLE_HEADING_PRICE; ?>:</span>
+<?php echo $product['productsPriceEach']; ?></td>
 
        <td class="cartQuantity">
 
@@ -118,9 +132,6 @@
 
 
 
-       <td class="cartUnitDisplay">
-	   <span class="mobile-only"><?php echo TABLE_HEADING_PRICE; ?>:</span>
-<?php echo $product['productsPriceEach']; ?></td>
 
 
        <td class="cartTotalDisplay">
@@ -130,18 +141,6 @@
             </span>
 
 <?php echo $product['productsPrice']; ?></td>
-       <td class="cartRemoveItemDisplay">
-<?php
-  if ($product['buttonDelete']) {
-?>
-           <a href="<?php echo zen_href_link(FILENAME_SHOPPING_CART, 'action=remove_product&product_id=' . $product['id']); ?>"><?php echo zen_image($template->get_template_dir(ICON_IMAGE_TRASH, DIR_WS_TEMPLATE, $current_page_base,'images/icons'). '/' . ICON_IMAGE_TRASH, ICON_TRASH_ALT); ?></a>
-<?php
-  }
-  if ($product['checkBoxDelete'] ) {
-    echo zen_draw_checkbox_field('cart_delete[]', $product['id']);
-  }
-?>
-</td>
      </tr>
 <?php
   } // end foreach ($productArray as $product)
