@@ -381,10 +381,10 @@
 // only for where multiple add to cart is used:
   define('SUCCESS_ADDED_TO_CART_PRODUCTS', 'Successfully added selected Product(s) to the cart ...');
 
-  define('TEXT_PRODUCT_WEIGHT_UNIT','lbs');
+  define('TEXT_PRODUCT_WEIGHT_UNIT','oz');
 
 // Shipping
-  define('TEXT_SHIPPING_WEIGHT','lbs');
+  define('TEXT_SHIPPING_WEIGHT','oz');
   define('TEXT_SHIPPING_BOXES', 'Boxes');
 
 // Discount Savings

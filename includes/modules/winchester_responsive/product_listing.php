@@ -166,7 +166,7 @@ if ($listing_split->number_of_rows > 0) {
         if (zen_has_product_attributes($listing->fields['products_id']) or PRODUCT_LIST_PRICE_BUY_NOW == '0') {
           $lc_button = '<div class="pl-details"><a href="' . zen_href_link(zen_get_info_page($listing->fields['products_id']), 'cPath=' . (($_GET['manufacturers_id'] > 0 and $_GET['filter_id']) > 0 ?  zen_get_generated_category_path_rev($_GET['filter_id']) : ($_GET['cPath'] > 0 ? $_GET['cPath'] : zen_get_generated_category_path_rev($listing->fields['master_categories_id']))) . '&products_id=' . $listing->fields['products_id']) . '">' . zen_image_button(BUTTON_IMAGE_GOTO_PROD_DETAILS, BUTTON_GOTO_PROD_DETAILS_ALT, 'class="listingBuyNowButton"') . '</a></div>';
         } else {
-          if (PRODUCT_LISTING_MULTIPLE_ADD_TO_CART != 0) {
+          if (PRODUCT_LISTING_MULTIPLE_ADD_TO_CART != 0 ) {
             if (
                 // not a hide qty box product
                 $listing->fields['products_qty_box_status'] != 0 &&
