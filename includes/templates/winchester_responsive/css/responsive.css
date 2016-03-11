@@ -24,7 +24,7 @@ margin-left:0.5em;
 
 /* onerow-fluid uses percentage-based calculations on its child div;s (above col;s). Both will still tile down, adjusting to the width of the browser as it shrinks or grows. But onerow-fluid will continuously try to re-size, while (col) will tile down only after a certain width is reached. */
 /* No reason to edit below percentage calculations */
-.onerow-fluid{width:100%;*zoom:1;}
+.onerow-fluid{width:90%;*zoom:1;margin: 0 auto;}
 .onerow-fluid:before,
 .onerow-fluid:after{display:table;content:"";}
 .onerow-fluid:after{clear:both;}
