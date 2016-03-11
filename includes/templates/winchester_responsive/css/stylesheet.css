@@ -17,9 +17,9 @@ HR {margin-top: 0.5em;border:none;border-bottom:1px solid #f2f2f2;}
 /*bof form elements*/
 CODE {font-family: arial, verdana, helvetica, sans-serif;font-size: 1em;}
 FORM, SELECT, INPUT {display: inline;}
-TEXTAREA {margin: auto;display: block;width: 95%;border:1px solid #ddd;background:#ddddde;margin-top:10px;margin-bottom:10px;}
+TEXTAREA {margin: auto;display: block;width: 95%;border:1px solid #ddd;margin-top:10px;margin-bottom:10px;}
 input {border:1px solid #ddd;height:28px;margin-bottom:10px;padding-left:20px;width:40%;}
-FIELDSET {padding: 30px;margin: 0.5em 0em;border: 1px solid #dbdbce;margin-bottom:30px;margin-top:30px;}
+FIELDSET {padding: 30px 0;margin: 0.5em 0em;border: 1px solid #dbdbce;margin-bottom:30px;margin-top:30px;}
 #country{width:42%;}
 LEGEND {font-weight: normal;padding: 15px;background:#f4f4f4;color:#444;text-transform:uppercase;margin-left:-31px;}
 LABEL, h4.optionName {line-height: 1.5em;padding: 0.2em;}
@@ -27,7 +27,7 @@ LABEL.checkboxLabel, LABEL.radioButtonLabel {margin: 0.5em 0.3em;color:#444;}
 LABEL.inputLabel {width: 11em;float: left;color:#444;}
 LABEL.inputLabelPayment {width: 15em;float: left;}
 LABEL.selectLabel, LABEL.switchedLabel, LABEL.uploadsLabel  {width: 12em;float: left;}
-P, ADDRESS {padding: 0.5em;}
+P, ADDRESS {padding: 0.5em 0;}
 ADDRESS {font-style: normal;}
 input[type=hidden]{border:none;}
 input[type=image], input[type=submit]{border:none;height:44px !important;width:auto !important;}
@@ -105,10 +105,10 @@ input [type=submit], input[type=submit]{ -webkit-appearance: none;-webkit-border
 /*bof the main content classes*/
 #contentColumnMain, #navColumnOne, #navColumnTwo, .centerBoxContents, .specialsListBoxContents, .categoryListBoxContents, .additionalImages, .centerBoxContentsSpecials, .centerBoxContentsAlsoPurch, .centerBoxContentsFeatured, .centerBoxContentsNew, .alert {vertical-align:top;}
 #productDescription, .shippingEstimatorWrapper {padding:0.5em;}
-.alert {margin-left:0.5em;color:#ff0001;}
+.alert {margin-left:0.5em;color:#c84e45;}
 .important {font-weight:bold;}
 .gvBal {float:right;}
-.centerColumn, #bannerOne, #bannerTwo,  #bannerThree,  #bannerFour,  #bannerFive,  #bannerSix {padding:0.8em;}
+.centerColumn, #bannerOne, #bannerTwo,  #bannerThree,  #bannerFour,  #bannerFive,  #bannerSix {padding:0.8em; margin-bottom: 50px;}
 .smallText, #siteinfoLegal, #siteinfoCredits, #siteinfoStatus, #siteinfoIP {font-size: 0.9em;}
 
 /*bof shopping cart display*/
@@ -147,7 +147,7 @@ input [type=submit], input[type=submit]{ -webkit-appearance: none;-webkit-border
 .mediaTitle {float:left;}
 .mediaTypeLink {float:right;}
 .normalprice, .productSpecialPriceSale {text-decoration:line-through;}
-.productSpecialPrice, .productSalePrice, .productSpecialPriceSale, .productPriceDiscount {color:#ff0001;}
+.productSpecialPrice, .productSalePrice, .productSpecialPriceSale, .productPriceDiscount {color:#c84e45;}
 .orderHistList {margin:1em;padding:0.2em 0;} 
 #cartBoxListWrapper ul, #ezPageBoxList ul {list-style-type:none;}
 #cartBoxListWrapper li, #ezPageBoxList li, .cartBoxTotal {margin:0;padding:0.2em 0;} 
@@ -392,7 +392,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 #flex-navSupp a:hover {color: #7B9FAA;}
 
 /*bof css buttons*/
-.cssButton, .cssButtonHover, .more-info {background-color:#171717;transition:background 2s ease;-webkit-transition:background 2s ease;-moz-transition:background 2s ease;-o-transition:background 2s ease;color:#fffffd;text-align:center;white-space:nowrap;text-decoration:none;font-weight:normal;padding:0.8em 1.2em;}
+.cssButton, .cssButtonHover, .more-info {background-color:#555555;transition:background 2s ease;-webkit-transition:background 2s ease;-moz-transition:background 2s ease;-o-transition:background 2s ease;color:#fffffd;text-align:center;white-space:nowrap;text-decoration:none;font-weight:normal;padding:0.8em 1.2em;}
 .more-info{width:80px;margin:0 auto;}
 .more-info:hover{background:#111111;}
 .more-info .icon-circle-arrow-right:before{color:#fff !important;margin-left:5px;vertical-align:middle;}
@@ -407,7 +407,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 .button_in_cart{width:150px !important;font-size:120% !important;background:#444;height:40px;}
 .button_in_cartHover{background:#a0a0a0;}
 .button_add_selected{width:250px !important;height:auto;}
-.button_search{height:auto !important;width:40px !important;background:#171717;border:none;position:relative;left:-3px;}
+.button_search{height:auto !important;width:40px !important;background:#555555;border:none;position:relative;left:-3px;}
 .button_buy_now .icon-circle-arrow-right:before{color:#fff !important;margin-left:5px;vertical-align:middle;}
 .button_checkout{background:#c84e45;}
 

@@ -45,7 +45,7 @@ define('CUSTOM_KEYWORDS', 'Solage Calistoga offers Napa Valley spa products and 
 
 // separators for meta tag definitions
 // Define Primary Section Output
-  define('PRIMARY_SECTION', ' : ');
+  define('PRIMARY_SECTION', ' | ');
 
 // Define Secondary Section Output
   define('SECONDARY_SECTION', ' - ');

@@ -359,7 +359,7 @@ ul.slimmenu{position:relative;z-index:1000;background:#fff;}
 /* Changing the % (100%) to a px (980px) will keep .onerow-fluid from expanding past (980px) */
 /* The below (margin:auto;) centers .onerow-fluid if changed to a (px) value */
 
-.onerow-fluid{width:1000px;*zoom:1;margin:0 auto;}
+.onerow-fluid{width:90%;*zoom:1;margin:0 auto;}
 #mobile-nav{display:none;}
 
 /* The below code will also keep your header and footer from expanding past (980px) */

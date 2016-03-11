@@ -55,8 +55,10 @@ class zen_categories_ul_generator {
     
     function buildBranch($parent_id, $level, $submenu=true, $parent_link='')
     {
-        $result = sprintf($this->parent_group_start_string, ($submenu==true) ? ' class="level'. ($level+1) . '"' : '' );
-        
+        if($level == 1){
+            $result = sprintf($this->parent_group_start_string, ($submenu==true) ? ' class="level'. ($level+1) . '"' : '' );
+        }
+            
         if (($this->data[$parent_id])) {
             foreach($this->data[$parent_id] as $category_id => $category) {
                 $category_link = $parent_link . $category_id;
@@ -75,8 +77,9 @@ class zen_categories_ul_generator {
                 $result .= $this->child_end_string;
             }
         }
-        
-        $result .= $this->parent_group_end_string;
+        if($level == 1){
+            $result .= $this->parent_group_end_string;
+        }
         return $result;
     }
     

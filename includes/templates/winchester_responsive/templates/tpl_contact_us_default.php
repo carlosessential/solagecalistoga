@@ -46,11 +46,12 @@
 
 <?php if ($messageStack->size('contact') > 0) echo $messageStack->output('contact'); ?>
 
+<h2>Location</h2>
 <?php if (CONTACT_US_STORE_NAME_ADDRESS== '1') { ?>
 <address><?php echo nl2br(STORE_NAME_ADDRESS); ?></address>
 <?php } ?>
 
-
+<h2>Contact Form</h2>
 <fieldset id="contactUsForm">
 
 <div class="contact-left">

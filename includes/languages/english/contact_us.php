@@ -7,8 +7,8 @@
  * @version $Id: contact_us.php 6202 2007-04-12 22:56:10Z drbyte $
  */
 
-define('HEADING_TITLE', 'Contact Us');
-define('NAVBAR_TITLE', 'Contact Us');
+define('HEADING_TITLE', 'Contact');
+define('NAVBAR_TITLE', 'Contact');
 define('TEXT_SUCCESS', 'Your message has been successfully sent.');
 define('EMAIL_SUBJECT', 'Message from ' . STORE_NAME);
 

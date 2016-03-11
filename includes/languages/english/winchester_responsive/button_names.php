@@ -89,7 +89,7 @@ define('BUTTON_REDEEM_ALT', 'Redeem');
 define('BUTTON_RETURN_TO_PROD_LIST_ALT', 'All');
 define('BUTTON_REVIEWS_ALT', 'Go to the Reviews Page');
 define('BUTTON_SEARCH_ALT', 'Search');
-define('BUTTON_SEND_ALT', 'Send Now');
+define('BUTTON_SEND_ALT', 'Send Message');
 define('BUTTON_SEND_ANOTHER_ALT', 'Send Another Gift Certificate');
 define('BUTTON_SEND_A_GIFT_CERT_ALT', 'Send A Gift Certificate');
 define('BUTTON_SHIPPING_ESTIMATOR_ALT', 'Shipping Estimator');

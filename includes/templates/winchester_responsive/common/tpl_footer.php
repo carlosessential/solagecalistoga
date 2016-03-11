@@ -64,11 +64,11 @@ if (!isset($flag_disable_footer) || !$flag_disable_footer) {
           <!-- bof AddThis -->
           <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=" async="async"></script>
 
-          <li><a class="hide-text icon-fb addthis_button_facebook" href="http://www.facebook.com/SolageCalistoga" target="_blank"><img src="images/social-icon_1fb.png"  height="25" border="0" alt="Facebook"/></a></li>
+          <li><a class="hide-text icon-fb" href="http://www.facebook.com/SolageCalistoga" target="_blank"><img src="images/social-icon_1fb.png"  height="25" border="0" alt="Facebook"/></a></li>
 
-          <li><a class="hide-text icon-tw addthis_button_twitter" href="http://twitter.com/solagecalistoga" target="_blank"><img src="images/social-icon_2twitter.png"  height="25" border="0" alt="Twitter"/></a></li>
+          <li><a class="hide-text icon-tw" href="http://twitter.com/solagecalistoga" target="_blank"><img src="images/social-icon_2twitter.png"  height="25" border="0" alt="Twitter"/></a></li>
 
-          <li><a class="hide-text icon-pi addthis_button_pinterest_share" href="http://pinterest.com/solagecalistoga/" target="_blank"><img src="images/social-icon_3pinterest.png"  height="25" border="0" alt="Pinterest"/></a></li>
+          <li><a class="hide-text icon-pi" href="http://pinterest.com/solagecalistoga/" target="_blank"><img src="images/social-icon_3pinterest.png"  height="25" border="0" alt="Pinterest"/></a></li>
 
           <li><a class="hide-text icon-ta" href="http://www.tripadvisor.com/Hotel_Review-g32143-d647781-Reviews-Solage_Calistoga-Calistoga_Napa_Valley_California.html" target="_blank"><img src="images/social-icon_4ta.png"  height="25" border="0" alt="Trip Advisor"/></a></li>
 

@@ -8,8 +8,8 @@
  * Updated Contact Us Subject for v1.5.1 by Judy Gunderson (stellarweb) 2013-08-16
  */
 
-define('HEADING_TITLE', 'Contact Us');
-define('NAVBAR_TITLE', 'Contact Us');
+define('HEADING_TITLE', 'Contact');
+define('NAVBAR_TITLE', 'Contact');
 define('TEXT_SUCCESS', 'Your message has been successfully sent.');
 define('EMAIL_SUBJECT', 'Website Inquiry from ' . STORE_NAME);
 

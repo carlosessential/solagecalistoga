@@ -14,7 +14,7 @@
 ?>
 
 <!-- bof: featured products  -->
-<?php if ($zc_show_featured == false) { 
+<?php if ($zc_show_featured == true) { 
  if ($this_is_home_page == 'true' and CAROUSEL_FEATURED_PRODUCTS == 'true') {
 ?>
    <h2 class="centerBoxHeading"><?php echo TABLE_HEADING_FEATURED_PRODUCTS; ?></h2>
