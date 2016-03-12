@@ -206,7 +206,7 @@ TH, #cartEmptyText, #cartBoxGVButton, #cartBoxEmpty, #cartBoxVoucherBalance, #na
 .side-search-box{margin-bottom:5px;width:80%;height:18px;border:1px solid #b5b5b5;}
 #documentcategoriesContent, #categoriesContent, #informationContent, #moreinformationContent, #bestsellersContent{border:none;}
 #categories .sideBoxContent{background:none;}
-select, #musicgenresContent select, #manufacturersContent select{ background: linear-gradient(to bottom, #f8f8f8 0%, #f2f2f2 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);border: 1px solid #ddd;background:#ddddde;border-radius:2px;box-shadow: 0 1px #FFFFFF inset;display: inline-block;height: 30px;min-width: 60px;position: relative;width: 80%;color:#666;}
+select, #musicgenresContent select, #manufacturersContent select{ background: linear-gradient(to bottom, #f8f8f8 0%, #f2f2f2 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);border: 1px solid #ddd;border-radius:2px;box-shadow: 0 1px #FFFFFF inset;display: inline-block;height: 30px;min-width: 60px;position: relative;width: 80%;color:#666;}
 #shoppincartHeading{font-size:170%;}
 #shoppingcart .cartBoxTotal{font-weight:normal;font-size:130%;color:#171717;}
 

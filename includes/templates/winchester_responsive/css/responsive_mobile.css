@@ -150,6 +150,9 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 
 /* 2.0 ALL MOBILE PHONES - ORIENTATION:PORTRAIT */
 @media only screen and (orientation:portrait) {
+#categories{
+	display: none;
+}
 div#headerWrapper {}
 .onerow-fluid>[class*="col"]{float:none;display:block;width:98%;margin:0;}
 img.listingProductImage{max-width:200px;}
@@ -160,12 +163,12 @@ div#logo IMG {clear:both;}
 .centerColumn{padding:0 0.5em 2.0em 0.5em;}
 table#cartContentsDisplay input[type="image"] {width:12px;height:12px;}
 .cartProductDisplay {text-align:left;padding:5px;}
-.cartQuantity INPUT {width:75%!important;}
+/*.cartQuantity INPUT {width:75%!important;}*/
 td.productListing-data INPUT {width:20%!important;}
 div#checkoutShipto IMG,div#checkoutBillto IMG {width:12px;height:12px;}
 div#checkoutBillto, div#checkoutShipto,div.floatingBox{font-size:12px;}
 .leftBoxContainer, .rightBoxContainer {margin:0.5em;}
-input[type="text"],input[type="password"],select {width:90%;}
+/*input[type="text"],input[type="password"],select {width:90%;}*/
 div#advSearchDefault.centerColumn fieldset {clear:both;float:none;width:95%;}
 .cartProductDisplay IMG,span#cartImage.back {width:40px;float:left;}
 .cartProductDisplay {text-align:left;padding:5px;}
@@ -178,7 +181,7 @@ body{margin:0;padding:0;}
 #logo{float:none;margin-left:10px;}
 #tagline{margin-left:10px;margin-top:15px;margin-bottom:0;}
 #top-wrapper{text-align:center;font-size:120%;}
-#menu{margin-top:-130px;width:98%;}
+#menu{margin-top:-30px;width:98%;}
 #header-cart{float:right;width:50%;}
 #navMainSearch{float:left;width:53%;border:1px solid #000;display:none;}
 #top-middle{padding-bottom:0;border-bottom:none;}

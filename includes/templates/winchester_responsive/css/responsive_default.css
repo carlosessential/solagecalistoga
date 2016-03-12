@@ -156,6 +156,9 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 
 
 @media (max-width:767px){
+#categories{
+	display: none;
+}
 .onerow-fluid{width:100%;} 
 .onerow-fluid>[class*="col"]{float:none;display:block;width:auto;margin:0;}
 img.listingProductImage{max-width:200px;}
@@ -289,6 +292,9 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 }
 
 @media (min-width:768px) and (max-width:979px){
+#categories{
+	display: none;
+}
 .onerow-fluid>[class*="col"]{float:none;display:block;width:auto;margin:0;}
 img.listingProductImage{max-width:200px;}
 #headerWrapper,div#logoWrapper {height:auto;}
@@ -340,8 +346,6 @@ ul.slimmenu{position:relative;z-index:1000;background:#fff;}
 
 @media (max-width:979px){
 #navMainWrapper{display:none;}
-
-
 }
 
 @media (min-width:980px){

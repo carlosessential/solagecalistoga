@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 11, 2016 at 10:08 AM
+-- Generation Time: Mar 12, 2016 at 01:11 AM
 -- Server version: 5.5.38
 -- PHP Version: 5.6.2
 
@@ -109,7 +109,7 @@ CREATE TABLE `admin_activity_log` (
   `page_accessed` varchar(80) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `page_parameters` text COLLATE latin1_general_ci,
   `ip_address` varchar(15) COLLATE latin1_general_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM AUTO_INCREMENT=1344 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1447 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `admin_activity_log`
@@ -1460,7 +1460,110 @@ INSERT INTO `admin_activity_log` (`log_id`, `access_date`, `admin_id`, `page_acc
 (1340, '2016-03-11 03:06:55', 1, 'categories.php', 'securityToken=b7ae726e7c3de04977d21ee2eea59802&cPath=0&', '::1'),
 (1341, '2016-03-11 03:07:03', 1, 'categories.php', 'cPath=0_84&', '::1'),
 (1342, '2016-03-11 03:07:41', 1, 'modules.php', 'set=payment&', '::1'),
-(1343, '2016-03-11 03:07:44', 1, 'modules.php', 'set=payment&module=shift4&', '::1');
+(1343, '2016-03-11 03:07:44', 1, 'modules.php', 'set=payment&module=shift4&', '::1'),
+(1344, '2016-03-11 16:54:21', 0, 'login.php ', '', '::1'),
+(1345, '2016-03-11 16:55:36', 0, 'login.php admin', '', '::1'),
+(1346, '2016-03-11 16:55:42', 1, 'layout_controller.php', '', '::1'),
+(1347, '2016-03-11 16:55:45', 1, 'layout_controller.php', 'page=&cID=114&', '::1'),
+(1348, '2016-03-11 16:55:47', 1, 'layout_controller.php', 'page=&cID=114&action=edit&', '::1'),
+(1349, '2016-03-11 16:56:15', 1, 'layout_controller.php', 'page=&cID=114&action=save&layout_box_name=search.php&', '::1'),
+(1350, '2016-03-11 16:56:15', 1, 'layout_controller.php', 'page=&cID=114&', '::1'),
+(1351, '2016-03-11 16:56:36', 1, 'layout_controller.php', 'page=&cID=114&action=edit&', '::1'),
+(1352, '2016-03-11 16:56:38', 1, 'layout_controller.php', 'page=&cID=114&action=save&layout_box_name=search.php&', '::1'),
+(1353, '2016-03-11 16:56:38', 1, 'layout_controller.php', 'page=&cID=114&', '::1'),
+(1354, '2016-03-11 16:56:49', 1, 'configuration.php', 'gID=19&', '::1'),
+(1355, '2016-03-11 16:57:14', 1, 'configuration.php', 'gID=19&cID=404&action=edit&', '::1'),
+(1356, '2016-03-11 16:58:11', 1, 'configuration.php', 'gID=19&cID=570&action=edit&', '::1'),
+(1357, '2016-03-11 16:58:19', 1, 'configuration.php', 'gID=19&cID=570&', '::1'),
+(1358, '2016-03-11 16:58:38', 1, 'banner_manager.php', '', '::1'),
+(1359, '2016-03-11 16:58:56', 1, 'banner_manager.php', 'page=1&bID=13&', '::1'),
+(1360, '2016-03-11 16:59:12', 1, 'store_manager.php', '', '::1'),
+(1361, '2016-03-11 16:59:21', 1, 'configuration.php', 'gID=1&', '::1'),
+(1362, '2016-03-11 16:59:52', 1, 'configuration.php', 'gID=8&', '::1'),
+(1363, '2016-03-11 17:00:10', 1, 'configuration.php', 'gID=47&', '::1'),
+(1364, '2016-03-11 17:00:12', 1, 'configuration.php', 'gID=47&cID=602&action=edit&', '::1'),
+(1365, '2016-03-11 17:00:15', 1, 'configuration.php', 'gID=47&cID=602&action=save&', '::1'),
+(1366, '2016-03-11 17:00:15', 1, 'configuration.php', 'gID=47&cID=602&', '::1'),
+(1367, '2016-03-11 17:00:30', 1, 'configuration.php', 'gID=47&cID=604&action=edit&', '::1'),
+(1368, '2016-03-11 17:00:33', 1, 'configuration.php', 'gID=47&cID=604&action=save&', '::1'),
+(1369, '2016-03-11 17:00:33', 1, 'configuration.php', 'gID=47&cID=604&', '::1'),
+(1370, '2016-03-11 17:00:39', 1, 'configuration.php', 'gID=47&cID=604&action=edit&', '::1'),
+(1371, '2016-03-11 17:00:41', 1, 'configuration.php', 'gID=47&cID=604&action=save&', '::1'),
+(1372, '2016-03-11 17:00:41', 1, 'configuration.php', 'gID=47&cID=604&', '::1'),
+(1373, '2016-03-11 17:00:42', 1, 'configuration.php', 'gID=47&cID=603&action=edit&', '::1'),
+(1374, '2016-03-11 17:01:18', 1, 'configuration.php', 'gID=47&cID=604&action=edit&', '::1'),
+(1375, '2016-03-11 17:01:28', 1, 'configuration.php', 'gID=23&', '::1'),
+(1376, '2016-03-11 17:07:16', 1, 'configuration.php', 'gID=47&', '::1'),
+(1377, '2016-03-11 17:07:19', 1, 'configuration.php', 'gID=47&cID=602&action=edit&', '::1'),
+(1378, '2016-03-11 17:07:22', 1, 'configuration.php', 'gID=47&cID=602&action=save&', '::1'),
+(1379, '2016-03-11 17:07:22', 1, 'configuration.php', 'gID=47&cID=602&', '::1'),
+(1380, '2016-03-11 17:18:21', 1, 'products_expected.php', '', '::1'),
+(1381, '2016-03-11 17:18:39', 1, 'specials.php', '', '::1'),
+(1382, '2016-03-11 17:18:44', 1, 'featured.php', '', '::1'),
+(1383, '2016-03-11 17:18:50', 1, 'categories.php', '', '::1'),
+(1384, '2016-03-11 17:18:58', 1, 'categories.php', 'cPath=84&', '::1'),
+(1385, '2016-03-11 17:19:00', 1, 'categories.php', 'cPath=84_85&', '::1'),
+(1386, '2016-03-11 17:19:07', 1, 'product.php', 'cPath=84_85&product_type=1&pID=181&action=new_product&', '::1'),
+(1387, '2016-03-11 17:19:39', 1, 'categories.php', '', '::1'),
+(1388, '2016-03-11 17:19:41', 1, 'categories.php', 'cPath=84&', '::1'),
+(1389, '2016-03-11 17:19:44', 1, 'categories.php', 'cPath=84_85&', '::1'),
+(1390, '2016-03-11 17:19:48', 1, 'attributes_controller.php', 'products_filter=181&current_category_id=85&', '::1'),
+(1391, '2016-03-11 17:26:07', 1, 'categories.php', '', '::1'),
+(1392, '2016-03-11 17:26:09', 1, 'categories.php', 'cPath=84&', '::1'),
+(1393, '2016-03-11 17:26:12', 1, 'categories.php', 'cPath=84_85&', '::1'),
+(1394, '2016-03-11 17:27:15', 1, 'categories.php', 'x=70&y=4&product_type=1&cPath=84_85&action=new_product&', '::1'),
+(1395, '2016-03-11 17:27:15', 1, 'product.php', 'x=70&y=4&product_type=1&cPath=84_85&action=new_product&', '::1'),
+(1396, '2016-03-11 17:29:10', 1, 'product.php', 'cPath=84_85&product_type=1&action=new_product_preview&', '::1'),
+(1397, '2016-03-11 17:29:12', 1, 'product.php', 'cPath=84_85&product_type=1&action=insert_product&', '::1'),
+(1398, '2016-03-11 17:29:12', 1, 'categories.php', 'cPath=84_85&pID=206&', '::1'),
+(1399, '2016-03-11 17:44:10', 1, 'attributes_controller.php', 'products_filter=181&current_category_id=85&', '::1'),
+(1400, '2016-03-11 17:44:13', 1, 'products_to_categories.php', 'products_filter=181&current_category_id=85&', '::1'),
+(1401, '2016-03-11 17:44:37', 1, 'configuration.php', 'gID=8&', '::1'),
+(1402, '2016-03-11 17:44:55', 1, 'configuration.php', 'gID=8&cID=216&action=edit&', '::1'),
+(1403, '2016-03-11 17:45:02', 1, 'configuration.php', 'gID=8&cID=219&action=edit&', '::1'),
+(1404, '2016-03-11 17:45:22', 1, 'configuration.php', 'gID=8&cID=580&action=edit&', '::1'),
+(1405, '2016-03-11 17:45:25', 1, 'configuration.php', 'gID=8&cID=580&action=save&', '::1'),
+(1406, '2016-03-11 17:45:25', 1, 'configuration.php', 'gID=8&cID=580&', '::1'),
+(1407, '2016-03-11 17:45:30', 1, 'configuration.php', 'gID=8&cID=580&action=edit&', '::1'),
+(1408, '2016-03-11 17:45:32', 1, 'configuration.php', 'gID=8&cID=580&action=save&', '::1'),
+(1409, '2016-03-11 17:45:32', 1, 'configuration.php', 'gID=8&cID=580&', '::1'),
+(1410, '2016-03-11 17:45:35', 1, 'configuration.php', 'gID=8&cID=582&action=edit&', '::1'),
+(1411, '2016-03-11 17:45:48', 1, 'configuration.php', 'gID=8&cID=583&action=edit&', '::1'),
+(1412, '2016-03-11 17:45:52', 1, 'configuration.php', 'gID=8&cID=583&action=save&', '::1'),
+(1413, '2016-03-11 17:45:53', 1, 'configuration.php', 'gID=8&cID=583&', '::1'),
+(1414, '2016-03-11 17:46:04', 1, 'configuration.php', 'gID=8&cID=583&action=edit&', '::1'),
+(1415, '2016-03-11 17:46:07', 1, 'configuration.php', 'gID=8&cID=583&action=save&', '::1'),
+(1416, '2016-03-11 17:46:07', 1, 'configuration.php', 'gID=8&cID=583&', '::1'),
+(1417, '2016-03-11 17:46:15', 1, 'configuration.php', 'gID=8&cID=225&action=edit&', '::1'),
+(1418, '2016-03-11 17:47:11', 1, 'categories.php', '', '::1'),
+(1419, '2016-03-11 17:47:13', 1, 'categories.php', 'cPath=84&', '::1'),
+(1420, '2016-03-11 17:47:19', 1, 'categories.php', 'cID=84&', '::1'),
+(1421, '2016-03-11 17:47:21', 1, 'categories.php', 'cPath=84&', '::1'),
+(1422, '2016-03-11 17:47:23', 1, 'categories.php', 'cPath=84&action=new_category&', '::1'),
+(1423, '2016-03-11 17:47:24', 1, 'categories.php', 'cPath=84&', '::1'),
+(1424, '2016-03-11 17:47:45', 1, 'categories.php', 'cPath=84&cID=85&action=edit_category&', '::1'),
+(1425, '2016-03-11 17:48:06', 1, 'categories.php', 'cPath=84&cID=85&', '::1'),
+(1426, '2016-03-11 17:48:10', 1, 'categories.php', '', '::1'),
+(1427, '2016-03-11 17:48:24', 1, 'categories.php', 'cPath=91&', '::1'),
+(1428, '2016-03-11 17:48:42', 1, 'categories.php', 'securityToken=143fbe765ff55b7e3523bce8edf23390&cPath=98&', '::1'),
+(1429, '2016-03-11 17:48:44', 1, 'categories.php', 'x=57&y=9&product_type=1&cPath=98&action=new_product&', '::1'),
+(1430, '2016-03-11 17:48:44', 1, 'product.php', 'x=57&y=9&product_type=1&cPath=98&action=new_product&', '::1'),
+(1431, '2016-03-11 17:48:48', 1, 'product.php', 'cPath=98&product_type=1&action=new_product_preview&', '::1'),
+(1432, '2016-03-11 17:48:50', 1, 'product.php', 'cPath=98&product_type=1&action=insert_product&', '::1'),
+(1433, '2016-03-11 17:48:50', 1, 'categories.php', 'cPath=98&pID=207&', '::1'),
+(1434, '2016-03-11 17:49:04', 1, 'categories.php', 'cID=98&', '::1'),
+(1435, '2016-03-11 17:49:06', 1, 'categories.php', 'cPath=98&', '::1'),
+(1436, '2016-03-11 17:49:10', 1, 'product.php', 'cPath=98&product_type=1&pID=207&action=delete_product&', '::1'),
+(1437, '2016-03-11 17:49:14', 1, 'product.php', 'action=delete_product_confirm&product_type=1&cPath=98&page=1&', '::1'),
+(1438, '2016-03-11 17:49:14', 1, 'categories.php', 'cPath=98&', '::1'),
+(1439, '2016-03-11 17:49:16', 1, 'categories.php', 'cID=98&', '::1'),
+(1440, '2016-03-11 17:49:23', 1, 'categories.php', 'cPath=84&', '::1'),
+(1441, '2016-03-11 17:49:27', 1, 'categories.php', 'cID=84&', '::1'),
+(1442, '2016-03-11 17:50:49', 1, 'layout_controller.php', '', '::1'),
+(1443, '2016-03-11 17:50:54', 1, 'layout_controller.php', 'page=&cID=114&', '::1'),
+(1444, '2016-03-11 17:51:46', 1, 'configuration.php', 'gID=19&', '::1'),
+(1445, '2016-03-11 17:51:58', 1, 'configuration.php', 'gID=19&cID=570&action=edit&', '::1'),
+(1446, '2016-03-11 17:52:02', 1, 'configuration.php', 'gID=19&cID=570&', '::1');
 
 -- --------------------------------------------------------
 
@@ -1539,7 +1642,7 @@ CREATE TABLE `banners_history` (
   `banners_shown` int(5) NOT NULL DEFAULT '0',
   `banners_clicked` int(5) NOT NULL DEFAULT '0',
   `banners_history_date` datetime NOT NULL DEFAULT '0001-01-01 00:00:00'
-) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `banners_history`
@@ -1598,10 +1701,15 @@ INSERT INTO `banners_history` (`banners_history_id`, `banners_id`, `banners_show
 (50, 1, 134, 0, '2016-03-10 00:04:43'),
 (51, 6, 22, 1, '2016-03-10 00:32:15'),
 (52, 14, 51, 0, '2016-03-10 00:37:09'),
-(53, 7, 73, 0, '2016-03-11 00:00:01'),
-(54, 1, 76, 0, '2016-03-11 00:00:59'),
-(55, 4, 96, 0, '2016-03-11 00:02:45'),
-(56, 14, 2, 0, '2016-03-11 00:50:06');
+(53, 7, 106, 0, '2016-03-11 00:00:01'),
+(54, 1, 98, 0, '2016-03-11 00:00:59'),
+(55, 4, 127, 0, '2016-03-11 00:02:45'),
+(56, 14, 2, 0, '2016-03-11 00:50:06'),
+(57, 10, 2, 0, '2016-03-11 16:56:26'),
+(58, 11, 2, 0, '2016-03-11 16:56:26'),
+(59, 12, 2, 0, '2016-03-11 16:56:26'),
+(60, 13, 2, 0, '2016-03-11 16:56:26'),
+(61, 15, 2, 0, '2016-03-11 16:56:26');
 
 -- --------------------------------------------------------
 
@@ -2294,10 +2402,10 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (577, 'Display Price', 'CAROUSEL_FEATURED_PRICE', 'true', 'Display featured product price?<br/><br/>Default = true<br/>', 31, 107, NULL, '2016-03-02 14:01:39', NULL, 'zen_cfg_select_option(array(''true'', ''false''), '),
 (578, 'Carousel Featured Image Listing Width', 'IMAGE_CAROUSEL_FEATURED_PRODUCTS_LISTING_WIDTH', '200', 'The width of the product images in the carousel.<br/>Default = 100', 31, 108, NULL, '2016-03-02 14:01:39', NULL, NULL),
 (579, 'Carousel Featured Image Listing Height', 'IMAGE_CAROUSEL_FEATURED_PRODUCTS_LISTING_HEIGHT', '200', 'The height of the product images in the carousel.<br/>Default = 80', 31, 109, NULL, '2016-03-02 14:01:39', NULL, NULL),
-(580, 'Product Listing - Layout Style', 'PRODUCT_LISTING_LAYOUT_STYLE', 'columns', 'Select the layout style:<br />Each product can be listed in its own row (rows option)\n                or products can be listed in multiple columns per row (columns option)<br />\n				If customer control is enabled this sets the default style.', 8, 41, NULL, '2016-03-02 14:59:30', NULL, 'zen_cfg_select_option(array(''rows'', ''columns''),'),
+(580, 'Product Listing - Layout Style', 'PRODUCT_LISTING_LAYOUT_STYLE', 'columns', 'Select the layout style:<br />Each product can be listed in its own row (rows option)\n                or products can be listed in multiple columns per row (columns option)<br />\n				If customer control is enabled this sets the default style.', 8, 41, '2016-03-11 17:45:32', '2016-03-02 14:59:30', NULL, 'zen_cfg_select_option(array(''rows'', ''columns''),'),
 (581, 'Product Listing - Columns Per Row', 'PRODUCT_LISTING_COLUMNS_PER_ROW', '3', 'Select the number of columns of products to show in each row in the product listing.  \n               The default setting is 3.', 8, 42, NULL, '2016-03-02 14:59:30', NULL, NULL),
 (582, 'Product Listing - Layout Style - Customer Control', 'PRODUCT_LISTING_LAYOUT_STYLE_CUSTOMER', '0', 'Allow the customer to select the layout style (0=no, 1=yes):', 8, 43, NULL, '2016-03-02 14:59:30', NULL, 'zen_cfg_select_option(array(''0'', ''1''),'),
-(583, 'Product Listing - Show Sorter for Columns Layout', 'PRODUCT_LISTING_GRID_SORT', '0', 'Allow the customer to select the item sort order (0=no, 1=yes):', 8, 44, NULL, '2016-03-02 14:59:30', NULL, 'zen_cfg_select_option(array(''0'', ''1''),'),
+(583, 'Product Listing - Show Sorter for Columns Layout', 'PRODUCT_LISTING_GRID_SORT', '0', 'Allow the customer to select the item sort order (0=no, 1=yes):', 8, 44, '2016-03-11 17:46:07', '2016-03-02 14:59:30', NULL, 'zen_cfg_select_option(array(''0'', ''1''),'),
 (584, '<b>Zen Colorbox</b>', 'ZEN_COLORBOX_STATUS', 'true', '<br />If true, all product images on the following pages will be displayed within a lightbox:<br /><br />- document_general_info<br />- document_product_info<br />- page (EZ-Pages)<br />- product_free_shipping_info<br />- product_info<br />- product_music_info<br />- product_reviews<br />- product_reviews_info<br />- product_reviews_write<br /><br /><b>Default: true</b>', 46, 100, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''), '),
 (585, 'Overlay Opacity', 'ZEN_COLORBOX_OVERLAY_OPACITY', '0.6', '<br />Controls the transparency of the overlay.<br /><br /><b>Default: 0.6</b>', 46, 101, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''0'', ''0.1'', ''0.2'', ''0.3'', ''0.4'', ''0.5'', ''0.6'', ''0.7'', ''0.8'', ''0.9'', ''1''), '),
 (586, 'Resize Duration', 'ZEN_COLORBOX_RESIZE_DURATION', '400', '<br />Controls the speed of the image resizing.<br /><br />Note: This value is measured in milliseconds.<br /><br /><b>Default: 400</b><br />', 46, 102, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
@@ -2316,9 +2424,9 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (599, '<b>EZ-Pages Support</b>', 'ZEN_COLORBOX_EZPAGES', 'true', '<br />If true, the lightbox effect will be used for linked images on all EZ-Pages.<br /><br /><b>Default: true</b>', 46, 400, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 (600, '&nbsp; File Types', 'ZEN_COLORBOX_FILE_TYPES', 'jpg,png,gif', '<br />On EZ-Pages, the lightbox effect will be applied to all images with one of the following file types.<br /><br /><b>Default: jpg,png,gif</b><br />', 46, 401, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
 (601, 'Version', 'WINCHESTER_RESPONSIVE_VERSION', '1.4', 'Version installed:', 47, 0, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
-(602, 'Home Page Slideshow', 'WIN_SLIDER_STATUS', 'true', 'Activate Home Page Slideshow', 47, 1, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(602, 'Home Page Slideshow', 'WIN_SLIDER_STATUS', 'true', 'Activate Home Page Slideshow', 47, 1, '2016-03-11 17:07:22', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 (603, 'Banner Display Groups Custom Tab', 'SHOW_BANNERS_GROUP_SETCUSTOMTAB', 'Custom Tab', 'Custom Tab for product info page', 47, 2, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
-(604, 'EZ Pages in Header Menu', 'SHOW_EZ_PAGES_MENU', 'true', 'Shows the menu option for EZ pages/important links in the header menu', 47, 3, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),');
+(604, 'EZ Pages in Header Menu', 'SHOW_EZ_PAGES_MENU', 'true', 'Shows the menu option for EZ pages/important links in the header menu', 47, 3, '2016-03-11 17:00:41', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),');
 
 -- --------------------------------------------------------
 
@@ -2399,7 +2507,7 @@ CREATE TABLE `counter` (
 --
 
 INSERT INTO `counter` (`startdate`, `counter`) VALUES
-('20160302', 1209);
+('20160302', 1301);
 
 -- --------------------------------------------------------
 
@@ -2424,7 +2532,8 @@ INSERT INTO `counter_history` (`startdate`, `counter`, `session_counter`) VALUES
 ('20160308', 124, 10),
 ('20160309', 197, 5),
 ('20160310', 365, 8),
-('20160311', 405, 6);
+('20160311', 416, 8),
+('20160312', 81, 2);
 
 -- --------------------------------------------------------
 
@@ -2873,15 +2982,14 @@ CREATE TABLE `customers_basket` (
   `customers_basket_quantity` float NOT NULL DEFAULT '0',
   `final_price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `customers_basket_date_added` varchar(8) COLLATE latin1_general_ci DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `customers_basket`
 --
 
 INSERT INTO `customers_basket` (`customers_basket_id`, `customers_id`, `products_id`, `customers_basket_quantity`, `final_price`, `customers_basket_date_added`) VALUES
-(8, 3, '189', 1, 0.0000, '20160311'),
-(7, 3, '180', 1, 0.0000, '20160311');
+(10, 3, '206', 1, 0.0000, '20160312');
 
 -- --------------------------------------------------------
 
@@ -2921,7 +3029,7 @@ CREATE TABLE `customers_info` (
 INSERT INTO `customers_info` (`customers_info_id`, `customers_info_date_of_last_logon`, `customers_info_number_of_logons`, `customers_info_date_account_created`, `customers_info_date_account_last_modified`, `global_product_notifications`) VALUES
 (1, '0001-01-01 00:00:00', 0, '2004-01-21 01:35:28', '0001-01-01 00:00:00', 0),
 (2, '2016-03-02 14:56:25', 2, '2016-03-02 13:41:38', NULL, 0),
-(3, '2016-03-11 01:05:05', 9, '2016-03-10 02:26:56', NULL, 0);
+(3, '2016-03-11 17:22:49', 10, '2016-03-10 02:26:56', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -3914,7 +4022,7 @@ CREATE TABLE `products` (
   `metatags_model_status` tinyint(1) NOT NULL DEFAULT '0',
   `metatags_price_status` tinyint(1) NOT NULL DEFAULT '0',
   `metatags_title_tagline_status` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=206 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=208 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `products`
@@ -3946,7 +4054,8 @@ INSERT INTO `products` (`products_id`, `products_type`, `products_quantity`, `pr
 (202, 1, 0, '', 'Encore_Refine.jpg', 65.0000, 0, '2016-03-11 02:57:36', NULL, NULL, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 65.0000, 89, 1, 0, 0, 0, 0, 0),
 (203, 1, 0, '', 'sen_step4.jpg', 56.0000, 0, '2016-03-11 03:00:10', NULL, NULL, 3.4, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 56.0000, 90, 1, 0, 0, 0, 0, 0),
 (204, 1, 0, '', 'normal_step4.jpg', 56.0000, 0, '2016-03-11 03:01:23', NULL, NULL, 3.4, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 56.0000, 90, 1, 0, 0, 0, 0, 0),
-(205, 1, 0, '', 'Encore_SHAVE.jpg', 38.0000, 0, '2016-03-11 03:02:33', NULL, NULL, 5.1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 38.0000, 90, 1, 0, 0, 0, 0, 0);
+(205, 1, 0, '', 'Encore_SHAVE.jpg', 38.0000, 0, '2016-03-11 03:02:33', NULL, NULL, 5.1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 38.0000, 90, 1, 0, 0, 0, 0, 0),
+(206, 1, 0, '', 'test-product.png', 5.0000, 0, '2016-03-11 17:29:12', NULL, NULL, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 5.0000, 85, 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -4010,7 +4119,7 @@ CREATE TABLE `products_description` (
   `products_description` text COLLATE latin1_general_ci,
   `products_url` varchar(255) COLLATE latin1_general_ci DEFAULT NULL,
   `products_viewed` int(5) DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=206 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=208 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `products_description`
@@ -4018,7 +4127,7 @@ CREATE TABLE `products_description` (
 
 INSERT INTO `products_description` (`products_id`, `language_id`, `products_name`, `products_description`, `products_url`, `products_viewed`) VALUES
 (180, 1, 'Organic Male - Sensitive Starter Travel Set', 'The Sensitive Skin Regimen derives essential active ingredients from the water, the world''s oceans and seas. Active phyto nutrients in marine based botanicals are especially beneficial to sensitive skin. Steeped in ocean marine ingredients, and exotic green tea, the Sensitive Collection is formulated, specifically, to calm and soothe male skin.\r\n\r\nEnjoy the Travel Starter set that includes a TSA approved travel bottle of the 4 steps: 1oz. Wash, 1oz. Balance, 0.5oz Bioactivate, and 1oz. Defend..', '', 16),
-(181, 1, 'Organic Male - Normal Starter Travel Set', 'The Normal/Combination Skin Regimen combines mineral-rich, antioxidant-packed berries, grains and wine extracts from across the Oregon vineyards and agricultural landscape. These earthy botanicals provide a solid foundation for normal male skin nutrition. Rich in polyphenols, the Normal Skin Collection defers the onset of fine lines and minimizes large pores. Designed for men with normal/combination skin. Enjoy the Travel Starter set that includes a TSA approved travel bottle of the 4 steps: 1oz. Wash, 1oz. Balance, 0.5oz Bioactivate, and 1oz. Defend.', '', 4),
+(181, 1, 'Organic Male - Normal Starter Travel Set', 'The Normal/Combination Skin Regimen combines mineral-rich, antioxidant-packed berries, grains and wine extracts from across the Oregon vineyards and agricultural landscape. These earthy botanicals provide a solid foundation for normal male skin nutrition. Rich in polyphenols, the Normal Skin Collection defers the onset of fine lines and minimizes large pores. Designed for men with normal/combination skin. Enjoy the Travel Starter set that includes a TSA approved travel bottle of the 4 steps: 1oz. Wash, 1oz. Balance, 0.5oz Bioactivate, and 1oz. Defend.', '', 6),
 (182, 1, 'Organic Male - Sun Secure Mineral SPF 30-Broad Spectrum UVA/UVB', 'Protect your skin from the environment and minimize photo-aging with OM4''s unique Broad Spectrum SPF 30.  Signature ingredients are microblended to create a three-in-one product that protects the skin from harmful UV radiation, helps prevent oxidative stress and collagen degradation, while brightening and clarifying the complexion.\r\nProduct size: 100 ml / 3.381 fl. oz.', '', 4),
 (183, 1, 'True Nature Botanicals - Pacific Face Oil', 'Boosts the body''s capacity to retain moisture by giving it the super rich, nourishing and highly absorbent essential oils aging skin needs.\r\n\r\nTHE RESULT: Rough patches disappear, cracked skin heals and your overall skin appearance improves.\r\n\r\nIDEAL FOR: All skin types, particularly aging skin.\r\n\r\n4oz | 120ml', '', 8),
 (184, 1, 'True Nature Botanicals - Pacific Body Oil', 'Boosts the body''s capacity to retain moisture by giving it the super rich, nourishing and highly absorbent essential oils aging skin needs.\r\n\r\nTHE RESULT: Rough patches disappear, cracked skin heals and your overall skin appearance improves.\r\n\r\nIDEAL FOR: All skin types, particularly aging skin.\r\n\r\n4oz | 120ml', '', 18),
@@ -4042,7 +4151,8 @@ INSERT INTO `products_description` (`products_id`, `language_id`, `products_name
 (202, 1, 'Organic Male - Radical Fine Line Eraser', 'Daytime eye protection is important in the prevention of fine lines which appear around the eye contour area. Radical Fine Line Eraser will minimize the appearance of fine lines, and address common concerns associated with eye fatigue. Eyebright, our Silk Protein Amino Acid Blend, Multi-Fruit Acids and Rosehip Oil protect, defend and help you look your best at any age. Botanicals from each of the four core skin type proprietary blends are added to this potent bioactive eye gel, making for an amazing and lengthy list of ingredients. But, don&rsquo;t let all that content scare you. By adding proprietary actives from each of our skin-type specific core collections, we have created a bioactive, comprehensive daytime gel that will work as hard as you do throughout your active day. \r\n\r\nProduct size: 30 ml / 1.014 fl. oz.', '', 0),
 (203, 1, 'Organic Male - Sea Essentials Calming Moisturizer', 'Guard and protect your skin from the impacts of stress and the environment with this soothing blend of essential botanicals from land and sea. Kelp and Jojoba, ingredients which most closely mimic the plasma content of the human body and sebum of the skin, are suspended in hexagonally structured water, which is instantly absorbed leaving the skin highly moisturized without heaviness. Also recommended for rosacea. \r\n\r\nProduct size: 100 ml / 3.381 fl. oz.', '', 1),
 (204, 1, 'Organic Male - Environmental Defense Hydration', 'The composition of male skin is unique. Endurance Moisturizing Complex is our signature microblend of the most nutritional, healing and protective ingredients known to man. Jojoba oil, aloe, vitamin A and C are frothed into a light, instantly absorbing moisturizer. Packed with restorative micronutrients found in alfalfa, wine and vines, Endurance Moisturizing Complex is one product you will never want to do without. \r\n\r\nProduct size: 100 ml / 3.381 fl. oz.', '', 0),
-(205, 1, 'Organic Male - Soothing Herbal Shaving Emulsion', 'Coltsfoot, cactus and prickly ash are microblended into a protective, soothing lotion which is applied to the skin before shaving. Peppermint and Lavender invigorate the senses, while stonecrop and comfrey immediately soothe razor burn and heal skin irritation. \r\n\r\nProduct size: 150 ml / 5.072 fl. oz.', '', 0);
+(205, 1, 'Organic Male - Soothing Herbal Shaving Emulsion', 'Coltsfoot, cactus and prickly ash are microblended into a protective, soothing lotion which is applied to the skin before shaving. Peppermint and Lavender invigorate the senses, while stonecrop and comfrey immediately soothe razor burn and heal skin irritation. \r\n\r\nProduct size: 150 ml / 5.072 fl. oz.', '', 0),
+(206, 1, 'Test product', 'Bacon ipsum dolor amet t-bone beef ribs landjaeger hamburger. Shankle kevin pastrami pig pancetta shank tail brisket drumstick pork belly ribeye. Jowl doner pork chop, rump bresaola short ribs short loin ball tip brisket. Pastrami tenderloin kielbasa, swine strip steak corned beef leberkas sirloin sausage.\r\n\r\nAndouille kevin pig pancetta pork belly. Hamburger venison beef ribs t-bone, pork loin kielbasa biltong tail tongue jowl. Hamburger beef corned beef rump, salami alcatra andouille venison. Strip steak ball tip turkey ground round. Chicken fatback chuck pork chop salami cow. Shoulder beef ribs salami fatback, picanha swine cupim turducken tri-tip porchetta sirloin. Landjaeger kielbasa drumstick bacon rump pork chop, ground round frankfurter filet mignon kevin turkey strip steak sausage hamburger.', '', 0);
 
 -- --------------------------------------------------------
 
@@ -4363,7 +4473,8 @@ INSERT INTO `products_to_categories` (`products_id`, `categories_id`) VALUES
 (202, 89),
 (203, 90),
 (204, 90),
-(205, 90);
+(205, 90),
+(206, 85);
 
 -- --------------------------------------------------------
 
@@ -4829,9 +4940,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`sesskey`, `expiry`, `value`) VALUES
-('8907a87094e02443dd271929620d32c2', 1457688382, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a694e32466c4e7a49325a54646a4d32526c4d4451354e7a646b4d6a466c5a544a6c5a5745314f5467774d694937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a733d),
-('e224881bf8d53e367b9165767da2943b', 1457691550, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a694e32466c4e7a49325a54646a4d32526c4d4451354e7a646b4d6a466c5a544a6c5a5745314f5467774d694937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f324e686447566e62334a705a584e6663484a765a48566a64484e666332397964463976636d526c636e787a4f6a4536496a41694f3252706333427359586c66593246305a576476636d6c6c6331396b636d39775a473933626e78704f6a41376257567a6332466e5a5652765533526859327438637a6f774f6949694f773d3d),
-('b054750b995f9713672c18c8499d100f', 1457688328, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949334d6a49774d574a6b4e6a426c5a44686a4f4442694d6d4a6a4d6d526d4d6a63334d3249314d6a41344e4349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f794f6e74704f6a45344d4474684f6a453665334d364d7a6f6963585235496a746b4f6a453766576b364d5467354f3245364d547037637a6f7a4f694a7864486b694f3251364d54743966584d364e546f6964473930595777694f3251364d544d774f334d364e6a6f69643256705a326830496a746b4f6a63754e54747a4f6a5936496d4e68636e524a52434937637a6f314f6949784d44597a4f434937637a6f784d6a6f695932397564475675644639306558426c496a747a4f6a6736496e426f65584e7059324673496a747a4f6a45344f694a6d636d566c58334e6f615842776157356e58326c305a5730694f326b364d44747a4f6a49774f694a6d636d566c58334e6f615842776157356e5833646c6157646f6443493761546f774f334d364d546b36496d5a795a5756666332687063484270626d646663484a70593255694f326b364d447439626d46326157646864476c76626e78504f6a45334f694a7559585a705a3246306157397553476c7a64473979655349364d6a7037637a6f304f694a775958526f496a74684f6a553665326b364d4474684f6a513665334d364e446f696347466e5a534937637a6f324f694a73623264765a6d59694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313961546f784f3245364e447037637a6f304f694a775957646c496a747a4f6a5536496d78765a326c75496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c6443493759546f784f6e747a4f6a5936496d466a64476c7662694937637a6f334f694a77636d396a5a584e7a496a7439637a6f304f694a7762334e30496a74684f6a41366533313961546f794f3245364e447037637a6f304f694a775957646c496a747a4f6a49784f694a77636d396b64574e3058334a6c646d6c6c64334e6664334a70644755694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a74684f6a493665334d364e546f6959314268644767694f334d364e546f694f4452664f4455694f334d364d544536496e4279623252315933527a58326c6b496a747a4f6a4d36496a45344d43493766584d364e446f696347397a6443493759546f774f6e743966576b364d7a74684f6a513665334d364e446f696347466e5a534937637a6f334f694a795a585a705a58647a496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364e4474684f6a513665334d364e446f696347466e5a534937637a6f314f694a70626d526c65434937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f3245364d547037637a6f314f694a6a5547463061434937637a6f314f6949344e4638354d43493766584d364e446f696347397a6443493759546f774f6e74396658317a4f6a6736496e4e755958427a61473930496a74684f6a4136653331395932686c59327466646d467361575238637a6f304f694a30636e566c496a74735957356e6457466e5a58787a4f6a6336496d56755a327870633267694f327868626d64315957646c633139705a48787a4f6a4536496a45694f327868626d64315957646c6331396a6232526c66484d364d6a6f695a5734694f324e31636e4a6c626d4e3566484d364d7a6f6956564e45496a743062325268655639706333787a4f6a45774f6949794d4445324c54417a4c544578496a7431634752686447564665484270636d463061573975633378694f6a45376332567a63326c76626c396a6233567564475679664749364d54746a64584e306232316c636e4e66615842665957526b636d567a6333787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a74755a58646663484a765a48566a64484e666157526661573566593246796448787a4f6a4d36496a45344d434937646d467361575266644739665932686c5932747664585238596a6f784f324e68636e52665a584a7962334a7a66484d364d446f69496a746a59584a3058324e7664573530636e6c6661575238637a6f7a4f6949794d6a4d694f324e7664573530636e6c666157356d623378684f6a4d3665334d364d545136496d4e7664573530636d6c6c633139755957316c496a747a4f6a457a4f694a56626d6c305a575167553352686447567a496a747a4f6a49774f694a6a6233567564484a705a584e6661584e7658324e765a4756664d694937637a6f794f694a5655794937637a6f794d446f6959323931626e52796157567a58326c7a6231396a6232526c587a4d694f334d364d7a6f6956564e42496a74395933567a644739745a584a6661575238637a6f784f69497a496a746a64584e306232316c636c396b5a575a68645778305832466b5a484a6c63334e6661575238637a6f784f69497a496a746a64584e306232316c636e4e6659585630614739796158706864476c76626e787a4f6a4536496a41694f324e31633352766257567958325a70636e4e305832356862575638637a6f314f694a4961584a68625349375933567a644739745a584a666247467a644639755957316c66484d364f446f6954574e725a573536615755694f324e31633352766257567958324e7664573530636e6c6661575238637a6f7a4f6949794d6a4d694f324e31633352766257567958337076626d566661575238637a6f784f694979496a747a5a57356b64473938637a6f784f69497a496a746a59584a305832466b5a484a6c63334e6661575238637a6f784f69497a496a747759586c745a57353066453437);
+('a65bf358e45aeb44b0602294b1a8c3e6', 1457742830, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949784e444e6d596d55334e6a566d5a6a5531596a646c4d7a55794d324a6a5a54686c5a4759794d7a4d354d434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746a5958526c5a3239796157567a58334279623252315933527a58334e76636e526662334a6b5a584a38637a6f784f694977496a746b61584e776247463558324e686447566e62334a705a584e665a484a76634752766432353861546f774f773d3d),
+('7a87b8402e5b65defaeb3694c7bece7d', 1457742901, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a6c5a4445794d32566a4f4755304f44426c4e4451304e544d345a54566a4d4456684e5751305932526c4f4349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f784f6e74704f6a45344d5474684f6a453665334d364d7a6f6963585235496a746b4f6a45376658317a4f6a5536496e527664474673496a746b4f6a67794f334d364e6a6f69643256705a326830496a746b4f6a4d754e54747a4f6a5936496d4e68636e524a52434937637a6f314f6949304f4449304e794937637a6f784d6a6f695932397564475675644639306558426c496a747a4f6a6736496e426f65584e7059324673496a747a4f6a45344f694a6d636d566c58334e6f615842776157356e58326c305a5730694f326b364d44747a4f6a49774f694a6d636d566c58334e6f615842776157356e5833646c6157646f6443493761546f774f334d364d546b36496d5a795a5756666332687063484270626d646663484a70593255694f326b364d447439626d46326157646864476c76626e78504f6a45334f694a7559585a705a3246306157397553476c7a64473979655349364d6a7037637a6f304f694a775958526f496a74684f6a513665326b364d4474684f6a513665334d364e446f696347466e5a534937637a6f324f694a73623264765a6d59694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313961546f784f3245364e447037637a6f304f694a775957646c496a747a4f6a5536496d78765a326c75496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364d6a74684f6a513665334d364e446f696347466e5a534937637a6f784d7a6f696332687663484270626d64665932467964434937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f334d364d446f69496a747a4f6a5136496e4276633351694f3245364d447037665831704f6a4d3759546f304f6e747a4f6a5136496e42685a3255694f334d364e546f696157356b5a5867694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313966584d364f446f696332356863484e6f623351694f3245364d4470376658316a6147566a61313932595778705a48787a4f6a5136496e5279645755694f327868626d64315957646c66484d364e7a6f695a57356e62476c7a61434937624746755a3356685a32567a58326c6b66484d364d546f694d534937624746755a3356685a32567a58324e765a475638637a6f794f694a6c6269493759335679636d567559336c38637a6f7a4f694a56553051694f3352765a47463558326c7a66484d364d544136496a49774d5459744d444d744d5449694f3356775a4746305a55563463476c79595852706232357a664749364d54747a5a584e7a6157397558324e76645735305a584a38596a6f784f324e31633352766257567963313970634639685a4752795a584e7a66484d364d546f694d534937646d467361575266644739665932686c5932747664585238596a6f784f324e68636e52665a584a7962334a7a66484d364d446f69496a74755a58646663484a765a48566a64484e666157526661573566593246796448787a4f6a4d36496a45344d5349376257567a6332466e5a5652765533526859327438637a6f774f6949694f324e68636e526659323931626e5279655639705a48787a4f6a4d36496a49794d79493759323931626e527965563970626d5a76664745364d7a7037637a6f784e446f6959323931626e52796157567a58323568625755694f334d364d544d36496c56756158526c5a434254644746305a584d694f334d364d6a4136496d4e7664573530636d6c6c63313970633239665932396b5a563879496a747a4f6a4936496c5654496a747a4f6a49774f694a6a6233567564484a705a584e6661584e7658324e765a4756664d794937637a6f7a4f694a56553045694f33303d);
 
 -- --------------------------------------------------------
 
@@ -5005,7 +5115,7 @@ CREATE TABLE `whos_online` (
 --
 
 INSERT INTO `whos_online` (`customer_id`, `full_name`, `session_id`, `ip_address`, `time_entry`, `time_last_click`, `last_page_url`, `host_address`, `user_agent`) VALUES
-(3, 'Mckenzie, Hiram', 'b054750b995f9713672c18c8499d100f', '1', '1457678649', '1457687052', '/shop.solagecalistoga139h/index.php?main_page=index&cPath=84_90', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
+(0, '&yen;Guest', '7a87b8402e5b65defaeb3694c7bece7d', '1', '1457739911', '1457741460', '/shop.solagecalistoga139h/', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
 
 -- --------------------------------------------------------
 
@@ -5834,7 +5944,7 @@ MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `admin_activity_log`
 --
 ALTER TABLE `admin_activity_log`
-MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1344;
+MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1447;
 --
 -- AUTO_INCREMENT for table `authorizenet`
 --
@@ -5849,7 +5959,7 @@ MODIFY `banners_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 -- AUTO_INCREMENT for table `banners_history`
 --
 ALTER TABLE `banners_history`
-MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=57;
+MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT for table `categories`
 --
@@ -5909,7 +6019,7 @@ MODIFY `customers_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT for table `customers_basket`
 --
 ALTER TABLE `customers_basket`
-MODIFY `customers_basket_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `customers_basket_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `customers_basket_attributes`
 --
@@ -6049,7 +6159,7 @@ MODIFY `paypal_ipn_id` int(11) unsigned NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-MODIFY `products_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=206;
+MODIFY `products_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=208;
 --
 -- AUTO_INCREMENT for table `products_attributes`
 --
@@ -6059,7 +6169,7 @@ MODIFY `products_attributes_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1
 -- AUTO_INCREMENT for table `products_description`
 --
 ALTER TABLE `products_description`
-MODIFY `products_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=206;
+MODIFY `products_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=208;
 --
 -- AUTO_INCREMENT for table `products_options_values_to_products_options`
 --

@@ -53,9 +53,6 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
 
 <div id="top-wrapper">
 <div class="onerow-fluid <?php echo $fluidisFixed; ?>" id="top-inner">
-<div id="top-inner-wrapper">
-     <?php echo HEADER_TITLE_TOP_TEXT; ?>
-</div>
 </div>
 </div>
 
