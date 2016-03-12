@@ -163,13 +163,6 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
 <?php
     if ($this_is_home_page) {
 ?>
- <?php
-if (WIN_SLIDER_STATUS == 'true') {
-?>
-          <?php require($template->get_template_dir('tpl_home_slider.php',DIR_WS_TEMPLATE, $current_page_base,'common')
-                        . '/tpl_home_slider.php');?>
-<?php
-    } ?>
 <?php
     } ?>
 
