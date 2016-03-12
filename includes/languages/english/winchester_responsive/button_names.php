@@ -69,7 +69,7 @@ define('BUTTON_ADD_TO_CART_ALT', 'Add to Cart');
 define('BUTTON_ADD_ADDRESS_ALT', 'Add Address');
 define('BUTTON_ADD_PRODUCTS_TO_CART_ALT','Add Selected to Cart');
 define('BUTTON_BACK_ALT', 'Back');
-define('BUTTON_BUY_NOW_ALT', 'Buy Now <i class="icon-circle-arrow-right white"></i>');
+define('BUTTON_BUY_NOW_ALT', 'Add to cart <i class="icon-circle-arrow-right white"></i>');
 define('BUTTON_CANCEL_ALT', 'Cancel');
 define('BUTTON_CHANGE_ADDRESS_ALT', 'Change Address');
 define('BUTTON_CHECKOUT_ALT', 'Checkout');
