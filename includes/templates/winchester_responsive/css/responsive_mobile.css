@@ -150,7 +150,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 
 /* 2.0 ALL MOBILE PHONES - ORIENTATION:PORTRAIT */
 @media only screen and (orientation:portrait) {
-#categories{
+#chcategories{
 	display: none;
 }
 div#headerWrapper {}

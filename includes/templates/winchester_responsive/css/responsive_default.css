@@ -156,7 +156,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 
 
 @media (max-width:767px){
-#categories{
+#chcategories{
 	display: none;
 }
 .onerow-fluid{width:100%;} 
@@ -292,7 +292,7 @@ ul.slimmenu.collapsed li ul.level2 li ul, ul.slimmenu1.collapsed li ul.level2 li
 }
 
 @media (min-width:768px) and (max-width:979px){
-#categories{
+#chcategories{
 	display: none;
 }
 .onerow-fluid>[class*="col"]{float:none;display:block;width:auto;margin:0;}
