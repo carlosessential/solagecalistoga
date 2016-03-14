@@ -38,6 +38,9 @@ if (!defined('IS_ADMIN_FLAG')) {
                                             products_quantity_order_min, products_quantity_order_units, products_priced_by_attribute,
                                             product_is_free, product_is_call, products_quantity_mixed,
                                             product_is_always_free_shipping, products_qty_box_status, products_quantity_order_max, products_sort_order,
+
+                                            products_family,
+
                                             products_price_sorter, master_categories_id
                                      from " . TABLE_PRODUCTS . "
                                      where products_id = '" . (int)$products_id . "'");
@@ -57,6 +60,9 @@ if (!defined('IS_ADMIN_FLAG')) {
                                        products_quantity_order_min, products_quantity_order_units, products_priced_by_attribute,
                                        product_is_free, product_is_call, products_quantity_mixed,
                                        product_is_always_free_shipping, products_qty_box_status, products_quantity_order_max, products_sort_order,
+
+                                       products_family,
+
                                        products_price_sorter, master_categories_id
                                        )
                           values ('" . zen_db_input($product->fields['products_type']) . "',
@@ -80,6 +86,9 @@ if (!defined('IS_ADMIN_FLAG')) {
                                   '" . zen_db_input($product->fields['products_qty_box_status']) . "',
                                   '" . zen_db_input($product->fields['products_quantity_order_max']) . "',
                                   '" . zen_db_input($product->fields['products_sort_order']) . "',
+
+                                  '" . zen_db_input($product->fields['products_family']) . "', 
+
                                   '" . zen_db_input($product->fields['products_price_sorter']) . "',
                                   '" . zen_db_input($categories_id) .
                                   "')");

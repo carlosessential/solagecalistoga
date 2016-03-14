@@ -316,6 +316,12 @@ if (SHOW_BANNERS_GROUP_SETCUSTOMTAB != '' && $banner = zen_banner_exists('dynami
 ?>
 <!--eof Product URL -->
 
+<!--bof also related products module-->
+
+    <?php require($template->get_template_dir('tpl_modules_related_products.php', DIR_WS_TEMPLATE, $current_page_base,'templates'). '/' . 'tpl_modules_related_products.php');?>
+
+    <!--eof also related products module-->
+
 <!--bof also purchased products module-->
 <?php require($template->get_template_dir('tpl_modules_also_purchased_products.php', DIR_WS_TEMPLATE, $current_page_base,'templates'). '/' . 'tpl_modules_also_purchased_products.php');?>
 <!--eof also purchased products module-->

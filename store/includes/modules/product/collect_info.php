@@ -1,10 +1,10 @@
 <?php
 /**
  * @package admin
- * @copyright Copyright 2003-2010 Zen Cart Development Team
+ * @copyright Copyright 2003-2011 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: collect_info.php 17947 2010-10-13 20:29:41Z drbyte $
+ * @version $Id: collect_info.php 19330 2011-08-07 06:32:56Z drbyte $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -38,6 +38,11 @@ if (!defined('IS_ADMIN_FLAG')) {
                        'products_discount_type' => '0',
                        'products_discount_type_from' => '0',
                        'products_price_sorter' => '0',
+                       
+                       //BOF Related Products
+                       'products_family' => '',
+                       //EOF Related Products
+                       
                        'master_categories_id' => ''
                        );
 
@@ -57,6 +62,9 @@ if (!defined('IS_ADMIN_FLAG')) {
                                       p.products_sort_order,
                                       p.products_discount_type, p.products_discount_type_from,
                                       p.products_price_sorter, p.master_categories_id
+                                      
+                                      , p.products_family
+                                      
                               from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd
                               where p.products_id = '" . (int)$_GET['pID'] . "'
                               and p.products_id = pd.products_id
@@ -105,7 +113,7 @@ if (!defined('IS_ADMIN_FLAG')) {
     }
 
 // Virtual Products
-    if (!isset($pInfo->products_virtual)) $pInfo->products_virtual = PRODUCTS_VIRTUAL_DEFAULT;
+    if (!isset($pInfo->products_virtual)) $pInfo->products_virtual = DEFAULT_PRODUCT_PRODUCTS_VIRTUAL;
     switch ($pInfo->products_virtual) {
       case '0': $is_virtual = false; $not_virtual = true; break;
       case '1': $is_virtual = true; $not_virtual = false; break;
@@ -117,7 +125,7 @@ if (!defined('IS_ADMIN_FLAG')) {
       case '0': $is_product_is_always_free_shipping = false; $not_product_is_always_free_shipping = true; $special_product_is_always_free_shipping = false; break;
       case '1': $is_product_is_always_free_shipping = true; $not_product_is_always_free_shipping = false; $special_product_is_always_free_shipping = false; break;
       case '2': $is_product_is_always_free_shipping = false; $not_product_is_always_free_shipping = false; $special_product_is_always_free_shipping = true; break;
-      default: $is_product_is_always_free_shipping = false; $not_product_is_always_free_shipping = true; $special_product_is_always_free_shipping = false;
+      default: $is_product_is_always_free_shipping = false; $not_product_is_always_free_shipping = true; $special_product_is_always_free_shipping = false; break;
     }
 // products_qty_box_status shows
     if (!isset($pInfo->products_qty_box_status)) $pInfo->products_qty_box_status = PRODUCTS_QTY_BOX_STATUS;
@@ -296,7 +304,7 @@ echo zen_draw_hidden_field('products_price_sorter', $pInfo->products_price_sorte
 ?>
           <tr>
             <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_NAME; ?></td>
-            <td class="main"><?php echo zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . zen_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? htmlspecialchars(stripslashes($products_name[$languages[$i]['id']]), ENT_COMPAT, CHARSET, TRUE) : htmlspecialchars(zen_get_products_name($pInfo->products_id, $languages[$i]['id']), ENT_COMPAT, CHARSET, TRUE)), zen_set_field_length(TABLE_PRODUCTS_DESCRIPTION, 'products_name')); ?></td>
+            <td class="main"><?php echo zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . zen_draw_input_field('products_name[' . $languages[$i]['id'] . ']', htmlspecialchars(isset($products_name[$languages[$i]['id']]) ? stripslashes($products_name[$languages[$i]['id']]) : zen_get_products_name($pInfo->products_id, $languages[$i]['id']), ENT_COMPAT, CHARSET, TRUE), zen_set_field_length(TABLE_PRODUCTS_DESCRIPTION, 'products_name')); ?></td>
           </tr>
 <?php
     }
@@ -398,20 +406,7 @@ updateGross();
             <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td class="main" width="25" valign="top"><?php echo zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']); ?>&nbsp;</td>
-                <td class="main" width="100%">
-        <?php if ($_SESSION['html_editor_preference_status']=="FCKEDITOR") {
-                $oFCKeditor = new FCKeditor('products_description[' . $languages[$i]['id'] . ']') ;
-                $oFCKeditor->Value = (isset($products_description[$languages[$i]['id']])) ? stripslashes($products_description[$languages[$i]['id']]) : zen_get_products_description($pInfo->products_id, $languages[$i]['id']);
-                $oFCKeditor->Width  = '99%' ;
-                $oFCKeditor->Height = '350' ;
-//                $oFCKeditor->Config['ToolbarLocation'] = 'Out:xToolbar' ;
-//                $oFCKeditor->Create() ;
-                $output = $oFCKeditor->CreateHtml() ;  echo $output;
-          } else { // using HTMLAREA or just raw "source"
-
-          echo zen_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '100%', '30', (isset($products_description[$languages[$i]['id']])) ? htmlspecialchars(stripslashes($products_description[$languages[$i]['id']]), ENT_COMPAT, CHARSET, TRUE) : htmlspecialchars(zen_get_products_description($pInfo->products_id, $languages[$i]['id']), ENT_COMPAT, CHARSET, TRUE)); //,'id="'.'products_description' . $languages[$i]['id'] . '"');
-          } ?>
-        </td>
+                <td class="main" width="100%"><?php echo zen_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '100%', '30', htmlspecialchars((isset($products_description[$languages[$i]['id']])) ? stripslashes($products_description[$languages[$i]['id']]) : zen_get_products_description($pInfo->products_id, $languages[$i]['id']), ENT_COMPAT, CHARSET, TRUE)); //,'id="'.'products_description' . $languages[$i]['id'] . '"'); ?></td>
               </tr>
             </table></td>
           </tr>
@@ -476,17 +471,28 @@ updateGross();
           <tr>
             <td colspan="2"><?php echo zen_draw_separator('pixel_black.gif', '100%', '3'); ?></td>
           </tr>
+          
+          <!--BOF Products Family -->
+          <tr>
+            <td class="main"><?php echo TEXT_PRODUCTS_FAMILY;?></td>
+            <td class="main"><?php echo zen_draw_input_field('products_family', $pInfo->products_family, 'id="products_family"');?></td>
+          </tr>
+           <tr>
+                <td colspan="2"><?php echo zen_draw_separator('pixel_black.gif', '100%', '3'); ?></td>
+           </tr>
+          <!--EOF Products Family -->
 
 <?php
     for ($i=0, $n=sizeof($languages); $i<$n; $i++) {
 ?>
           <tr>
             <td class="main"><?php if ($i == 0) echo TEXT_PRODUCTS_URL . '<br /><small>' . TEXT_PRODUCTS_URL_WITHOUT_HTTP . '</small>'; ?></td>
-            <td class="main"><?php echo zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . zen_draw_input_field('products_url[' . $languages[$i]['id'] . ']', (isset($products_url[$languages[$i]['id']]) ? $products_url[$languages[$i]['id']] : zen_get_products_url($pInfo->products_id, $languages[$i]['id'])), zen_set_field_length(TABLE_PRODUCTS_DESCRIPTION, 'products_url')); ?></td>
+            <td class="main"><?php echo zen_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . zen_draw_input_field('products_url[' . $languages[$i]['id'] . ']', htmlspecialchars(isset($products_url[$languages[$i]['id']]) ? $products_url[$languages[$i]['id']] : zen_get_products_url($pInfo->products_id, $languages[$i]['id']), ENT_COMPAT, CHARSET, TRUE), zen_set_field_length(TABLE_PRODUCTS_DESCRIPTION, 'products_url')); ?></td>
           </tr>
 <?php
     }
 ?>
+           
           <tr>
             <td colspan="2"><?php echo zen_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
@@ -503,6 +509,8 @@ updateGross();
           </tr>
         </table></td>
       </tr>
+       
+       
       <tr>
         <td><?php echo zen_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
