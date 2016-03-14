@@ -18,6 +18,20 @@
 <div class="centerColumn" id="indexProductList">
 
 <h1 id="productListHeading"><?php echo $breadcrumb->last(); ?></h1>
+<?php
+  // Display all header alerts via messageStack:
+  if ($messageStack->size('header') > 0) {
+    echo $messageStack->output('header');
+  }
+  if (isset($_GET['error_message']) && zen_not_null($_GET['error_message'])) {
+  echo htmlspecialchars(urldecode($_GET['error_message']), ENT_COMPAT, CHARSET, TRUE);
+  }
+  if (isset($_GET['info_message']) && zen_not_null($_GET['info_message'])) {
+   echo htmlspecialchars($_GET['info_message'], ENT_COMPAT, CHARSET, TRUE);
+  } else {
+
+  }
+?>
 
 <?php
 if (PRODUCT_LIST_CATEGORIES_IMAGE_STATUS == 'true') {

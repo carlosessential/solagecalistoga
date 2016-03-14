@@ -40,7 +40,7 @@ if (!defined('IS_ADMIN_FLAG')) {
       } elseif ($type == 'warning') {
         $this->errors[] = array('params' => 'class="messageStackWarning"', 'text' => zen_image(DIR_WS_ICONS . 'warning.gif', ICON_WARNING) . '&nbsp;' . $message);
       } elseif ($type == 'success') {
-        $this->errors[] = array('params' => 'class="messageStackSuccess"', 'text' => zen_image(DIR_WS_ICONS . 'success.gif', ICON_SUCCESS) . '&nbsp;' . $message);
+        $this->errors[] = array('params' => 'class="class="cssButton messageStackSuccess"', 'text' => zen_image(DIR_WS_ICONS . 'success.gif', ICON_SUCCESS) . '&nbsp;' . $message);
       } elseif ($type == 'caution') {
         $this->errors[] = array('params' => 'class="messageStackCaution"', 'text' => zen_image(DIR_WS_ICONS . 'warning.gif', ICON_WARNING) . '&nbsp;' . $message);
       } else {

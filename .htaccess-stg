@@ -53,7 +53,7 @@ RewriteEngine on
 #
 # Don't forget the leading and trailing /. This directive requires both!
 ###############################################################################
-RewriteBase /shop.solagecalistoga139h/
+#RewriteBase /store/
 
 
 ###############################################################################
