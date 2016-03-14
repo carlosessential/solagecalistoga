@@ -1,0 +1,1 @@
+[14-Mar-2016 06:11:20 Europe/Berlin] PHP Fatal error:  Cannot redeclare cat_with_pointer() (previously declared in /Applications/MAMP/htdocs/shop.solagecalistoga139h/includes/templates/winchester_responsive/sideboxes/tpl_categories.php:126) in /Applications/MAMP/htdocs/shop.solagecalistoga139h/includes/templates/winchester_responsive/sideboxes/tpl_categories.php on line 168
