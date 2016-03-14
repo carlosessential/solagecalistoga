@@ -14,7 +14,17 @@ $zco_notifier->notify('NOTIFY_HEADER_START_INDEX');
 
 // the following cPath references come from application_top/initSystem
 $category_depth = 'top';
+
 if (isset($cPath) && zen_not_null($cPath)) {
+  // bof all_sub_cats_products
+  $_SESSION['category_tree']->build_deepest_level_children();
+  $sub_cats = implode(',',$_SESSION['category_tree']->retrieve_deepest_level_children($cPath));
+  if(!empty($sub_cats))
+    $categories_products_query = "SELECT count(*) AS total
+                                FROM   " . TABLE_PRODUCTS_TO_CATEGORIES . "
+                                WHERE   categories_id IN ($sub_cats)";
+   else 
+   // eof all_sub_cats_products
   $categories_products_query = "SELECT count(*) AS total
                                 FROM   " . TABLE_PRODUCTS_TO_CATEGORIES . "
                                 WHERE   categories_id = :categoriesID";
@@ -39,6 +49,7 @@ if (isset($cPath) && zen_not_null($cPath)) {
     }
   }
 }
+
 // include template specific file name defines
 $define_page = zen_get_file_directory(DIR_WS_LANGUAGES . $_SESSION['language'] . '/html_includes/', FILENAME_DEFINE_MAIN_PAGE, 'false');
 require(DIR_WS_MODULES . zen_get_module_directory('require_languages.php'));
