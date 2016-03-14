@@ -15,6 +15,15 @@
  */
   function zen_href_link($page = '', $parameters = '', $connection = 'NONSSL', $add_session_id = true, $search_engine_safe = true, $static = false, $use_dir_ws_catalog = true) {
     global $request_type, $session_started, $http_domain, $https_domain;
+    // START alternative URLs patch
+    global $altURLs;
+	$link = null;
+    if(isset($altURLs)) {
+      $link = $altURLs->href_link($page, $parameters, $connection, $add_session_id, $static, $use_dir_ws_catalog);
+      if($link !== null) return $link;
+    }
+    // END alternative URLs patch
+
 
     if (!zen_not_null($page)) {
       die('</td></tr></table></td></tr></table><br /><br /><strong class="note">Error!<br /><br />Unable to determine the page link!</strong><br /><br /><!--' . $page . '<br />' . $parameters . ' -->');

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2016 at 01:11 AM
+-- Generation Time: Mar 14, 2016 at 05:36 AM
 -- Server version: 5.5.38
 -- PHP Version: 5.6.2
 
@@ -109,7 +109,7 @@ CREATE TABLE `admin_activity_log` (
   `page_accessed` varchar(80) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `page_parameters` text COLLATE latin1_general_ci,
   `ip_address` varchar(15) COLLATE latin1_general_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM AUTO_INCREMENT=1447 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1470 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `admin_activity_log`
@@ -1563,7 +1563,30 @@ INSERT INTO `admin_activity_log` (`log_id`, `access_date`, `admin_id`, `page_acc
 (1443, '2016-03-11 17:50:54', 1, 'layout_controller.php', 'page=&cID=114&', '::1'),
 (1444, '2016-03-11 17:51:46', 1, 'configuration.php', 'gID=19&', '::1'),
 (1445, '2016-03-11 17:51:58', 1, 'configuration.php', 'gID=19&cID=570&action=edit&', '::1'),
-(1446, '2016-03-11 17:52:02', 1, 'configuration.php', 'gID=19&cID=570&', '::1');
+(1446, '2016-03-11 17:52:02', 1, 'configuration.php', 'gID=19&cID=570&', '::1'),
+(1447, '2016-03-11 18:30:52', 1, 'configuration.php', 'gID=19&cID=399&action=edit&', '::1'),
+(1448, '2016-03-11 18:30:54', 1, 'configuration.php', 'gID=19&cID=399&action=save&', '::1'),
+(1449, '2016-03-11 18:30:54', 1, 'configuration.php', 'gID=19&cID=399&', '::1'),
+(1450, '2016-03-11 18:31:03', 1, 'configuration.php', 'gID=19&cID=400&action=edit&', '::1'),
+(1451, '2016-03-11 18:31:06', 1, 'configuration.php', 'gID=19&cID=400&action=save&', '::1'),
+(1452, '2016-03-11 18:31:06', 1, 'configuration.php', 'gID=19&cID=400&', '::1'),
+(1453, '2016-03-11 18:31:24', 1, 'configuration.php', 'gID=19&cID=402&action=edit&', '::1'),
+(1454, '2016-03-11 18:31:32', 1, 'configuration.php', 'gID=19&cID=402&action=save&', '::1'),
+(1455, '2016-03-11 18:31:32', 1, 'configuration.php', 'gID=19&cID=402&', '::1'),
+(1456, '2016-03-11 18:31:33', 1, 'configuration.php', 'gID=19&cID=403&action=edit&', '::1'),
+(1457, '2016-03-11 18:31:40', 1, 'configuration.php', 'gID=19&cID=403&action=save&', '::1'),
+(1458, '2016-03-11 18:31:40', 1, 'configuration.php', 'gID=19&cID=403&', '::1'),
+(1459, '2016-03-11 18:32:47', 1, 'configuration.php', 'gID=19&cID=433&action=edit&', '::1'),
+(1460, '2016-03-11 18:32:58', 1, 'configuration.php', 'gID=19&cID=433&', '::1'),
+(1461, '2016-03-11 18:34:51', 0, 'login.php ', '', '::1'),
+(1462, '2016-03-11 18:34:52', 0, 'login.php admin', '', '::1'),
+(1463, '2016-03-11 18:34:57', 1, 'configuration.php', 'gID=19&', '::1'),
+(1464, '2016-03-11 18:34:59', 1, 'configuration.php', 'gID=19&cID=435&action=edit&', '::1'),
+(1465, '2016-03-13 15:35:41', 0, 'login.php ', '', '::1'),
+(1466, '2016-03-13 15:35:42', 0, 'login.php admin', '', '::1'),
+(1467, '2016-03-13 21:53:22', 0, 'login.php ', '', '::1'),
+(1468, '2016-03-13 21:53:23', 0, 'login.php admin', '', '::1'),
+(1469, '2016-03-13 22:17:24', 1, 'categories.php', '', '::1');
 
 -- --------------------------------------------------------
 
@@ -1642,7 +1665,7 @@ CREATE TABLE `banners_history` (
   `banners_shown` int(5) NOT NULL DEFAULT '0',
   `banners_clicked` int(5) NOT NULL DEFAULT '0',
   `banners_history_date` datetime NOT NULL DEFAULT '0001-01-01 00:00:00'
-) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `banners_history`
@@ -1701,15 +1724,19 @@ INSERT INTO `banners_history` (`banners_history_id`, `banners_id`, `banners_show
 (50, 1, 134, 0, '2016-03-10 00:04:43'),
 (51, 6, 22, 1, '2016-03-10 00:32:15'),
 (52, 14, 51, 0, '2016-03-10 00:37:09'),
-(53, 7, 106, 0, '2016-03-11 00:00:01'),
-(54, 1, 98, 0, '2016-03-11 00:00:59'),
-(55, 4, 127, 0, '2016-03-11 00:02:45'),
+(53, 7, 127, 0, '2016-03-11 00:00:01'),
+(54, 1, 117, 0, '2016-03-11 00:00:59'),
+(55, 4, 141, 0, '2016-03-11 00:02:45'),
 (56, 14, 2, 0, '2016-03-11 00:50:06'),
-(57, 10, 2, 0, '2016-03-11 16:56:26'),
-(58, 11, 2, 0, '2016-03-11 16:56:26'),
-(59, 12, 2, 0, '2016-03-11 16:56:26'),
-(60, 13, 2, 0, '2016-03-11 16:56:26'),
-(61, 15, 2, 0, '2016-03-11 16:56:26');
+(57, 10, 4, 0, '2016-03-11 16:56:26'),
+(58, 11, 4, 0, '2016-03-11 16:56:26'),
+(59, 12, 4, 0, '2016-03-11 16:56:26'),
+(60, 13, 4, 0, '2016-03-11 16:56:26'),
+(61, 15, 4, 0, '2016-03-11 16:56:26'),
+(62, 7, 2, 0, '2016-03-12 11:56:54'),
+(63, 4, 16, 0, '2016-03-13 15:07:10'),
+(64, 7, 16, 0, '2016-03-13 15:18:12'),
+(65, 1, 9, 0, '2016-03-13 15:21:24');
 
 -- --------------------------------------------------------
 
@@ -1828,7 +1855,7 @@ CREATE TABLE `configuration` (
   `date_added` datetime NOT NULL DEFAULT '0001-01-01 00:00:00',
   `use_function` text COLLATE latin1_general_ci,
   `set_function` text COLLATE latin1_general_ci
-) ENGINE=MyISAM AUTO_INCREMENT=605 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=624 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `configuration`
@@ -2234,11 +2261,11 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (396, 'Bestsellers - Number Padding', 'BEST_SELLERS_FILLER', '&nbsp;', 'What do you want to Pad the numbers with?<br />Default = &amp;nbsp;', 19, 5, NULL, '2003-11-21 22:16:36', NULL, 'zen_cfg_textarea_small('),
 (397, 'Bestsellers - Truncate Product Names', 'BEST_SELLERS_TRUNCATE', '35', 'What size do you want to truncate the Product Names?<br />Default = 35', 19, 6, NULL, '2003-11-21 22:16:36', NULL, NULL),
 (398, 'Bestsellers - Truncate Product Names followed by ...', 'BEST_SELLERS_TRUNCATE_MORE', 'true', 'When truncated Product Names follow with ...<br />Default = true', 19, 7, '2003-03-21 13:08:25', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
-(399, 'Categories Box - Show Specials Link', 'SHOW_CATEGORIES_BOX_SPECIALS', 'true', 'Show Specials Link in the Categories Box', 19, 8, '2003-03-21 13:08:25', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
-(400, 'Categories Box - Show Products New Link', 'SHOW_CATEGORIES_BOX_PRODUCTS_NEW', 'true', 'Show Products New Link in the Categories Box', 19, 9, '2003-03-21 13:08:25', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(399, 'Categories Box - Show Specials Link', 'SHOW_CATEGORIES_BOX_SPECIALS', 'false', 'Show Specials Link in the Categories Box', 19, 8, '2016-03-11 18:30:54', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(400, 'Categories Box - Show Products New Link', 'SHOW_CATEGORIES_BOX_PRODUCTS_NEW', 'false', 'Show Products New Link in the Categories Box', 19, 9, '2016-03-11 18:31:06', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 (401, 'Shopping Cart Box Status', 'SHOW_SHOPPING_CART_BOX_STATUS', '1', 'Shopping Cart Shows<br />0= Always<br />1= Only when full<br />2= Only when full but not when viewing the Shopping Cart', 19, 10, NULL, '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''0'', ''1'', ''2''), '),
-(402, 'Categories Box - Show Featured Products Link', 'SHOW_CATEGORIES_BOX_FEATURED_PRODUCTS', 'true', 'Show Featured Products Link in the Categories Box', 19, 11, '2016-03-09 00:56:43', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
-(403, 'Categories Box - Show Products All Link', 'SHOW_CATEGORIES_BOX_PRODUCTS_ALL', 'true', 'Show Products All Link in the Categories Box', 19, 12, '2016-03-11 00:21:19', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(402, 'Categories Box - Show Featured Products Link', 'SHOW_CATEGORIES_BOX_FEATURED_PRODUCTS', 'false', 'Show Featured Products Link in the Categories Box', 19, 11, '2016-03-11 18:31:32', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(403, 'Categories Box - Show Products All Link', 'SHOW_CATEGORIES_BOX_PRODUCTS_ALL', 'false', 'Show Products All Link in the Categories Box', 19, 12, '2016-03-11 18:31:40', '2003-03-21 11:42:47', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 (404, 'Column Left Status - Global', 'COLUMN_LEFT_STATUS', '1', 'Show Column Left, unless page override exists?<br />0= Column Left is always off<br />1= Column Left is on, unless page override', 19, 15, '2016-03-09 00:52:35', '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''0'', ''1''), '),
 (405, 'Column Right Status - Global', 'COLUMN_RIGHT_STATUS', '0', 'Show Column Right, unless page override exists?<br />0= Column Right is always off<br />1= Column Right is on, unless page override', 19, 16, '2016-03-09 00:54:51', '2016-03-02 13:03:31', NULL, 'zen_cfg_select_option(array(''0'', ''1''), '),
 (406, 'Column Width - Left', 'COLUMN_WIDTH_LEFT', '250px', 'Width of the Left Column<br />px may be included<br />Default = 150px', 19, 20, NULL, '2003-11-21 22:16:36', NULL, NULL),
@@ -2426,7 +2453,26 @@ INSERT INTO `configuration` (`configuration_id`, `configuration_title`, `configu
 (601, 'Version', 'WINCHESTER_RESPONSIVE_VERSION', '1.4', 'Version installed:', 47, 0, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
 (602, 'Home Page Slideshow', 'WIN_SLIDER_STATUS', 'true', 'Activate Home Page Slideshow', 47, 1, '2016-03-11 17:07:22', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 (603, 'Banner Display Groups Custom Tab', 'SHOW_BANNERS_GROUP_SETCUSTOMTAB', 'Custom Tab', 'Custom Tab for product info page', 47, 2, '2016-03-02 14:59:31', '2016-03-02 14:59:31', NULL, NULL),
-(604, 'EZ Pages in Header Menu', 'SHOW_EZ_PAGES_MENU', 'true', 'Shows the menu option for EZ pages/important links in the header menu', 47, 3, '2016-03-11 17:00:41', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),');
+(604, 'EZ Pages in Header Menu', 'SHOW_EZ_PAGES_MENU', 'true', 'Shows the menu option for EZ pages/important links in the header menu', 47, 3, '2016-03-11 17:00:41', '2016-03-02 14:59:31', NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
+(605, 'Enable alternate URLs?', 'USU_ENABLED', 'true', 'This is a global setting and can be used to enable or disable this module completely.', 48, 1, NULL, '2016-03-13 21:54:33', '', 'zen_cfg_select_option(array(''true'', ''false''),'),
+(606, 'Enable debug log?', 'USU_DEBUG', 'false', 'When enabled, additional debugging information is saved to log files.<br /><br />Enabling debugging may result in the creation of numerous log files and may adversely affect server performance. Only enable this if absolutely necessary!', 48, 2, NULL, '2016-03-13 21:54:33', '', 'zen_cfg_select_option(array(''true'', ''false''),'),
+(607, 'Generate cPath parameters', 'USU_CPATH', 'auto', 'By default Zen Cart generates a cPath parameter for product pages. These are used to keep linked products in the correct category. In automatic mode the cPath will only be added if needed.', 48, 3, NULL, '2016-03-13 21:54:33', 'usu_check_cpath_option', 'usu_set_cpath_option('),
+(608, 'Alternate URLs end with', 'USU_END', '.html', 'If you want your URLs to end with a certain suffix add one here. Common suffixes are ''.html'', ''.htm''. Leave this field blank to have no suffix added to generated URLs.', 48, 4, NULL, '2016-03-13 21:54:33', '', ''),
+(609, 'Format of alternate URLs', 'USU_FORMAT', 'original', 'You can select from a list of commonly generated formats.<br /><b>Original:</b><br /><i>Categories:</i> category-name-c-34<br /><i>Products:</i> product-name-p-54<br /><br /><b>Category Parent:</b><br /><i>Categories:</i> parent-category-name-c-34<br /><i>Products:</i> parent-product-name-p-54', 48, 5, NULL, '2016-03-13 21:54:33', 'usu_check_url_format_option', 'usu_set_url_format_option('),
+(610, 'Display categories as directories', 'USU_CATEGORY_DIR', 'short', 'You can select from a list of commonly generated formats.<br /><b>Off:</b> disables displaying categories as directories<br /><br /><b>Short:</b> use the settings from ''Format of rewritten URLs''<b>Full:</b> uses full category paths<br /><br />', 48, 6, NULL, '2016-03-13 21:54:33', 'usu_check_category_dir_option', 'usu_set_category_dir_option('),
+(611, 'Remove problematic characters', 'USU_REMOVE_CHARS', 'punctuation', 'This allows you remove certain problematic characters from the generated URLs.<br /><br /><i>non-alphanumerical:</i> removes all non-alphanumerical characters<br /><i>punctuation:</i> removes all punctuation characters', 48, 7, NULL, '2016-03-13 21:54:33', 'usu_check_remove_chars_option', 'usu_set_remove_chars_option('),
+(612, 'Enter PCRE filter rules', 'USU_FILTER_PCRE', '', 'This setting uses PCRE rules to filter URLs.<br><br>This filter is run before character conversions and stripping of special characters. If you want a dash - in your URLS, use a single space. To escape a character in the regular expression use \\\\ instead of a single \\.<br /><br />The format <b>MUST</b> be in the form: <b>find1=>replace1,find2=>replace2</b>. ', 48, 8, NULL, '2016-03-13 21:54:33', '', ''),
+(613, 'Filter short words', 'USU_FILTER_SHORT_WORDS', '0', 'This setting will filter words less than or equal to the value from the URL.', 48, 9, NULL, '2016-03-13 21:54:33', 'usu_check_short_words', ''),
+(614, 'Limit alternate URLS to the following pages', 'USU_FILTER_PAGES', 'index, product_info, product_music_info, document_general_info, document_product_info, product_free_shipping_info, products_new, products_all, shopping_cart, featured_products, specials, contact_us, conditions, privacy, reviews, shippinginfo, faqs_all, site_map, gv_faq, discount_coupon, page, page_2, page_3, page_4', 'You can limit the pages which will be rewritten by specifying them here. If no pages are specified all pages will be rewritten. <br><br>The format is comma delimited and <b>MUST</b> be in the form: <b>page1,page2,page3</b> or <b>page1, page2, page3</b>', 48, 10, NULL, '2016-03-13 21:54:33', '', ''),
+(615, 'Choose URL Engine', 'USU_ENGINE', 'rewrite', 'Choose which URL Engine to use.', 48, 11, NULL, '2016-03-13 21:54:33', '', 'zen_cfg_select_option(array(''rewrite''),'),
+(616, 'Enable automatic redirects?', 'USU_REDIRECT', 'false', 'This will activate the automatic redirect code and send 301 headers for old to new URLs.', 48, 12, NULL, '2016-03-13 21:54:33', '', 'zen_cfg_select_option(array(''true'', ''false''),'),
+(617, 'Enable caches to save queries?', 'USU_CACHE_GLOBAL', 'true', 'This is a global setting and will turn off both memory and SQL caching of URLs completely.', 48, 13, NULL, '2016-03-13 21:54:33', 'usu_check_cache_options', 'usu_set_global_cache_option('),
+(618, 'Enable product cache?', 'USU_CACHE_PRODUCTS', 'true', 'This will turn off SQL caching for the products.', 48, 14, NULL, '2016-03-13 21:54:33', 'usu_check_cache_options', 'usu_set_cache_options(''products'','),
+(619, 'Enable categories cache?', 'USU_CACHE_CATEGORIES', 'true', 'This will turn off SQL caching for the categories.', 48, 15, NULL, '2016-03-13 21:54:33', 'usu_check_cache_options', 'usu_set_cache_options(''categories'','),
+(620, 'Enable manufacturers cache?', 'USU_CACHE_MANUFACTURERS', 'true', 'This will turn off SQL caching for the manufacturers.', 48, 16, NULL, '2016-03-13 21:54:33', 'usu_check_cache_options', 'usu_set_cache_options(''manufacturers'','),
+(621, 'Enable ez pages cache?', 'USU_CACHE_EZ_PAGES', 'true', 'This will turn off SQL caching for ez pages.', 48, 17, NULL, '2016-03-13 21:54:33', 'usu_check_cache_options', 'usu_set_cache_options(''ez_pages'','),
+(622, 'Reset URL Cache', 'USU_CACHE_RESET', 'false', 'This will reset the SQL cache data for URLs', 48, 18, NULL, '2016-03-13 21:54:33', 'usu_reset_cache_data', 'zen_cfg_select_option(array(''true'', ''false''),'),
+(623, 'Ultimate URLs Version', 'USU_VERSION', '2.215', 'Indicates the currently installed version of Ultimate URLs.', 48, 0, NULL, '2016-03-13 21:54:33', NULL, 'zen_cfg_select_option(array(''2.215''),');
 
 -- --------------------------------------------------------
 
@@ -2440,7 +2486,7 @@ CREATE TABLE `configuration_group` (
   `configuration_group_description` varchar(255) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `sort_order` int(5) DEFAULT NULL,
   `visible` int(1) DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `configuration_group`
@@ -2489,7 +2535,8 @@ INSERT INTO `configuration_group` (`configuration_group_id`, `configuration_grou
 (44, 'Carousel Featured Products', 'Set Carousel Featured Products Options', 44, 1),
 (45, 'Carousel Featured Products', 'Set Carousel Featured Products Options', 45, 1),
 (46, 'Zen Colorbox', 'Configure Zen Colorbox settings', 46, 1),
-(47, 'Winchester Responsive Template Configuration', 'Set Winchester Responsive Template Options', 47, 1);
+(47, 'Winchester Responsive Template Configuration', 'Set Winchester Responsive Template Options', 47, 1),
+(48, 'Ultimate URLs', 'Configuration Group for Ultimate URLs', 48, 1);
 
 -- --------------------------------------------------------
 
@@ -2507,7 +2554,7 @@ CREATE TABLE `counter` (
 --
 
 INSERT INTO `counter` (`startdate`, `counter`) VALUES
-('20160302', 1301);
+('20160302', 1414);
 
 -- --------------------------------------------------------
 
@@ -2533,7 +2580,9 @@ INSERT INTO `counter_history` (`startdate`, `counter`, `session_counter`) VALUES
 ('20160309', 197, 5),
 ('20160310', 365, 8),
 ('20160311', 416, 8),
-('20160312', 81, 2);
+('20160312', 143, 5),
+('20160313', 40, 1),
+('20160314', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -2984,13 +3033,6 @@ CREATE TABLE `customers_basket` (
   `customers_basket_date_added` varchar(8) COLLATE latin1_general_ci DEFAULT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
---
--- Dumping data for table `customers_basket`
---
-
-INSERT INTO `customers_basket` (`customers_basket_id`, `customers_id`, `products_id`, `customers_basket_quantity`, `final_price`, `customers_basket_date_added`) VALUES
-(10, 3, '206', 1, 0.0000, '20160312');
-
 -- --------------------------------------------------------
 
 --
@@ -3029,7 +3071,7 @@ CREATE TABLE `customers_info` (
 INSERT INTO `customers_info` (`customers_info_id`, `customers_info_date_of_last_logon`, `customers_info_number_of_logons`, `customers_info_date_account_created`, `customers_info_date_account_last_modified`, `global_product_notifications`) VALUES
 (1, '0001-01-01 00:00:00', 0, '2004-01-21 01:35:28', '0001-01-01 00:00:00', 0),
 (2, '2016-03-02 14:56:25', 2, '2016-03-02 13:41:38', NULL, 0),
-(3, '2016-03-11 17:22:49', 10, '2016-03-10 02:26:56', NULL, 0);
+(3, '2016-03-11 18:42:24', 11, '2016-03-10 02:26:56', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -4940,8 +4982,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`sesskey`, `expiry`, `value`) VALUES
-('a65bf358e45aeb44b0602294b1a8c3e6', 1457742830, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949784e444e6d596d55334e6a566d5a6a5531596a646c4d7a55794d324a6a5a54686c5a4759794d7a4d354d434937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f32316c63334e685a32565562314e3059574e7266484d364d446f69496a746a5958526c5a3239796157567a58334279623252315933527a58334e76636e526662334a6b5a584a38637a6f784f694977496a746b61584e776247463558324e686447566e62334a705a584e665a484a76634752766432353861546f774f773d3d),
-('7a87b8402e5b65defaeb3694c7bece7d', 1457742901, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f694a6c5a4445794d32566a4f4755304f44426c4e4451304e544d345a54566a4d4456684e5751305932526c4f4349375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f784f6e74704f6a45344d5474684f6a453665334d364d7a6f6963585235496a746b4f6a45376658317a4f6a5536496e527664474673496a746b4f6a67794f334d364e6a6f69643256705a326830496a746b4f6a4d754e54747a4f6a5936496d4e68636e524a52434937637a6f314f6949304f4449304e794937637a6f784d6a6f695932397564475675644639306558426c496a747a4f6a6736496e426f65584e7059324673496a747a4f6a45344f694a6d636d566c58334e6f615842776157356e58326c305a5730694f326b364d44747a4f6a49774f694a6d636d566c58334e6f615842776157356e5833646c6157646f6443493761546f774f334d364d546b36496d5a795a5756666332687063484270626d646663484a70593255694f326b364d447439626d46326157646864476c76626e78504f6a45334f694a7559585a705a3246306157397553476c7a64473979655349364d6a7037637a6f304f694a775958526f496a74684f6a513665326b364d4474684f6a513665334d364e446f696347466e5a534937637a6f324f694a73623264765a6d59694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313961546f784f3245364e447037637a6f304f694a775957646c496a747a4f6a5536496d78765a326c75496a747a4f6a5136496d31765a4755694f334d364e6a6f69546b394f55314e4d496a747a4f6a4d36496d646c64434937637a6f774f6949694f334d364e446f696347397a6443493759546f774f6e743966576b364d6a74684f6a513665334d364e446f696347466e5a534937637a6f784d7a6f696332687663484270626d64665932467964434937637a6f304f694a746232526c496a747a4f6a5936496b3550546c4e5454434937637a6f7a4f694a6e5a5851694f334d364d446f69496a747a4f6a5136496e4276633351694f3245364d447037665831704f6a4d3759546f304f6e747a4f6a5136496e42685a3255694f334d364e546f696157356b5a5867694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a747a4f6a413649694937637a6f304f694a7762334e30496a74684f6a41366533313966584d364f446f696332356863484e6f623351694f3245364d4470376658316a6147566a61313932595778705a48787a4f6a5136496e5279645755694f327868626d64315957646c66484d364e7a6f695a57356e62476c7a61434937624746755a3356685a32567a58326c6b66484d364d546f694d534937624746755a3356685a32567a58324e765a475638637a6f794f694a6c6269493759335679636d567559336c38637a6f7a4f694a56553051694f3352765a47463558326c7a66484d364d544136496a49774d5459744d444d744d5449694f3356775a4746305a55563463476c79595852706232357a664749364d54747a5a584e7a6157397558324e76645735305a584a38596a6f784f324e31633352766257567963313970634639685a4752795a584e7a66484d364d546f694d534937646d467361575266644739665932686c5932747664585238596a6f784f324e68636e52665a584a7962334a7a66484d364d446f69496a74755a58646663484a765a48566a64484e666157526661573566593246796448787a4f6a4d36496a45344d5349376257567a6332466e5a5652765533526859327438637a6f774f6949694f324e68636e526659323931626e5279655639705a48787a4f6a4d36496a49794d79493759323931626e527965563970626d5a76664745364d7a7037637a6f784e446f6959323931626e52796157567a58323568625755694f334d364d544d36496c56756158526c5a434254644746305a584d694f334d364d6a4136496d4e7664573530636d6c6c63313970633239665932396b5a563879496a747a4f6a4936496c5654496a747a4f6a49774f694a6a6233567564484a705a584e6661584e7658324e765a4756664d794937637a6f7a4f694a56553045694f33303d);
+('cc12d8fc19a2599c25eb01c61d6d6ef8', 1457932102, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f69497a4f54646d5a5459334f5467774f4459784d4455334e7a4535595459334e44417a597a51774d6a42684d534937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a733d),
+('217a03ead4749f1542a313864a860707', 1457933545, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f69497a4f54646d5a5459334f5467774f4459784d4455334e7a4535595459334e44417a597a51774d6a42684d534937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a747a5a57786c5933526c5a46396962336838637a6f784d7a6f69593239755a6d6c6e64584a6864476c7662694937614852746246396c5a476c3062334a6663484a6c5a6d56795a57356a5a56397a6447463064584e38637a6f304f694a4f54303546496a74685a473170626c39705a48787a4f6a4536496a45694f324e686447566e62334a705a584e6663484a765a48566a64484e666332397964463976636d526c636e787a4f6a4536496a41694f3252706333427359586c66593246305a576476636d6c6c6331396b636d39775a473933626e78704f6a4137),
+('28f98b85a624bdea97299063efaaa579', 1457929829, 0x6332566a64584a7064486c556232746c626e787a4f6a4d794f6949784d4751344d44557a5a6a49794e546c6b4d32597a595745784f546b7a4f5467775a544d354f446333597949375933567a644739745a584a7a58326876633352665957526b636d567a6333787a4f6a6b36496d7876593246736147397a644349375932467964456c4566484d364d446f69496a746a59584a30664538364d544936496e4e6f623342776157356e51324679644349364f447037637a6f344f694a6a623235305a5735306379493759546f774f6e7439637a6f314f694a30623352686243493761546f774f334d364e6a6f69643256705a326830496a74704f6a4137637a6f324f694a6a59584a30535551694f303437637a6f784d6a6f695932397564475675644639306558426c496a74694f6a4137637a6f784f446f695a6e4a6c5a56397a61476c7763476c755a31397064475674496a74704f6a4137637a6f794d446f695a6e4a6c5a56397a61476c7763476c755a3139335a576c6e614851694f326b364d44747a4f6a45354f694a6d636d566c58334e6f615842776157356e5833427961574e6c496a74704f6a413766573568646d6c6e5958527062323538547a6f784e7a6f69626d46326157646864476c76626b687063335276636e6b694f6a493665334d364e446f69634746306143493759546f784f6e74704f6a413759546f304f6e747a4f6a5136496e42685a3255694f334d364e546f696157356b5a5867694f334d364e446f696257396b5a534937637a6f324f694a4f54303554553077694f334d364d7a6f695a325630496a74684f6a453665334d364e546f6959314268644767694f334d364e546f694f4452664f4459694f33317a4f6a5136496e4276633351694f3245364d44703766583139637a6f344f694a7a626d4677633268766443493759546f774f6e743966574e6f5a574e7258335a6862476c6b66484d364e446f6964484a315a534937624746755a3356685a325638637a6f334f694a6c626d647361584e6f496a74735957356e6457466e5a584e6661575238637a6f784f694978496a74735957356e6457466e5a584e665932396b5a58787a4f6a4936496d5675496a746a64584a795a57356a6558787a4f6a4d36496c5654524349376447396b59586c6661584e38637a6f784d446f694d6a41784e6930774d7930784e4349376458426b5958526c5258687761584a6864476c76626e4e38596a6f784f334e6c63334e706232356659323931626e526c636e78694f6a45375933567a644739745a584a7a58326c775832466b5a484a6c63334e38637a6f784f694978496a7432595778705a4639306231396a6147566a61323931644878694f6a4537593246796446396c636e4a76636e4e38637a6f774f6949694f773d3d);
 
 -- --------------------------------------------------------
 
@@ -5095,6 +5138,34 @@ CREATE TABLE `upgrade_exceptions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `usu_cache`
+--
+
+CREATE TABLE `usu_cache` (
+  `cache_id` varchar(32) NOT NULL DEFAULT '',
+  `cache_language_id` tinyint(1) NOT NULL DEFAULT '0',
+  `cache_name` varchar(255) NOT NULL DEFAULT '',
+  `cache_data` mediumblob NOT NULL,
+  `cache_global` tinyint(1) NOT NULL DEFAULT '1',
+  `cache_gzip` tinyint(1) NOT NULL DEFAULT '1',
+  `cache_method` varchar(20) NOT NULL DEFAULT 'RETURN',
+  `cache_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `cache_expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usu_cache`
+--
+
+INSERT INTO `usu_cache` (`cache_id`, `cache_language_id`, `cache_name`, `cache_data`, `cache_global`, `cache_gzip`, `cache_method`, `cache_date`, `cache_expires`) VALUES
+('aa52eb591cb1f251d3bd144f4cc29025', 1, 'usu_v3_manufacturers', 0x25cc4d0e83400805e0bbb07761fda9e269c81495d4ce3448aa49d3bb17e2f27d8f07e1885fc17adab147789169396112bc398c0e92b4ec65b6b0e63a3a48336b40ebd020ccd7a4f334206c6511e3b406f54e1d42a25c72e4fbf5611756a580c1a16e1116ab241b2b25930f473346e3db958f8dcdaa37a527e903a6df1f, 1, 1, 'RETURN', '2016-03-14 04:54:51', '2016-04-13 04:54:51'),
+('ad4baf75b1497c2576ac411a78ccec26', 1, 'usu_v3_ezpages', 0x55905d6e02310c84ef92774b18963f731a2b1bb21690ac1217b454bd7be34d5589d72f33e39930e140df4278a9742417de33c750dd4568db086ec831a4f002c34677460f8da6ac53281f6f43cf782c70977433b26fe464e2452749d1d0a1a1e6af1397301a38fedd6936f63e7f25357aeace2a1ae0c1b3a1b3090772739127fb055a03f1eb61dc74f53b24f05cd600b445d8ea44b92af85054aee259fb385cd761abe6557282f13976beebf562cef1deb36d15eec9bd2656900aff5ff4f30b, 1, 1, 'RETURN', '2016-03-14 04:54:51', '2016-04-13 04:54:51'),
+('cc42973580bf9fff7bbed2323c1b5212', 1, 'usu_v3_categories', 0x4bb432b0aaae0500, 1, 1, 'RETURN', '2016-03-14 04:54:51', '2016-04-13 04:54:51'),
+('e56cd0f958e0c4cbe40aa07499c079c3', 1, 'usu_v3_products', 0x9554ed72a3300c7c97fef70c21e483f46984114173c6666c43cbddf4dd2b617a4db964c2fd892178575a6925b8e4a7cb1fbaecced96bb814bbcb8bf357b0a455070655401b28d2c84f117c44afa287110d7f882faf02db316c7f5ec1acf37c3ec4e48c3994eb5083e51b7af0a83ab2e805df376a9f55de41cdcfa8a31f3a358c308c5522da4b7026e20f1c14a2802b1785144c503d686a98bf018dca9149a0621ba872f5f40d3a48ca87a7a0e87af9831579d6c0c211628776d17d5c4abc25dd802c36c14edb12d606c1322c81ce027a9e70476149ae1485cf93c3f7c6198248f6fa3362996d2b91a56b1b933cf546b1551e99cca53a9762a7c379739d478ac06e517a55ea522c566c683218b05ab4fcf04829c63a66cf8b31a29f6a985468917dae1dbfc31595118d8949dc76dc50d6074c1dd6b4f8a09c3d78fcaf0e758efb3b8f14845f89653661b11a3e4d4c1ab81c5de51c77240c9e0b220c41fb214d5b293ecc594a7046525b8ec504e98ab8aec8d793ed5c6c85cb69be7a33dd06429b70e5dde53327819c4e4356f07dbb342c592ecfe69db55e3e7d3b456787e889dda0341a3318f0ccd203f9efb9cab3ddbda02ca9c66692706023b977aaf9bc8589b5f6a715cc433d1bb291b137f2c31ac3579e62a7e2f4cf6e058581376c24691fa3bb9b96d1ef2f7071af616847f2ce8ae1392a67cc8b1a553bd59e1bef6c428a618ac3a36eb4e82b69430ba3bc623798f0172a2ed971232386a87aefea41b3a13f3e01, 1, 1, 'RETURN', '2016-03-14 04:54:51', '2016-04-13 04:54:51');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `whos_online`
 --
 
@@ -5115,7 +5186,7 @@ CREATE TABLE `whos_online` (
 --
 
 INSERT INTO `whos_online` (`customer_id`, `full_name`, `session_id`, `ip_address`, `time_entry`, `time_last_click`, `last_page_url`, `host_address`, `user_agent`) VALUES
-(0, '&yen;Guest', '7a87b8402e5b65defaeb3694c7bece7d', '1', '1457739911', '1457741460', '/shop.solagecalistoga139h/', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
+(0, '&yen;Guest', '28f98b85a624bdea97299063efaaa579', '1', '1457927691', '1457928388', '/shop.solagecalistoga139h/exfoliants-c-84_86/', 'localhost', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36');
 
 -- --------------------------------------------------------
 
@@ -5904,6 +5975,12 @@ ALTER TABLE `upgrade_exceptions`
  ADD PRIMARY KEY (`upgrade_exception_id`);
 
 --
+-- Indexes for table `usu_cache`
+--
+ALTER TABLE `usu_cache`
+ ADD PRIMARY KEY (`cache_id`,`cache_language_id`), ADD KEY `cache_id` (`cache_id`), ADD KEY `cache_language_id` (`cache_language_id`), ADD KEY `cache_global` (`cache_global`);
+
+--
 -- Indexes for table `whos_online`
 --
 ALTER TABLE `whos_online`
@@ -5944,7 +6021,7 @@ MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `admin_activity_log`
 --
 ALTER TABLE `admin_activity_log`
-MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1447;
+MODIFY `log_id` int(15) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1470;
 --
 -- AUTO_INCREMENT for table `authorizenet`
 --
@@ -5959,7 +6036,7 @@ MODIFY `banners_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 -- AUTO_INCREMENT for table `banners_history`
 --
 ALTER TABLE `banners_history`
-MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
+MODIFY `banners_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=66;
 --
 -- AUTO_INCREMENT for table `categories`
 --
@@ -5969,12 +6046,12 @@ MODIFY `categories_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=103;
 -- AUTO_INCREMENT for table `configuration`
 --
 ALTER TABLE `configuration`
-MODIFY `configuration_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=605;
+MODIFY `configuration_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=624;
 --
 -- AUTO_INCREMENT for table `configuration_group`
 --
 ALTER TABLE `configuration_group`
-MODIFY `configuration_group_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
+MODIFY `configuration_group_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `countries`
 --

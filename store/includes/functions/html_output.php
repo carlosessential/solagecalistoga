@@ -57,6 +57,15 @@
   }
 
   function zen_catalog_href_link($page = '', $parameters = '', $connection = 'NONSSL') {
+    // START alternative URLs patch
+    global $altURLs;
+    $link = null;
+    if(isset($altURLs)) {
+      $link = $altURLs->href_link($page, $parameters, $connection, $add_session_id, $static, $use_dir_ws_catalog);
+      if($link !== null) return $link;
+    }
+    // END alternative URLs patch
+
     if ($connection == 'NONSSL') {
       $link = HTTP_CATALOG_SERVER . DIR_WS_CATALOG;
     } elseif ($connection == 'SSL') {
