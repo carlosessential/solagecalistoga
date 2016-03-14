@@ -38,7 +38,8 @@ input [type=submit], input[type=submit]{ -webkit-appearance: none;-webkit-border
 /*bof warnings, errors, messages*/
 .messageStackWarning, .messageStackError, .messageStackSuccess, .messageStackCaution {padding:0.2em;line-height:1.8em;border:0px solid #dbdbce;padding:15px;}
 .messageStackWarning, .messageStackError {background-color:#c84e45;color:#fff;}
-.messageStackSuccess {background-color:#c84e45;color:#fff;}
+.messageStackSuccess {background-color:#c84e45;color:#fff; width: 102px; height: 20px; margin: 0 auto;}
+.messageStackSuccess a {color:#fff;}
 .messageStackCaution {background-color:#c84e45;color:#fff;}
 .messageStackCaution img{vertical-align:middle;margin-right:10px;}
 

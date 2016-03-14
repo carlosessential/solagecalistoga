@@ -377,9 +377,9 @@
 // success messages for added to cart when display cart is off
 // set to blank for no messages
 // for all pages except where multiple add to cart is used:
-  define('SUCCESS_ADDED_TO_CART_PRODUCT', 'Successfully added Product to the cart ...');
+  define('SUCCESS_ADDED_TO_CART_PRODUCT', '<a href="shopping_cart.html">View Cart</a>');
 // only for where multiple add to cart is used:
-  define('SUCCESS_ADDED_TO_CART_PRODUCTS', 'Successfully added selected Product(s) to the cart ...');
+  define('SUCCESS_ADDED_TO_CART_PRODUCTS', '<a href="shopping_cart.html">View Cart</a>');
 
   define('TEXT_PRODUCT_WEIGHT_UNIT','oz');
 

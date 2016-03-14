@@ -148,6 +148,21 @@ if (CUSTOMERS_APPROVAL == 3 and TEXT_LOGIN_FOR_PRICE_BUTTON_REPLACE_SHOWROOM == 
       echo $display_qty;
       echo $display_button;
             ?>
+            <?php
+  // Display all header alerts via messageStack:
+  if ($messageStack->size('header') > 0) {
+    echo $messageStack->output('header');
+  }
+  if (isset($_GET['error_message']) && zen_not_null($_GET['error_message'])) {
+  echo htmlspecialchars(urldecode($_GET['error_message']), ENT_COMPAT, CHARSET, TRUE);
+  }
+  if (isset($_GET['info_message']) && zen_not_null($_GET['info_message'])) {
+   echo htmlspecialchars($_GET['info_message'], ENT_COMPAT, CHARSET, TRUE);
+} else {
+
+}
+?>
+
           </div>
   <?php } // display qty and button ?>
 <?php } // CUSTOMERS_APPROVAL == 3 ?>
